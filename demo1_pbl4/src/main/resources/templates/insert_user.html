@@ -1,0 +1,44 @@
+<!--<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>-->
+<!--<!DOCTYPE html>-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Them moi nhan vien </title>
+</head>
+<body>
+<h1> Thêm mới nhân viên</h1>
+<form th:action="@{/users/insertUser}" method="post" th:object="${myUser}">  <!-- ${variable} goi ten bien trong thymeleaf -->
+  <table>
+    <tr>
+      <td>First name</td>
+      <td><input type="text" id="first_name" name="firstName" th:field="*{firstName}"></td> <!-- ${variable} goi ten bien trong thymeleaf -->
+    </tr>
+    <tr>
+      <td>Last name</td>
+      <td><input type="text" id="last_name" th:field="*{lastName}"></td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><input type="text" id="email" th:field="*{email}"></td>
+    </tr>
+    <tr>
+      <td>Phone</td>
+      <td><input type="text" id="phone_num" th:field="*{phoneNum}"></td>
+    </tr>
+    <tr>
+      <td>Username</td>
+      <td><input type="text" id="username" th:field="*{username}"></td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td><input type="password" id="password" th:field="*{password}"></td>
+
+    </tr>
+    <tr>
+      <td><input type="submit" value="Submit"></td>
+      <td><input type="reset" value="Reset" ></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
