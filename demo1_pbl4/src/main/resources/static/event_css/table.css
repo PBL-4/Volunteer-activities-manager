@@ -1,0 +1,91 @@
+.events {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.events td, .events th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.events tr:nth-child(even){background-color: #f2f2f2;}
+
+.events tr:hover {background-color: #ddd;}
+
+.events th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+/* Bach IT*/
+
+ .container {
+     border-radius: 5px;
+     padding: 20px;
+     background-color: #888;
+ }
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.grid {
+    display: flex;
+    flex-direction: row;
+}
+
+.col-sm-2 {
+    width: 16.67%;
+}
+.col-sm-3 {
+    width: 25%;
+}
+.col-sm-4 {
+    width: 33.33%;
+}
+.col-sm-6 {
+    width: 50%;
+    float: left;
+}
+
+.col-sm-3.in_checkbox {
+    display: flex;
+    flex-direction: column;
+    order:1
+}
+
+.col-sm-3.in_location {
+    display: flex;
+    flex-direction: column;
+    order: 2;
+}
+
+
+.col-sm-4.in_select {
+    order: 3;
+}
+.col-sm-3.in_keyword {
+    order: 4;
+}
+.category {
+    margin: 0;
+    padding: 0px;
+}
+
+.category ul {
+    margin:0px;
+    padding:0px;
+    list-style-type: none; /* Chọn style cho list*/
+    display: block;
+    float: left;
+}
+
+.category ul li {
+    float: left; /*li : float left*/
+}

@@ -15,7 +15,7 @@ public class EventServiceImpl implements EventService {
 
 
     @Override
-    public List<Event> getAllUsers() {
+    public List<Event> getAllEvents() {
         return eventRepository.findAll();
     }
 
@@ -38,5 +38,10 @@ public class EventServiceImpl implements EventService {
     public boolean deleteEvent(Long eventId) {
          eventRepository.deleteById(eventId);
          return true;
+    }
+    @Override
+    public List<Event> findEventByLocationAndKeyword(String location,String keyword)
+    {
+       return eventRepository.findEventByLocationAndKeyword(location,keyword);
     }
 }
