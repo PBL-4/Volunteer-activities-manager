@@ -31,9 +31,6 @@ public class User {
 
     private Boolean gender;
 
-//    @Column(name="is_admin")
-//    private Boolean isAdmin;
-
     @ManyToOne()
     @JoinColumn(name="role_id")
     private Role role;
@@ -41,20 +38,25 @@ public class User {
    // private List<String> comments;
 
 
-    @ManyToMany(cascade={
-            CascadeType.ALL
-    },fetch = FetchType.LAZY)
-    @JoinTable(
-            name="users_events",
-            joinColumns={
-                   @JoinColumn(name = "user_id")
-            },
-            inverseJoinColumns={
-                        @JoinColumn(name="event_id")
-            }
+//    @ManyToMany(cascade={
+//            CascadeType.ALL
+//    },fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name="users_events",
+//            joinColumns={
+//                   @JoinColumn(name = "user_id"),
+//            },
+//            inverseJoinColumns={
+//                    @JoinColumn(name="event_id"),
+//                   // @JoinColumn(name="is_appoval")
+//            }
+//
+//    )
+//
+//   private Set<Event> eventList=new HashSet<Event>();
 
-    )
-   private Set<Event> eventList=new HashSet<Event>();
+
+
     public User() {
         this.gender=true;
     }
@@ -64,7 +66,7 @@ public class User {
     private Set<Post>posts;
 
 
-    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password, Set<Event> events) {
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -72,7 +74,7 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.eventList = events;
+//        this.eventList = events;
     }
 
     public Long getUserId() {
@@ -131,11 +133,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Event> getEvents() {
-        return eventList;
-    }
-
-    public void setEvents(Set<Event> events) {
-        this.eventList = events;
-    }
+//    public Set<Event> getEvents() {
+//        return eventList;
+//    }
+//
+//    public void setEvents(Set<Event> events) {
+//        this.eventList = events;
+//    }
 }
