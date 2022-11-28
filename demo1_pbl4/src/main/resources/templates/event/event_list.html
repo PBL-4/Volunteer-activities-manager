@@ -1,0 +1,41 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event List</title>
+    <link rel="stylesheet" type="text/css" href="/event_css/table.css">
+</head>
+<body>
+<button><a href="/events/insert">Thêm mới sự kiện</a></button>
+<table class="events">
+    <thead>
+    <tr>
+        <th>Event Id</th>
+        <th>Name</th>
+        <th>Age permission</th>
+        <th>Begin time</th>
+        <th>End time</th>
+        <th>Location</th>
+        <th>Num of member</th>
+        <th>Rating</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="event: ${eventList}">
+        <tr>
+            <td th:text="${event.getEventId()}"></td>
+            <td th:text="${event.getEventName()}"></td>
+            <td th:text="${event.getAge()}"></td>
+            <td th:text="${event.getBeginTime()}"></td>
+            <td th:text="${event.getEndTime()}"></td>
+            <td th:text="${event.getLocation()}"></td>
+            <td th:text="${event.getNumOfMem()}"></td>
+            <td th:text="${event.getRating()}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+<button><a href="/events/find">Tìm kiếm sự kiện</a></button>
+</body>
+</html>

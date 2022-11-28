@@ -27,8 +27,16 @@ public class User {
     private String username;
     private String password;
 
-    @Column(name="is_admin")
-    private Boolean isAdmin;
+    private String country;
+
+    private Boolean gender;
+
+//    @Column(name="is_admin")
+//    private Boolean isAdmin;
+
+    @ManyToOne()
+    @JoinColumn(name="role_id")
+    private Role role;
 
    // private List<String> comments;
 
@@ -48,6 +56,7 @@ public class User {
     )
    private Set<Event> eventList=new HashSet<Event>();
     public User() {
+        this.gender=true;
     }
 
 

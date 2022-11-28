@@ -1,43 +1,51 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "posts")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_post")
-    private Long idPost;
+    @Column(name = "post_id")
+    private Long postId;
     private String title;
     private String content;
-    private Long idUser;
+
+    //Dư
+   // private Long idUser;
+
+    @Column(name = "post_date")
+    private Date postDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy="post",fetch = FetchType.LAZY)
     private Event event;
 
 
     public Post() {
     }
 
-    public Post(Long idPost, String title, String content, Long idUser) {
-        this.idPost = idPost;
+    public Post(Long postId, String title, String content, Date postDate, User user, Event event) {
+        this.postId = postId;
         this.title = title;
         this.content = content;
-        this.idUser = idUser;
+        this.postDate = postDate;
+        this.user = user;
+        this.event = event;
     }
 
-    public Long getIdPost() {
-        return idPost;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setIdPost(Long idPost) {
-        this.idPost = idPost;
+    public void setPostId(Long idPost) {
+        this.postId = idPost;
     }
 
     public String getTitle() {
@@ -56,11 +64,4 @@ public class Post {
         this.content = content;
     }
 
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
-    }
 }
