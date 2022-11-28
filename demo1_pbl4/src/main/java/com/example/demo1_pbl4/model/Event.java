@@ -2,23 +2,22 @@ package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name="events")
+@Table(name = "events")
 public class Event {
 
     @Id
-    @Column(name="event_id")
+    @Column(name = "event_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long eventId;
 
-    @Column(name="event_name")
+    @Column(name = "event_name")
     private String eventName;
     private String location;
 
     private String age;
-    @Column(name="num_of_member")
+    @Column(name = "num_of_member")
     private int numOfMem;
     private Date beginTime;
     private Date endTime;
@@ -29,19 +28,18 @@ public class Event {
     private double donation;
 
     @ManyToOne()
-    @JoinColumn(name="status_id",nullable=false)
+    @JoinColumn(name = "status_id", nullable = false)
     private Status status;
-    @ManyToMany(mappedBy = "eventList", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
-    private Set<User> users= new HashSet<>();
+//    @ManyToMany(mappedBy = "eventList", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
+//    private Set<User> users= new HashSet<>();
 
     //Post
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="post_id")
+    @JoinColumn(name = "post_id")
     private Post post;
 
     public Event() {
     }
-
 
 
     public Long getEventId() {
@@ -74,14 +72,6 @@ public class Event {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
     }
 
     public String getAge() {

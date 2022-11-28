@@ -1,6 +1,7 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -24,7 +25,7 @@ public class Post {
     private User user;
 
 
-    @OneToOne(mappedBy="post",fetch = FetchType.LAZY)
+    @OneToOne(mappedBy="post")
     private Event event;
 
 
@@ -64,4 +65,27 @@ public class Post {
         this.content = content;
     }
 
+    public Date getPostDate() {
+        return postDate;
+    }
+
+    public void setPostDate(Date postDate) {
+        this.postDate = postDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 }
