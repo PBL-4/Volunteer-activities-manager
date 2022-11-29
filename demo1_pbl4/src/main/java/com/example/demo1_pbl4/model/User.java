@@ -35,8 +35,6 @@ public class User {
     @JoinColumn(name="role_id")
     private Role role;
 
-   // private List<String> comments;
-
 
 //    @ManyToMany(cascade={
 //            CascadeType.ALL
@@ -74,7 +72,6 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
-//        this.eventList = events;
     }
 
     public Long getUserId() {

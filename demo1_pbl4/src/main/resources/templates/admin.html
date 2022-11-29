@@ -1,0 +1,234 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="https://th.bing.com/th/id/OIP.YPmaQXLVdP3q9iTXANeyFgHaHa?w=189&h=189&c=7&r=0&o=5&dpr=2&pid=1.7">
+  <title>Assignment: Staff Management</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      /* Display theo chieu ngang*/
+      min-height: 100vh;
+      /* Chieu doc min 100 viewport-height */
+      flex-direction: column;
+    }
+
+    #content {
+      display: flex;
+      flex: 1;
+    }
+
+    #content article {
+      flex: 1;
+    }
+
+    #content>nav,
+    #content>aside {
+      /* flex: 0 0 20 vw;*/
+      /* Viewport width */
+      min-height: fit-content;
+      background: beige;
+    }
+
+    #content>nav {
+      order: -1;
+    }
+
+
+    header{
+      text-align: left;
+    }
+    footer {
+      margin: 0px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 24px;
+      text-align: center;
+      background: #F0F8FF;
+      height: 10vh;
+    }
+
+    /* header*/
+    /*.marquee {*/
+    /*  direction: right;*/
+    /*}*/
+
+
+    footer,
+    article,
+    nav,
+    aside {
+      padding: 1em;
+    }
+
+    #right {
+      float: right;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+
+      /* width:25%;  Loi font chu*/
+      /* float:left; */
+    }
+
+    ul>li {
+      margin: 0px 10px;
+      padding: 10px 0px;
+    }
+
+    ul>li>a {
+      display: block;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+
+    ul>li>a:hover {
+      background-color: red;
+      color: #F0F8FF;
+    }
+
+    @media screen and (max-width: 600px) {
+
+      #content>nav,
+      aside {
+        margin: 0px;
+        padding: 0;
+        width: 15%;
+        height: fit-content;
+
+      }
+
+      #content>article {
+        margin: 0px;
+        padding: 0;
+        width: 70%;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    @media screen and (min-width:600px) {
+
+      #content>nav,
+      aside {
+        margin: 0px;
+        padding: 0;
+        width: 300px;
+        /* height:fit-content; Ko anh huong*/
+
+      }
+
+      #content>article {
+        margin: 0px;
+        padding: 0;
+        width: 70%;
+      }
+
+      img {
+        height: fit-content;
+        width: 100%;
+        flex-direction: column;
+      }
+
+    }
+
+    .center {
+      text-align: center;
+    }
+  </style>
+</head>
+
+
+<body>
+<header>
+<!--  <marquee style="display: block; direction: rtl">-->
+<!--    <h2>Admin home</h2>-->
+<!--  </marquee>-->
+  <div>
+    <h3 th:text="Admin+':'+ admin"></h3>
+    <h5 th:text="29-11-2022"></h5>
+  </div>
+</header>
+<div id="content">
+  <article>
+    <iframe width="100%" height="100%" name="main_content"></iframe>
+  </article>
+  <nav>
+    <!-- <form action="xulydangnhap.php" name="homeForm" method="get"> -->
+    <h3 class="center">Lựa chọn</h3>
+    <ul>
+      <li><a href=" ">Trang chủ</a></li>
+      <li><a class="center">Mục quản lý</a>
+        <ul>
+          <li>
+            <form>
+              <input type="hidden" name="show" value="qlTNV">
+              <button type="submit" formtarget="main_content" formaction="#">Quản lý tình nguyện viên</button>
+            </form>
+          </li>
+          <li>
+            <form>
+              <input type="hidden" name="controller" value="qlSK">
+              <button type="submit" formaction="" formtarget="main_content">Quản lý sự kiện</button>
+            </form>
+          </li>
+          <li>
+            <form>
+              <input type="hidden" name="controller" value="qlBD">
+              <button type="submit" formaction="" formtarget="main_content">Quản lý bài đăng</button>
+            </form>
+          </li>
+
+
+          <li>
+            <form>
+              <input type="hidden" name="controller" value="showDeleteNV">
+              <button type="submit" formaction="" formtarget="main_content">Quản lý tài chính</button>
+            </form>
+          </li>
+          <li>
+            <form>
+              <input type="hidden" name="show" value="search">
+              <button type="submit" formaction="" formtarget="main_content">Thống kê</button>
+            </form>
+          </li>
+        </ul>
+      </li>
+
+      <li><a class="center">Mục khác</a>
+        <ul>
+          <li>
+            <form>
+              <input type="hidden" name="controller" value="listPB">
+              <button type="submit" formtarget="main_content" formaction="">Chat room</button>
+            </form>
+          </li>
+
+          <li>
+            <form>
+              <input type="hidden" name="controller" value="updatePB">
+              <button type="submit" formaction="" formtarget="main_content">Google map</button>
+            </form>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <!-- </form> -->
+  </nav>
+</div>
+<footer>
+    Nghĩa, Bách , Hoàng Team
+</footer>
+</body>
+
+</html>

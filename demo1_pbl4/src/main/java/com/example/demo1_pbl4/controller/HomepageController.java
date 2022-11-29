@@ -21,6 +21,12 @@ public class HomepageController {
     {
         return "login";
     }
+
+    @GetMapping("/admin_home")
+    public String goAdminHome()
+    {
+        return "admin";
+    }
    // @GetMapping("/register")
 
     //url
