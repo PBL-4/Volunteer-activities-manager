@@ -341,28 +341,36 @@
         .grid-bleed [class*="col-"] {
             padding: 0;
         }
-         .title h1{
-             color: #888;
-             font-size:16px;
-         }
-        .title h2{
+
+        .title h1 {
             color: #888;
-            font-size:14px;
+            font-size: 16px;
         }
-        .event_title{
+
+        .title h2 {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .event_title {
             color: #11bbee;
-            font-size:20px;
+            font-size: 20px;
         }
-        .event_content{
-            color:black;
-            font-size:16px;
-            display:-webkit-box;
+
+        .event_content {
+            color: black;
+            font-size: 16px;
+            display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             /*padding-bottom: ;*/
         }
 
+        .event_content td {
+            margin: 0;
+            padding: 0;
+        }
     </style>
 
 
@@ -490,12 +498,16 @@
                 <table>
                     <thead class="event_title">
                     <tr>
-                        <td th:text="${event.getEventId()}"><a th:href="@{'posts/get{${event.getEventId()}'}">
-                            Wage Peace in Da Nang
-                            <span th:text="With+' '+ ${event.getHostname()}"></span></a></td>
+                        <td>
+                            <a th:href="@{/posts/get(id=${event.eventId})}"><span
+                                    th:text="${event.getEventId()} + ' ' + ${event.eventName}"></span></a>
+                        </td>
                     </tr>
                     <tr>
-                        <td th:text="${event.getBeginTime()}+' - ' + ${event.getEndTime()}"></td>
+                        <td><span th:text="With + ' '+ ${event.hostname}"></span></td>
+                    </tr>
+                    <tr>
+                        <td th:text="${#dates.format(event.beginTime, 'dd-MMM-yyyy')} +' - ' + ${#dates.format(event.endTime, 'dd-MMM-yyyy')    }"></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -503,7 +515,7 @@
                         <td th:text="${event.getPost().getContent()}"></td>
                     </tr>
                     <tr>
-                        <td th:text="${event.getPost().getPostDate()}"></td>
+                        <td th:text="${#dates.format(event.post.postDate, 'dd-MMM-yyyy')}"></td>
                     </tr>
                     </tbody>
                 </table>
