@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("commentServImpl")
 public class CommentServiceImpl implements CommentService {
 
     @Autowired
@@ -38,5 +38,9 @@ public class CommentServiceImpl implements CommentService {
     public boolean deleteComment(Long commentId) {
         commentRepository.deleteById(commentId);
         return true;
+    }
+    @Override
+    public Long countComment() {
+        return commentRepository.countComments();
     }
 }

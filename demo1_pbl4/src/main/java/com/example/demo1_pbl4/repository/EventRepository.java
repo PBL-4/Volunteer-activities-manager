@@ -9,6 +9,13 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event,Long> {
-    @Query(value="SELECT * from Event e where location=?1 and event_name LIKE %?2%",nativeQuery = true)
+    @Query(value="SELECT * from Events e where location=?1 and event_name LIKE %?2%",nativeQuery = true)
     public List<Event> findEventByLocationAndKeyword(String location, String keyword);
+
+    @Query(value="SELECT * from Events e where location LIKE %?1%",nativeQuery = true)
+    public List<Event> findEventByLocation(String location);
+    @Query(value="SELECT * from Events e where hostname LIKE %?1%",nativeQuery = true)
+    public List<Event> findEventByHostname(String hostname);
+    @Query(value="SELECT * from Events  where event_name LIKE %?1%",nativeQuery = true)
+    public List<Event> findEventByEventName(String eventName);
 }

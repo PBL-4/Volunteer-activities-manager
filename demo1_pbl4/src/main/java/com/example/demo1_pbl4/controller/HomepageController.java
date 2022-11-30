@@ -27,6 +27,12 @@ public class HomepageController {
     {
         return "admin";
     }
+
+    @GetMapping("/post")
+    public String goPostView()
+    {
+        return "post_of_event";
+    }
    // @GetMapping("/register")
 
     //url

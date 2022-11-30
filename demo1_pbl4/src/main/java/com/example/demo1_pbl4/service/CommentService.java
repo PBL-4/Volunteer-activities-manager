@@ -11,4 +11,5 @@ public interface CommentService {
     Comment insertComment(Comment comment);
     void updateComment(Comment comment);
     boolean deleteComment(Long commentId);
+    Long countComment();
 }

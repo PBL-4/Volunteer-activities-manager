@@ -44,4 +44,21 @@ public class EventServiceImpl implements EventService {
     {
        return eventRepository.findEventByLocationAndKeyword(location,keyword);
     }
+
+    @Override
+    public List<Event> findEventByLocation(String location)
+    {
+        return eventRepository.findEventByLocation(location);
+    }
+
+    @Override
+    public List<Event> findEventByEventName(String eventName)
+    {
+        return eventRepository.findEventByEventName(eventName);
+    }
+    @Override
+    public List<Event> findEventByHostname(String hostname)
+    {
+        return eventRepository.findEventByHostname(hostname);
+    }
 }

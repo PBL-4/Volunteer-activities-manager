@@ -13,4 +13,7 @@ public interface EventService {
     boolean deleteEvent(Long eventId);
 
     List<Event> findEventByLocationAndKeyword(String location,String keyword);
+    List<Event> findEventByLocation(String location);
+    List<Event> findEventByEventName(String eventName);
+    List<Event> findEventByHostname(String hostname);
 }

@@ -1,6 +1,7 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name="comments")
@@ -9,22 +10,30 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id_comment")
     private Long idComment;
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @OneToOne(optional = true)
     private User user;
 
-    private String comment;
+    @Column(name="comment_content")
+    private String commentContent;
+
+    @Column(name="comment_date")
+    private Date commentDate;
+
 
     public Comment() {
     }
 
-    public Comment(Long idComment, Post post, User user, String comment) {
+
+    public Comment(Long idComment, Post post, User user, String commentContent, Date commentDate) {
         this.idComment = idComment;
         this.post = post;
         this.user = user;
-        this.comment = comment;
+        this.commentContent = commentContent;
+        this.commentDate = commentDate;
     }
 
     public Long getIdComment() {
@@ -51,11 +60,19 @@ public class Comment {
         this.user = user;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCommentContent() {
+        return commentContent;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
+    public Date getCommentDate() {
+        return commentDate;
+    }
+
+    public void setCommentDate(Date commentDate) {
+        this.commentDate = commentDate;
     }
 }
