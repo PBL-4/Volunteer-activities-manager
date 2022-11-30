@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Volunteer Experts</title>
     <link rel="stylesheet" type="text/css" href="/event_css/table.css">
-    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"-->
-    <!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -380,7 +380,7 @@
     <div class="container-fluid"> <!-- Sử dụng class container-fluid thay cho container -->
         <div class="padding">
             <div class="row"><!-- class="grid gl-hdr" -->
-                <div class="col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity">
+                <div class="col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity" style="padding-left:20px">
                     <!--            col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity-->
                     <img id="logo" alt="no image"
                          src="https://thumbs.dreamstime.com/b/volunteer-handwritten-word-text-rainbow-colors-vibrant-swoosh-design-vector-illustration-140554768.jpg"/>
@@ -388,8 +388,8 @@
 
                 <div class="col-8 col-bleed align-self-center gl-hdr-mnu-icn">
                     <div class="main_nav" id="myMainNav">
-                        <a href="#">Tìm kiếm cơ hội</a>
-                        <a href="#">Đăng nhập</a>
+                        <a th:href="@{/events/find}">Tìm kiếm cơ hội</a>
+                        <a th:href="@{/login}">Đăng nhập</a>
                         <a href="#">Giải quyết nghiệp vụ</a>
                         <a href="#">Tuyển tình nguyện viên</a>
                         <a href="#">Đăng ký</a>
@@ -410,118 +410,93 @@
 
     <div class="stripe"></div>
 
-    <div>
 
-    </div>
-    <nav class="sub-nav">
-        <ul class="sub-nav-list">
-            <li class="sub-nav-list-item">
-                <a class="active" href="#">Tìm việc cho tình nguyện viên</a>
-            </li>
-            <li class="sub-nav-list-item">
-                <a href="#">Tổ chức</a>
-            </li>
-        </ul>
-    </nav>
     <main id="content">
-        <form action="/events/find" method="get">
-            <div class="container">
-                <div class="grid">
-                    <!--        <div class="row">-->
-                    <div class="col-sm-2 in_checkbox">
-                        <div class="row-checkbox">
-                            <div>
-                                <label>
-                                    <input type="checkbox" name="in-person"/>
-                                </label>
-                                <label>In-person</label>
+        <!--- Form search begin -->
+        <form th:action="@{/events/find}" method="post">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #888;color:white"><a
+                    class="navbar-brand" href="#" data-abc="true">Tìm kiếm sự kiện</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                        aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation"><span
+                        class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav mr-auto form-check form-check-inline">
+                        <li class="nav-item">
+                            <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
+                                                                                    id="inlineCheckbox1" type="radio"
+                                                                                    name="choice"
+                                                                                    value="eventName"/><label
+                                    class="form-check-label" for="inlineCheckbox1">Tên sự kiện</label></div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
+                                                                                    id="inlineCheckbox2" type="radio"
+                                                                                    name="choice"
+                                                                                    value="location"/><label
+                                    class="form-check-label" for="inlineCheckbox2">Vị trí</label></div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
+                                                                                    id="inlineCheckbox3" type="radio"
+                                                                                    name="choice"
+                                                                                    value="hostname"/><label
+                                    class="form-check-label" for="inlineCheckbox3">Người tổ chức</label>
                             </div>
-                            <div>
-                                <input id="virtual" type="checkbox" name="virtual">
-                                <label for="virtual">Virtual</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 in_location">
-                        <div class="row-location">
-                            <div><input type="text" name="location" placeholder="Enter location"></div>
-                            <span><label>Location of the opportunity</label></span>
-                        </div>
-                    </div>
-                    <div class="col-sm-4 in_select">
-                        <div class="category">
-                            <ul>
-                                <li>
-                                    <select>
-                                        <option>Causes</option>
-                                    </select>
-                                </li>
-                                <li>
-                                    <select>
-                                        <option>Skills</option>
-                                    </select>
-                                </li>
-                                <li>
-                                    <select>
-                                        <option>More</option>
-                                    </select>
-                                </li>
-                                <li>
-                                    <select>
-                                        <option>Covid19</option>
-                                    </select>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 in_keyword">
-                        <input type="text" name="keyword" placeholder="Tìm kiếm bằng từ khóa">
+                        </li>
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0"><input
+                            class="form-control mr-sm-2" type="text" name="keyword" placeholder="Enter keyword">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                     </div>
                 </div>
-                <!--    </div>-->
-            </div>
+            </nav>
         </form>
-        <div class="row">
-            <h1 class="title">The best Virtual Volunteer Opportunity
-                <div th:if="${location}!=null">
+        <!-- Form search end-->
+        <div class="col-sm-7">
+            <div class="row">
+                <h1 class="title">The best Virtual Volunteer Opportunity
+                    <div th:if="${location}!=null">
 
-                    in <span th:text="${location}"></span>
-                </div>
+                        in <span th:text="${location}"></span>
+                    </div>
 
-            </h1>
-            <h2>140 volunteer are needed<span th:if="${location}!=null" th:text="near ${location} "></span></h2>
-
-        </div>
-        <hr>
-        <th:block th:each="event: ${eventList}">
-            <div class="event_content">
-                <table>
-                    <thead class="event_title">
-                    <tr>
-                        <td>
-                            <a th:href="@{/posts/get(id=${event.eventId})}"><span
-                                    th:text="${event.getEventId()} + ' ' + ${event.eventName}"></span></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span th:text="With + ' '+ ${event.hostname}"></span></td>
-                    </tr>
-                    <tr>
-                        <td th:text="${#dates.format(event.beginTime, 'dd-MMM-yyyy')} +' - ' + ${#dates.format(event.endTime, 'dd-MMM-yyyy')    }"></td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td th:text="${event.getPost().getContent()}"></td>
-                    </tr>
-                    <tr>
-                        <td th:text="${#dates.format(event.post.postDate, 'dd-MMM-yyyy')}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <hr>
+                </h1>
             </div>
-        </th:block>
+            <div class="row">
+                <h2>140 volunteer are needed<span th:if="${location}!=null" th:text="near ${location} "></span></h2>
+            </div>
+
+            <hr>
+            <th:block th:each="event: ${eventList}">
+                <div class="event_content">
+                    <table>
+                        <thead class="event_title">
+                        <tr>
+                            <td>
+                                <a th:href="@{/posts/get(id=${event.eventId})}"><span
+                                        th:text="${event.getEventId()} + ' ' + ${event.eventName}"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span th:text="With + ' '+ ${event.hostname}"></span></td>
+                        </tr>
+                        <tr>
+                            <td th:text="${#dates.format(event.beginTime, 'dd-MMM-yyyy')} +' - ' + ${#dates.format(event.endTime, 'dd-MMM-yyyy')    }"></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${event.getPost().getContent()}"></td>
+                        </tr>
+                        <tr>
+                            <td th:text="${#dates.format(event.post.postDate, 'dd-MMM-yyyy')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                </div>
+            </th:block>
+        </div>
     </main>
 </header>
 <script>
@@ -534,14 +509,14 @@
         }
     }
 </script>
-<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"-->
-<!--        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"-->
-<!--        crossorigin="anonymous"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"-->
-<!--        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"-->
-<!--        crossorigin="anonymous"></script>-->
-<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"-->
-<!--        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"-->
-<!--        crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

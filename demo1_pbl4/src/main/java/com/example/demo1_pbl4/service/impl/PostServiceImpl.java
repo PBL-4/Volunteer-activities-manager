@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service("postServImpl")
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;

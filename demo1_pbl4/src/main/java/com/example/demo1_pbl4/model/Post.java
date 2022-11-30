@@ -1,8 +1,8 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "posts")
@@ -29,6 +29,11 @@ public class Post {
     private Event event;
 
 
+    @OneToMany(mappedBy= "post",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+    private Set<Comment> comment;
+
+
+
     public Post() {
     }
 
@@ -39,6 +44,16 @@ public class Post {
         this.postDate = postDate;
         this.user = user;
         this.event = event;
+    }
+
+    public Post(Long postId, String title, String content, Date postDate, User user, Event event, Set<Comment> comment) {
+        this.postId = postId;
+        this.title = title;
+        this.content = content;
+        this.postDate = postDate;
+        this.user = user;
+        this.event = event;
+        this.comment = comment;
     }
 
     public Long getPostId() {
@@ -87,5 +102,13 @@ public class Post {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public Set<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(Set<Comment> comment) {
+        this.comment = comment;
     }
 }

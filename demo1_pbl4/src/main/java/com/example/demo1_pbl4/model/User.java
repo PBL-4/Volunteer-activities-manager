@@ -1,5 +1,6 @@
 package com.example.demo1_pbl4.model;
 
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -30,6 +31,9 @@ public class User {
     private String country;
 
     private Boolean gender;
+
+    @Nullable
+    private String avatar;
 
     @ManyToOne()
     @JoinColumn(name="role_id")
