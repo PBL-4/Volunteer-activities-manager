@@ -14,7 +14,7 @@ public class HomepageController {
     @GetMapping("/")
     public String showHomepage()
     {
-        return "index";
+        return "homepage/homepage";
     }
     @GetMapping("/login")
     public String goLogin()

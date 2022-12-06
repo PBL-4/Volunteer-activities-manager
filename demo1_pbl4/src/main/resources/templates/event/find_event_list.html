@@ -135,12 +135,12 @@
 
         }
 
-        .gl-hdr__special-response-links {
+        .sub_nav_header {
             margin: 10px 10px;
             text-align: left;
         }
 
-        .gl-hdr__special-response-links a {
+        .sub_nav_header a {
             color: #11bbee !important;
             display: inline;
             font-size: 14px;
@@ -149,16 +149,27 @@
             text-decoration: none;
         }
 
-        .gl-hdr__special-response-links a :hover {
+        .sub_nav_header a :hover {
             color: red;
         }
 
+        @media screen and (max-width: 1200px)and ( min-width: 768px) {
+            .sub_nav_header {
+                margin-bottom: 10px;
+            }
+
+            .sub_nav_header a {
+                font-size: 16px;
+                margin: 0 0 5px 45px;
+            }
+        }
+
         @media screen and (min-width: 768px) {
-            .gl-hdr__special-response-links {
+            .sub_nav_header {
                 text-align: right;
             }
 
-            .gl-hdr__special-response-links a {
+            .sub_nav_header a {
                 font-size: 16px;
                 margin: 0 0 5px 45px;
             }
@@ -172,7 +183,7 @@
 
         .main_nav {
             overflow: hidden; /*Hide khi chữ bị tràn*/
-            background-color: #f2f2f2;
+            background-color: #fff;
         }
 
         .main_nav a {
@@ -199,7 +210,7 @@
             display: none;
         }
 
-        @media screen and (max-width: 600px) {
+        @media screen and (max-width: 1200px) {
             .main_nav a:not(:first-child) {
                 display: none;
             }
@@ -241,6 +252,7 @@
 
         @media (min-width: 768px) {
             .stripe {
+                margin: 20px 0 10px;
                 height: 30px !important;
             }
         }
@@ -302,40 +314,6 @@
         /*    Main --- content*/
         #content {
             display: block;
-        }
-
-        /* Form tim kiem*/
-        .pub-srp-form {
-            background-color: #888;
-            padding: 19px 0;
-            height: 281px;
-        }
-
-        @media only screen and (min-width: 768px) {
-            .pub-srp-form {
-                height: 120px;
-                padding: 29px 0 25px;
-            }
-        }
-
-        .pub-srp-form .o-location {
-            order: 2;
-
-        }
-
-        @media only screen and (min-width: 992px) {
-            .pub-srp-form__loc {
-                margin: 0 30px 0 0;
-                width: 20%;
-            }
-        }
-
-        .pub-srp-form .o-keywords {
-            order: 4;
-        }
-
-        .pub-srp-form__keyword {
-            position: relative;
         }
 
         .grid-bleed [class*="col-"] {
@@ -401,7 +379,7 @@
                 <nav class="col-xs-8 col-bleed align-self-center hide gl-hdr-nav">
                 </nav>
             </div>
-            <div class="col-12 col-bleed gl-hdr__special-response-links">
+            <div class="col-12 col-bleed sub_nav_header">
                 <a href="#">Cơ hội được đề xuất</a>
                 <a href="#">Giúp đỡ Covid-19</a>
             </div>
@@ -503,7 +481,7 @@
     function myFunction() {
         var x = document.getElementById("myMainNav");
         if (x.className === "main_nav") {
-            x.className += " responsive";
+            x.className += "responsive";
         } else {
             x.className = "main_nav";
         }

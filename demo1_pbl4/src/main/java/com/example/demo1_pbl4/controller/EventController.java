@@ -69,14 +69,20 @@ public class EventController {
     @PostMapping("/find")
     public String showEventsByFind(Model model, @RequestParam(value="choice", required=false) String choice, @RequestParam("keyword") String keyword) {
         List<Event> eventLists;
-        if (choice.equals("eventName")) {
-            eventLists = eventService.findEventByEventName(keyword);
-        } else if(choice.equals("eventName")) {
-            eventLists = eventService.findEventByLocation(keyword);
-            model.addAttribute("location", keyword);
-        }
-        else if(choice.equals("hostname")) {
-            eventLists = eventService.findEventByHostname(keyword);
+        if(choice!=null)
+        {
+            if (choice.equals("eventName")) {
+                eventLists = eventService.findEventByEventName(keyword);
+            } else if(choice.equals("eventName")) {
+                eventLists = eventService.findEventByLocation(keyword);
+                model.addAttribute("location", keyword);
+            }
+            else if(choice.equals("hostname")) {
+                eventLists = eventService.findEventByHostname(keyword);
+            }
+            else{
+                eventLists = eventService.getAllEvents();
+            }
         }
         else{
             eventLists = eventService.getAllEvents();
