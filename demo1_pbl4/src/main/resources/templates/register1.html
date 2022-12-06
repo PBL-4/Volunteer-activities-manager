@@ -422,7 +422,7 @@
     </div>
     <div class="row clearfix">
       <div class="">
-        <form th:action="@{/register}" method="post" th:object="${myUser}">
+        <form th:action="@{/account/process_register}" method="post" th:object="${myUser}" enctype="utf8">
 
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
             <input type="text" name="username" placeholder="Username" required  th:field="*{username}" />

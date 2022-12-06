@@ -36,16 +36,5 @@ public class HomepageController {
    // @GetMapping("/register")
 
     //url
-    @RequestMapping(value="/register",method ={RequestMethod.GET, RequestMethod.POST} )
-    public String goRegister(Model model)
-    {
-        model.addAttribute("myUser",new User());
-        return "register1";
-    }
-    @PostMapping("/process_register") // action form
-    public String registerAccount(@ModelAttribute("myUser")User user)
-    {
-        userService.insertUser(user);
-        return "user_list";
-    }
+
 }

@@ -24,12 +24,18 @@ public class User {
     private String lastName;
     @Column(name="phone_number")
     private String phoneNum;
+    @Column(name="email", unique = true, length = 45)
     private String email;
+    @Column(name="username", unique = true )
     private String username;
+    @Column(name="password")
     private String password;
 
+    @Nullable
+    @Column(name="country")
     private String country;
-
+    @Nullable
+    @Column(name="gender")
     private Boolean gender;
 
     @Nullable
