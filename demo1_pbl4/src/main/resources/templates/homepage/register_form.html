@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Đăng ký tài khoản</title>
@@ -422,7 +422,7 @@
     </div>
     <div class="row clearfix">
       <div class="">
-        <form th:action="@{/process_register}" method="get" th:object="${User}">
+        <form th:action="@{/process_register}" method="post" th:object="${myUser}">
 
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
             <input type="text" name="username" placeholder="Username" required  th:field="*{username}" />
@@ -434,10 +434,13 @@
             <input type="password" name="password" placeholder="Re-type Password" required />
           </div>
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-            <input type="text" name="email" placeholder="Email" required th:field="*{email}"/>
+            <input type="email" name="email" placeholder="Email" required th:field="*{email}"/>
           </div>
           <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
             <input type="text" name="phoneNum" placeholder="Phone Number" required th:field="*{phoneNum}"/>
+          </div>
+          <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+            <input type="text" name="address" placeholder="Address" required th:field="*{address}"/>
           </div>
           <div class="row clearfix">
             <div class="col_half">
@@ -452,10 +455,10 @@
             </div>
           </div>
           <div class="input_field radio_option">
-            <input type="radio" name="radiogroup1" id="rd1">
-            <label for="rd1">Male</label>
-            <input type="radio" name="radiogroup1" id="rd2">
-            <label for="rd2">Female</label>
+            <input type="radio" name="gender" id="male" value="Nam" th:field="*{gender}">
+            <label for="male">Male</label>
+            <input type="radio" name="gender" id="female" value="Nữ" th:field="*{gender}">
+            <label for="female">Female</label>
           </div>
           <!--
           <div class="input_field select_option">
@@ -472,7 +475,7 @@
             <label for="cb1">I agree with terms and conditions</label>
           </div>
 
-          <input class="button" type="submit" value="Register" />
+          <input class="button" type="submit" value="Register"/>
         </form>
       </div>
     </div>

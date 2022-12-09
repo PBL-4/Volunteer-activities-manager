@@ -38,18 +38,24 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         return false;
     }
-    public User findUserByUserName(String username)
-    {
-        return userRepository.findUserByUserName(username);
-    }
-    public User findUserByEmail(String email)
-    {
-        return userRepository.findUserByUserName(email);
-    }
-    public boolean checkExistedAccount(User user)
-    {
+
+    public boolean checkExistedAccount(User user) {
         boolean check = false;
-        if(userRepository.findUserByUserName(user.getUsername()) == null && userRepository.findUserByEmail(user.getEmail()) == null) check = true;
+        if (userRepository.findUserByUserName(user.getUsername()) == null && userRepository.findUserByEmail(user.getEmail()) == null)
+            check = true;
         return check;
+    }
+
+    public boolean checkLogin(String username, String password) {
+        for (User user : getAllUsers()) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public User findUserByUsername(String username)
+    {
+        return userRepository.findUserByUsername(username);
     }
 }
