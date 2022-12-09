@@ -10,4 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RatingController {
     @Autowired
     private RatingService ratingService;
+
+    // day la controller cho viec rating event, hoac host/user.
+
+
 }

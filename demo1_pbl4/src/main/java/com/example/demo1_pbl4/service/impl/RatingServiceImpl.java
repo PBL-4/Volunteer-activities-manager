@@ -38,4 +38,10 @@ public class RatingServiceImpl implements RatingService {
         ratingRepository.deleteById(ratingId);
         return true;
     }
+
+    @Override
+    public List<Rating> findRatingByUserId(Long UserId)
+    {
+        return ratingRepository.findRatingByUserId(UserId);
+    }
 }

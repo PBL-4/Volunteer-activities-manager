@@ -27,17 +27,17 @@ public class AccountController {
     @RequestMapping(value="/register",method ={RequestMethod.GET, RequestMethod.POST} )
     public String goRegister(Model model)
     {
-        model.addAttribute("myUser",new User());
+        model.addAttribute("User",new User());
         return "register1";
     }
     @RequestMapping(value="/login",method ={RequestMethod.GET, RequestMethod.POST} )
     public String goLogin(Model model)
     {
-        model.addAttribute("myUser",new User());
+        model.addAttribute("User",new User());
         return "login";
     }
     @RequestMapping(value = "/process_register", method = { RequestMethod.GET, RequestMethod.POST })
-    public String processRegister(@ModelAttribute("myUser") User user) {
+    public String processRegister(@ModelAttribute("User") User user) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         System.out.println("Password cua toi: " + user.getPassword());
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -54,10 +54,10 @@ public class AccountController {
         }
         //userRepo.save(user); luu user
     }
-    @ModelAttribute("myUser")
+    @ModelAttribute("User")
     public User getUser(HttpServletRequest request)
     {
-       User registerUser = (User) request.getAttribute("myUser");
+       User registerUser = (User) request.getAttribute("User");
        return registerUser;
     }
 

@@ -10,5 +10,6 @@ public interface RatingService {
     Rating insertRating(Rating rating);
     void updateRating(Rating rating);
     boolean deleteRating(Long ratingId);
-    
+
+    List<Rating> findRatingByUserId(Long UserId);
 }
