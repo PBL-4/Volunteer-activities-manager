@@ -7,14 +7,15 @@ import java.sql.Date;
 @Table(name="comments")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_comment")
     private Long idComment;
     @ManyToOne(optional = true)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
-    @OneToOne(optional = true)
+    @ManyToOne(optional = true)
+    @JoinColumn(name="user_id")
     private User user;
 
     @Column(name="comment_content")

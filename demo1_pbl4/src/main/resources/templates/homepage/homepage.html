@@ -20,10 +20,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="/homepage/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link th:href="@{/homepage/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/homepage/css/style.css" rel="stylesheet">
+    <link th:href="@{/homepage/css/style.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -73,20 +73,23 @@
         <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
             <div class="navbar-nav mx-auto py-0">
                 <a href="/" class="nav-item nav-link active">Home</a>
-<!--                <a href="about.html" class="nav-item nav-link">About</a>-->
+                <!--                <a href="about.html" class="nav-item nav-link">About</a>-->
                 <a href="/events/find" class="nav-item nav-link">Find our opportunities</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Join us</a>
-                    <div class="dropdown-menu m-0">
-                        <a href="/login" class="dropdown-item">Đăng nhập</a>
-                        <a href="/register" class="dropdown-item">Đăng ký</a>
+                <div th:if="${session.username==null}">
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Join us</a>
+                        <div class="dropdown-menu m-0">
+                            <a th:href="@{/login}" class="dropdown-item">Login</a>
+                            <a th:href="@{/register}" class="dropdown-item">Register</a>
+                        </div>
                     </div>
                 </div>
-<!--                <a href="contact.html" class="nav-item nav-link">Contact</a>-->
+                <a th:href="@{/events/create_event}" class="nav-item nav-link">Recruit Volunteers</a>
+                <!--                <a href="contact.html" class="nav-item nav-link">Contact</a>-->
             </div>
 
-            <a href="#" class="btn btn-primary py-2 px-4 d-none d-lg-block">Hello</a>
-            <th:if ></th:if>
+            <a href="#" class="btn btn-primary py-2 px-4 d-none d-lg-block">Hello <span th:if="${session.username}"
+                                                                                        th:text="' '+${session.username}"></span></a>
         </div>
     </nav>
 </div>
@@ -285,8 +288,8 @@
         <div class="row align-items-center">
             <div class="col-lg-5 mb-5 mb-lg-0">
                 <div class="section-title position-relative mb-4">
-                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Testimonial</h6>
-                    <h1 class="display-4">What Say Our Students</h1>
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Feedback</h6>
+                    <h1 class="display-4">What Say Our Volunteers</h1>
                 </div>
                 <p class="m-0">It's Good</p>
             </div>
@@ -294,14 +297,13 @@
                 <div class="owl-carousel testimonial-carousel">
                     <div class="bg-white p-5">
                         <i class="fa fa-3x fa-quote-left text-primary mb-4"></i>
-                        <p>Sed et elitr ipsum labore dolor diam, ipsum duo vero sed sit est est ipsum eos clita est
-                            ipsum. Est nonumy tempor at kasd. Sed at dolor duo ut dolor, et justo erat dolor magna sed
-                            stet amet elitr duo lorem</p>
+                        <p>Cảm ơn bạn đã làm ra 1 sản phầm mà chúng tôi mong đợi.Chúng ta có thể kết nối với nhau với
+                            nhau dễ dàng hơn thông qua ứng dụng này.</p>
                         <div class="d-flex flex-shrink-0 align-items-center mt-4">
                             <img class="img-fluid mr-4" src="/homepage/img/testimonial-2.jpg" alt="">
                             <div>
-                                <h5>Trịnh Xuân Khê</h5>
-                                <span>Web Design</span>
+                                <h5>Volunteer name</h5>
+                                <span>Trịnh Xuân Khê</span>
                             </div>
                         </div>
                     </div>
@@ -311,8 +313,8 @@
                         <div class="d-flex flex-shrink-0 align-items-center mt-4">
                             <img class="img-fluid mr-4" src="/homepage/img/testimonial-1.jpg" alt="">
                             <div>
-                                <h5>Student Name</h5>
-                                <span>Web Design</span>
+                                <h5>Volunteer Name</h5>
+                                <span>Võ Văn Lộc</span>
                             </div>
                         </div>
                     </div>
@@ -335,7 +337,7 @@
                             <i class="fa fa-2x fa-map-marker-alt text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>Our Location</h4>
+                            <h4>Địa điểm chúng tôi</h4>
                             <p class="m-0">Sơn Trà Đà Nẵng</p>
                         </div>
                     </div>
@@ -344,7 +346,7 @@
                             <i class="fa fa-2x fa-phone-alt text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>Call Us</h4>
+                            <h4>Hãy gọi chúng tôi</h4>
                             <p class="m-0">+012 345 6789</p>
                         </div>
                     </div>
@@ -353,7 +355,7 @@
                             <i class="fa fa-2x fa-envelope text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>Email Us</h4>
+                            <h4>Email chúng tôi</h4>
                             <p class="m-0">volunteerGrp12@dut.udn.vn</p>
                         </div>
                     </div>
@@ -361,8 +363,8 @@
             </div>
             <div class="col-lg-7">
                 <div class="section-title position-relative mb-4">
-                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Need Help?</h6>
-                    <h1 class="display-4">Send Us A Message</h1>
+                    <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Cần một tay?</h6>
+                    <h1 class="display-4">Gửi tôi 1 tin</h1>
                 </div>
                 <div class="contact-form">
                     <form>
@@ -385,7 +387,7 @@
                                       placeholder="Message" required="required"></textarea>
                         </div>
                         <div>
-                            <button class="btn btn-primary py-3 px-5" type="submit">Send Message</button>
+                            <button class="btn btn-primary py-3 px-5" type="submit">Gửi tin nhắn</button>
                         </div>
                     </form>
                 </div>
@@ -493,13 +495,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script src="/homepage/lib/easing/easing.min.js"></script>
-<script src="/homepage/lib/waypoints/waypoints.min.js"></script>
-<script src="/homepage/lib/counterup/counterup.min.js"></script>
-<script src="/homepage/lib/owlcarousel/owl.carousel.min.js"></script>
+<script th:src="@{/homepage/lib/easing/easing.min.js}"></script>
+<script th:src="@{/homepage/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/homepage/lib/counterup/counterup.min.js}"></script>
+<script th:src="@{/homepage/lib/owlcarousel/owl.carousel.min.js}"></script>
 
 <!-- Template Javascript -->
-<script src="/homepage/js/main.js"></script>
+<script th:src="@{/homepage/js/main.js}"></script>
 </body>
 
 </html>
