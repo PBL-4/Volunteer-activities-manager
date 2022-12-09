@@ -34,4 +34,17 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         return false;
     }
+
+    public boolean checkLogin(String username, String password) {
+        for (User user : getAllUsers()) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public User findUserByUsername(String username)
+    {
+        return userRepository.findUserByUsername(username);
+    }
 }

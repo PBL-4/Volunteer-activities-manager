@@ -19,7 +19,7 @@ public class AccountController {
 
     @GetMapping("")
     public String viewHomePage() {
-        return  "index";
+        return  "homepage/homepage";
     }
 
     @RequestMapping(value = "/register", method = { RequestMethod.GET, RequestMethod.POST })

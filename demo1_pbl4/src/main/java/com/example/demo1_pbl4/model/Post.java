@@ -8,7 +8,7 @@ import java.util.Set;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId;
     private String title;
@@ -54,6 +54,13 @@ public class Post {
         this.user = user;
         this.event = event;
         this.comment = comment;
+    }
+
+    public Post(String title, String content, Date postDate, User user) {
+        this.title = title;
+        this.content = content;
+        this.postDate = postDate;
+        this.user = user;
     }
 
     public Long getPostId() {

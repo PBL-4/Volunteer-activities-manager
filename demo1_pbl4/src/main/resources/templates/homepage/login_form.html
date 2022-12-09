@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Login please!</title>
+    <link th:href="@{/css/login_form/style.css}" rel="stylesheet">
+    <link th:href="@{/css/login_form/alert.scss}" rel="stylesheet">
+
+    <!--    <th:blockquote th:include="/header"></th:blockquote>-->
+</head>
+
+<body>
+<div class="alert danger-alert">
+    <h3>  <span th:if="${failMessage!=null}" th:text="${failMessage}"></span></h3>
+    <a class="close">&times;</a>
+</div>
+<form id="login" th:action="@{/process_login}" method="post">
+    <h1>Log In</h1>
+    <fieldset id="inputs">
+        <input id="username" type="text" placeholder="Username" name="username">
+        <input id="password" type="password" placeholder="Password" name="password">
+    </fieldset>
+    <fieldset id="actions">
+        <input type="submit" id="submit" value="Log in">
+        <a href="#">Forgot your password?</a><a href="/register">Register</a>
+    </fieldset>
+    <a th:href="@{/home}" id="back">Back to home ...</a>
+</form>
+
+</body>
+</html>
