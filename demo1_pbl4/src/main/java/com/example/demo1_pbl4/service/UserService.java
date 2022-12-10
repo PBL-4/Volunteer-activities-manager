@@ -16,12 +16,16 @@ public interface UserService {
 
     boolean deleteUser(Long userId);
 
+    public List<User> search(String keyword);
+
     boolean checkLogin(String username, String password);
 
     User findUserByUsername(String usernane);
 
+
     List<User> findUserWithSorting(String field);
 
     Page<User> findUsersWithPagination(int offset, int pageSize);
+
 
 }

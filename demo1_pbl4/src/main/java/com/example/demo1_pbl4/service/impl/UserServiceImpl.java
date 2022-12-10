@@ -38,6 +38,13 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+
+    public List<User> search(String keyword) {
+        if (keyword != "") {
+            return userRepository.search(keyword);
+        }
+        return userRepository.findAll();
+    }
     public boolean checkLogin(String username, String password) {
         for (User user : getAllUsers()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -49,6 +56,7 @@ public class UserServiceImpl implements UserService {
 
     public User findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+
     }
 
     @Override
