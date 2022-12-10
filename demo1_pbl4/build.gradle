@@ -22,7 +22,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 //	implementation 'org.springframework.boot:spring-boot-starter-security' // Tao trang login
-	implementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.security:spring-security-test' // Security
 }
 
 tasks.named('test') {

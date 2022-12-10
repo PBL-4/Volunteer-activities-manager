@@ -33,7 +33,7 @@
             <th>Gender</th>
             <th>Phone Number</th>
             <th>Email</th>
-            <th>Country</th>
+            <th>Address</th>
             <th>Username</th>
         </tr>
         </thead>
@@ -47,7 +47,7 @@
             <td th:text="${u.getGender()}? Male :Female"></td>
             <td th:text="${u.getPhoneNum()}"></td>
             <td th:text="${u.getEmail()}"></td>
-            <td th:text="${u.getCountry()}"></td>
+            <td th:text="${u.getAddress()}"></td>
             <td th:text="${u.getUsername()}"></td>
                 <td>
                     <a th:href="@{'/users/admin/delete/' + ${u.getUserId()}}">Xoa</a>

@@ -1,80 +1,81 @@
 package com.example.demo1_pbl4.model;
 
 import org.springframework.lang.Nullable;
-import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-    private static final long serialVersionUID = 1L;
+     private static final long serialVersionUID = 20L;
     @Id
-    @Column(name="user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO) // Khong co cai nay, se gap phai loi 001
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Khong co cai nay, se gap phai loi 001
     private Long userId;
 
-    @Column(name="first_name")
+    @Column(name = "first_name", nullable = true)
     private String firstName;
 
-    @Column(name="last_name")
+    @Column(name = "last_name", nullable = true)
     private String lastName;
-    @Column(name="phone_number")
+    @Column(name = "phone_number", nullable = true)
     private String phoneNum;
+    @Column(nullable = false, unique = true, length = 45)
     private String email;
+
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
 
-    private String country;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    private Boolean gender;
+    @Column(name="gender",nullable=true)
+    private String gender;
 
     @Nullable
     private String avatar;
 
     @ManyToOne()
-    @JoinColumn(name="role_id")
+    @JoinColumn(name = "role_id")
     private Role role;
 
-
-//    @ManyToMany(cascade={
-//            CascadeType.ALL
-//    },fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name="users_events",
-//            joinColumns={
-//                   @JoinColumn(name = "user_id"),
-//            },
-//            inverseJoinColumns={
-//                    @JoinColumn(name="event_id"),
-//                   // @JoinColumn(name="is_appoval")
-//            }
-//
-//    )
-//
-//   private Set<Event> eventList=new HashSet<Event>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Post> posts;
 
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Post> comments;
 
     public User() {
-        this.gender=true;
+
     }
 
 
-    @OneToMany(mappedBy= "user",fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-    private Set<Post>posts;
-
 
     public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password,String country) {
+
+    }
+
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password, String address, String gender) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNum = phoneNum;
         this.email = email;
-        this.country = country;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.gender = gender;
+    }
+
+    public User(String firstName, String lastName, String phoneNum, String email, String username, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.email = email;
         this.username = username;
         this.password = password;
     }
@@ -131,25 +132,56 @@ public class User {
         return password;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public Boolean getGender() {
-        return gender;
-    }
-
-    public void setGender(Boolean gender) {
-        this.gender = gender;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Nullable
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(@Nullable String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+}
+
+
+
+
+
 
 //    public Set<Event> getEvents() {
 //        return eventList;
@@ -158,4 +190,21 @@ public class User {
 //    public void setEvents(Set<Event> events) {
 //        this.eventList = events;
 //    }
-}
+
+
+//    @ManyToMany(cascade={
+//            CascadeType.ALL
+//    },fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name="users_events",
+//            joinColumns={
+//                   @JoinColumn(name = "user_id"),
+//            },
+//            inverseJoinColumns={
+//                    @JoinColumn(name="event_id"),
+//                   // @JoinColumn(name="is_appoval")
+//            }
+//
+//    )
+//
+//   private Set<Event> eventList=new HashSet<Event>();

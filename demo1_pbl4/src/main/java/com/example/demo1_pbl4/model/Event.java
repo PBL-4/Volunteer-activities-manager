@@ -9,14 +9,14 @@ public class Event {
 
     @Id
     @Column(name = "event_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long eventId;
 
     @Column(name = "event_name")
     private String eventName;
     private String location;
 
-    private String age;
+    private int age;
     @Column(name = "num_of_member")
     private int numOfMem;
     private Date beginTime;
@@ -41,6 +41,17 @@ public class Event {
     public Event() {
     }
 
+    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double donation, Post post) {
+        this.eventName = eventName;
+        this.location = location;
+        this.age = age;
+        this.numOfMem = numOfMem;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.hostname = hostname;
+        this.donation = donation;
+        this.post = post;
+    }
 
     public Long getEventId() {
         return eventId;
@@ -74,11 +85,11 @@ public class Event {
         this.location = location;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

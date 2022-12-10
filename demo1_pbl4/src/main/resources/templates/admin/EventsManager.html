@@ -8,12 +8,22 @@
 </head>
 <script type="text/javascript">
     function clearSearch() {
-        window.location = "[[@{/users/admin}]]";
+        window.location = "[[@{/events/admin}]]";
     }
 </script>
 <body>
 <div class="container-fluid text-center">
-    <div><h2>EVENTS MANAGER</h2></div>
+    <div><h2>POST MANAGER</h2></div>
+
+    <div>
+        <form th:action="@{/events/admin}" th:method="post">
+            <input type="text" name="eventName" id="keyword" size="50" th:value="${eventName}"  />
+            &nbsp;
+            <input type="submit" value="Search" />
+            &nbsp;
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+        </form>
+    </div>
     <div>
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -27,6 +37,7 @@
                 <th>Endtime</th>
                 <th>NumberOfMember</th>
                 <th>HostName</th>
+                <th>MoTa</th>
             </tr>
             </thead>
             <tbody>
@@ -36,11 +47,12 @@
                     <td th:text="${e.getEventName()}"></td>
                     <td th:text="${e.getAge()}"></td>
                     <td th:text="${e.getLocation()}"></td>
-                    <td th:text="${e.getDonation()}"></td>
+                    <td th:text="${#numbers.formatCurrency(e.getDonation())}"></td>
                     <td th:text="${e.getBeginTime()}"></td>
                     <td th:text="${e.getEndTime()}"></td>
                     <td th:text="${e.getNumOfMem()}"></td>
                     <td th:text="${e.getHostname()}"></td>
+                    <td th:text="${e.getPost().getContent()}"></td>
                 </tr>
             </th:block>
             </tbody>
