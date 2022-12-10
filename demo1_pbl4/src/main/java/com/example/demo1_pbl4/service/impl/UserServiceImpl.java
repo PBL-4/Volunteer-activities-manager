@@ -4,6 +4,9 @@ import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.repository.UserRepository;
 import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +46,18 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
-    public User findUserByUsername(String username)
-    {
+
+    public User findUserByUsername(String username) {
         return userRepository.findUserByUsername(username);
+    }
+
+    @Override
+    public List<User> findUserWithSorting(String field) {
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, field));
+    }
+
+    @Override
+    public Page<User> findUsersWithPagination(int offset, int pageSize) {
+        return userRepository.findAll(PageRequest.of(offset, pageSize));
     }
 }
