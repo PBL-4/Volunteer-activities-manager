@@ -11,4 +11,6 @@ public interface UserService{
     User insertUser(User user);
     void updateUser(User user);
     boolean deleteUser(Long userId);
+
+    public List<User> search(String keyword);
 }

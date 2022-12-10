@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>UserManager</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/users/admin}]]";
+    }
+</script>
 <body>
-<h1></h1>
+<div class="container-fluid text-center">
+    <div><h2>EVENTS MANAGER</h2></div>
+    <div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>Event_ID</th>
+                <th>Event_Name</th>
+                <th>Age</th>
+                <th>Location</th>
+                <th>Donation</th>
+                <th>BeginTime</th>
+                <th>Endtime</th>
+                <th>NumberOfMember</th>
+                <th>HostName</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="e : ${Events}">
+                <tr>
+                    <td th:text="${e.getEventId()}"></td>
+                    <td th:text="${e.getEventName()}"></td>
+                    <td th:text="${e.getAge()}"></td>
+                    <td th:text="${e.getLocation()}"></td>
+                    <td th:text="${e.getDonation()}"></td>
+                    <td th:text="${e.getBeginTime()}"></td>
+                    <td th:text="${e.getEndTime()}"></td>
+                    <td th:text="${e.getNumOfMem()}"></td>
+                    <td th:text="${e.getHostname()}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
-</html>

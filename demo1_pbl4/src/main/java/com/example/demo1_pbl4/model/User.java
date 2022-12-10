@@ -68,12 +68,13 @@ public class User {
     private Set<Post>posts;
 
 
-    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password) {
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password,String country) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNum = phoneNum;
         this.email = email;
+        this.country = country;
         this.username = username;
         this.password = password;
     }
@@ -128,6 +129,22 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setPassword(String password) {

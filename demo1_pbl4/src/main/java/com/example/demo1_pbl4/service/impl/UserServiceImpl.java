@@ -34,4 +34,11 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(userId);
         return false;
     }
+
+    public List<User> search(String keyword) {
+        if(keyword !=""){
+            return userRepository.search(keyword);
+        }
+        return userRepository.findAll();
+    }
 }

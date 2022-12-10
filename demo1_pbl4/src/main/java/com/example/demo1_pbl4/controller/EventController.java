@@ -92,4 +92,12 @@ public class EventController {
         //     model.addAttribute("keyword", keyword);
         return "/event/find_event_list";
     }
+
+    @GetMapping("/admin")
+    public String showEventOnAdmin(Model model) {
+        List<Event> eventLists = eventService.getAllEvents();
+        model.addAttribute("Events",eventLists);
+        return "/admin/EventsManager";
+    }
+
 }
