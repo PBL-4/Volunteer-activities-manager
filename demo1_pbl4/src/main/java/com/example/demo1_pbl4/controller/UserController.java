@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -35,11 +37,35 @@ public class UserController {
     @PostMapping("/insertUser")
     // Voi bien se dung @RequestParam nhung voi doi tuong thi
     public ModelAndView createUser(@ModelAttribute("myUser") User myUser) {
-        if (myUser != null ) {
+        if (myUser != null) {
             userService.insertUser(myUser);
         }       // Chỗ này cần phải tối ưu.
 
-            return new ModelAndView("redirect:/users/");
-        }
+        return new ModelAndView("redirect:/users/");
     }
+    @GetMapping("/admin")
+    public String showUserOnAdmin(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin/UserManager";
+    }
+    @PostMapping("/admin")
+        public String View(Model model, @RequestParam ("keyword") String keyword) {
+        List<User> listuser = userService.search(keyword);
+        model.addAttribute("users", listuser);
+        model.addAttribute("keyword", keyword);
+
+        return "admin/UserManager";
+    }
+    @GetMapping("/admin/delete/{id}")
+    public String deleteUser(@PathVariable("id")Long id){
+        userService.deleteUser(id);
+        return "redirect:/users/admin";
+    }
+
+    }
+
+
+
+
+
 

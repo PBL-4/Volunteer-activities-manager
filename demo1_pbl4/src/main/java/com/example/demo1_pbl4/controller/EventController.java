@@ -97,6 +97,13 @@ public class EventController {
         return "/event/find_event_list";
     }
 
+    @GetMapping("/admin")
+    public String showEventOnAdmin(Model model) {
+        List<Event> eventLists = eventService.getAllEvents();
+        model.addAttribute("Events", eventLists);
+        return "/admin/EventsManager";
+    }
+
     @GetMapping("/create_event")
     public String showCreateEventForm(Model model, HttpSession session) {
         if (session.getAttribute("username") != null) {
@@ -134,7 +141,14 @@ public class EventController {
             System.out.println("Chua dang nhap");
             return "/403Page";
         }
+    }
+    @PostMapping("/admin")
+    public String View(Model model, @RequestParam ("eventName") String keyword) {
+        List<Event> listevent = eventService.findEventByEventName(keyword);
+        model.addAttribute("Events", listevent);
+        model.addAttribute("eventName", keyword);
 
+        return "admin/EventsManager";
     }
 
 }

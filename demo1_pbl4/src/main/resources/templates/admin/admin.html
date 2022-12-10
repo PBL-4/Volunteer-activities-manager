@@ -156,7 +156,26 @@
 <!--  </marquee>-->
   <div>
     <h3 th:text="Admin+':'+ admin"></h3>
-    <h5 th:text="29-11-2022"></h5>
+    <div id="current-time"></div>
+    <script>
+      var curDate = new Date();
+      //
+      var curh = curDate.getHours();
+      var curm = curDate.getMinutes();
+      var curs = curDate.getSeconds()
+
+      // Ngày hiện tại
+      var curDay = curDate.getDate();
+
+      // Tháng hiện tại
+      var curMonth = curDate.getMonth() + 1;
+
+      // Năm hiện tại
+      var curYear = curDate.getFullYear();
+
+      // Gán vào thẻ HTML
+      document.getElementById('current-time').innerHTML =curh + ":"+ curm + ":"+ curs + " " + curDay + "/" + curMonth + "/" + curYear;
+    </script>
   </div>
 </header>
 <div id="content">
@@ -173,13 +192,13 @@
           <li>
             <form>
               <input type="hidden" name="show" value="qlTNV">
-              <button type="submit" formtarget="main_content" formaction="#">Quản lý tình nguyện viên</button>
+              <button type="submit" formtarget="main_content" formaction="/users/admin">Quản lý tình nguyện viên</button>
             </form>
           </li>
           <li>
             <form>
               <input type="hidden" name="controller" value="qlSK">
-              <button type="submit" formaction="" formtarget="main_content">Quản lý sự kiện</button>
+              <button type="submit" formaction="/events/admin" formtarget="main_content">Quản lý sự kiện</button>
             </form>
           </li>
           <li>
