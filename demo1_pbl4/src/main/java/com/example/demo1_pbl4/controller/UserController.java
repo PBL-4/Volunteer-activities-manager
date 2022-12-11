@@ -30,12 +30,13 @@ public class UserController {
     @GetMapping("/insertForm")
     public String showCreateForm(Model model) {
         User user = new User();
-        model.addAttribute("myUser", user);
+        model.addAttribute("User", user);
         return "insert_user";
     }
 
     @PostMapping("/insertUser")
     // Voi bien se dung @RequestParam nhung voi doi tuong thi
+
     public ModelAndView createUser(@ModelAttribute("myUser") User myUser) {
         if (myUser != null) {
             userService.insertUser(myUser);
