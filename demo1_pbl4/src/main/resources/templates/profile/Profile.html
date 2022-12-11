@@ -68,12 +68,12 @@
         color: #6c757d;
         cursor: pointer;
     }
-    .proile-rating{
+    .proile-ratingEvent{
         font-size: 12px;
         color: #818182;
         margin-top: 5%;
     }
-    .proile-rating span{
+    .proile-ratingEvent span{
         color: #495057;
         font-size: 15px;
         font-weight: 600;
@@ -137,7 +137,7 @@
                     <h6>
                         Web Developer and Designer
                     </h6>
-                    <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                    <p class="proile-ratingEvent">RANKINGS : <span>8/10</span></p>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#" role="tab" aria-controls="home" aria-selected="true" onclick="ChangeDisplay('home','profile')">Thông tin cá nhân</a>
@@ -176,7 +176,7 @@
                                 <label>User Id</label>
                             </div>
                             <div class="col-md-6">
-                                <p>Kshiti123</p>
+                                <p th:text="${myUser.userId}"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -184,7 +184,8 @@
                                 <label>Name</label>
                             </div>
                             <div class="col-md-6">
-                                <p>Kshiti Ghelani</p>
+                                <p th:text="${myUser.first_name}"></p>
+                                <p th:text="${myUser.last_name}"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -192,76 +193,79 @@
                                 <label>Email</label>
                             </div>
                             <div class="col-md-6">
-                                <p>kshitighelani@gmail.com</p>
+                                <p th:text="${myUser.email}"> </p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Phone</label>
+                                <label>Phone Number</label>
                             </div>
                             <div class="col-md-6">
-                                <p>123 456 7890</p>
+                                <p th:text="${myUser.phoneNum}"></p>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
-                                <label>Profession</label>
+                                <label>Gender</label>
                             </div>
                             <div class="col-md-6">
-                                <p>Web Developer and Designer</p>
+                                <p th:text="${myUser.Gender}"></p>
                             </div>
                         </div>
+
                     </div>
                     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Experience</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Expert</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Hourly Rate</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>10$/hr</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Total Projects</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>230</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>English Level</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>Expert</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>Availability</label>
-                            </div>
-                            <div class="col-md-6">
-                                <p>6 months</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Your Bio</label><br/>
-                                <p>Your detail description</p>
-                            </div>
-                        </div>
+                        <div class="list-group">
+                        <th:block th:each="rating : ${RatingHistory}">
+                            <a th:href="@{/posts/get(id=${rating.getEvent().getEventId()})}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1" th:text="${rating.getEvent().getEventName()}" > EventName</h5>
+                                    <small th:text="${rating.getEvent().getBeginTime()}+ ' - ' + ${rating.getEvent().getEndTime()}">eventtime</small>
+                                </div>
+                                <p class="mb-1">Đánh giá về sự kiện của tôi: </p>
+                                <span class="mb-1">Tính hữu ích của sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point1}" th:if="${rating.point1 != -1}">Point1</span>
+                                <span th:text="${rating.point1}" th:if="${rating.point1 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Tính hiệu quả của sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point2}" th:if="${rating.point2 != -1}">Point2</span>
+                                <span th:text="${rating.point2}" th:if="${rating.point2 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Tính chuyên nghiệp của chủ sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point3}" th:if="${rating.point3 != -1}">Point3</span>
+                                <span th:text="${rating.point3}" th:if="${rating.point3 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <p class="mb-1">Đánh giá của chủ sự kiện về tôi: </p>
+                                <span class="mb-1">Thái độ tham gia : </span>&nbsp;
+
+                                <span th:text="${rating.point4}" th:if="${rating.point4 != -1}">Point4</span>
+                                <span th:text="${rating.point4}" th:if="${rating.point4 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Sự chuyên nghiệp : </span>&nbsp;
+
+                                <span th:text="${rating.point5}" th:if="${rating.point5 != -1}">Point5</span>
+                                <span th:text="${rating.point5}" th:if="${rating.point5 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Khả năng đóng góp cho sự kiện: </span>&nbsp;
+
+                                <span th:text="${rating.point6}" th:if="${rating.point6 != -1}">Point2</span>
+                                <span th:text="${rating.point6}" th:if="${rating.point6 == -1}">Chưa có đánh giá</span>
+
+                            </a>
+
+                        </th:block>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </form>
 </div>

@@ -62,7 +62,7 @@ public class HomepageController {
         {
             System.out.println("Dang nhap thanh cong");
             session.setAttribute("username", username);
-            return "redirect:/home";
+            return "redirect:/";
         }else{
       //      System.out.println("Dang nhap that bai"+encodePass);
             model.addAttribute("failMessage","Tai khoan hoac mat khau ko chinh xac");
