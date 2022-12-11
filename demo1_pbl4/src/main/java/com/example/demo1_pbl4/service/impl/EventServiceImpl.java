@@ -4,6 +4,9 @@ import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.repository.EventRepository;
 import com.example.demo1_pbl4.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,11 +57,25 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> findEventByEventName(String eventName)
     {
-        return eventRepository.findEventByEventName(eventName);
+        if (eventName != "") {
+            return eventRepository.findEventByEventName(eventName);
+        }
+        return eventRepository.findAll();
     }
+
     @Override
     public List<Event> findEventByHostname(String hostname)
     {
         return eventRepository.findEventByHostname(hostname);
+    }
+
+    @Override
+    public List<Event> findEventWithSorting(String field) {
+        return eventRepository.findAll(Sort.by(Sort.Direction.ASC,field));
+    }
+
+    @Override
+    public Page<Event> findEventWithPagination(int offset, int pageSize) {
+        return eventRepository.findAll(PageRequest.of(offset,pageSize));
     }
 }

@@ -53,7 +53,13 @@ public class User {
 
     }
 
-    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password) {
+
+
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password,String country) {
+
+    }
+
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password, String address, String gender) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,6 +67,8 @@ public class User {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.address = address;
+        this.gender = gender;
     }
 
     public User(String firstName, String lastName, String phoneNum, String email, String username, String password) {

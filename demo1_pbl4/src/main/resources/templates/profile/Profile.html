@@ -184,8 +184,8 @@
                                 <label>Name</label>
                             </div>
                             <div class="col-md-6">
-                                <p th:text="${myUser.first_name}"></p>
-                                <p th:text="${myUser.last_name}"></p>
+                                <p th:text="${myUser.firstName}"></p>
+                                <p th:text="${myUser.lastName}"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -209,7 +209,7 @@
                                 <label>Gender</label>
                             </div>
                             <div class="col-md-6">
-                                <p th:text="${myUser.Gender}"></p>
+                                <p th:text="${myUser.gender}"></p>
                             </div>
                         </div>
 
@@ -220,7 +220,7 @@
                             <a th:href="@{/posts/get(id=${rating.getEvent().getEventId()})}" class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1" th:text="${rating.getEvent().getEventName()}" > EventName</h5>
-                                    <small th:text="${rating.getEvent().getBeginTime()}+ ' - ' + ${rating.getEvent().getEndTime()}">eventtime</small>
+                                    <small th:text="${#dates.format(rating.getEvent().getBeginTime(), 'dd-MMM-yyyy')}+ ' - ' + ${#dates.format(rating.getEvent().getEndTime(), 'dd-MMM-yyyy')}">eventtime</small>
                                 </div>
                                 <p class="mb-1">Đánh giá về sự kiện của tôi: </p>
                                 <span class="mb-1">Tính hữu ích của sự kiện : </span>&nbsp;

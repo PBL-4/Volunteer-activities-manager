@@ -8,12 +8,10 @@ import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.PostService;
 import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
@@ -51,10 +49,38 @@ public class EventController {
     }
 
 
-    @GetMapping("/find")
+    @GetMapping("/find_all")
     public String findEventPage(Model model) {
         List<Event> eventLists = eventService.getAllEvents();
         model.addAttribute("eventList", eventLists);
+        return "/event/find_event_list";
+    }
+
+    @GetMapping("/page")
+    public String pagingEvent(Model model) {
+        int currentPage=0,pageSize=2;
+        Page<Event> eventPages = eventService.findEventWithPagination(currentPage,pageSize);
+        long totalItems= eventPages.getTotalElements();
+        int totalPages= eventPages.getTotalPages();
+        List<Event> eventLists=eventPages.getContent();
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("eventList", eventLists);
+        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("myTotalPages", totalPages-1);
+        return "/event/find_event_list";
+    }
+    @GetMapping("/page/{pageNumber}")
+    public String pagingEventPage(Model model, @PathVariable("pageNumber") int currentPage) {
+        int pageSize=2;
+        Page<Event> eventPages = eventService.findEventWithPagination(currentPage,pageSize);
+        long totalItems= eventPages.getTotalElements();
+        int totalPages= eventPages.getTotalPages();
+        List<Event> eventLists=eventPages.getContent();
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("myTotalPages", totalPages-1);
+        model.addAttribute("eventList", eventLists);
+        model.addAttribute("currentPage",currentPage);
         return "/event/find_event_list";
     }
 
@@ -97,6 +123,13 @@ public class EventController {
         return "/event/find_event_list";
     }
 
+    @GetMapping("/admin")
+    public String showEventOnAdmin(Model model) {
+        List<Event> eventLists = eventService.getAllEvents();
+        model.addAttribute("Events", eventLists);
+        return "/admin/EventsManager";
+    }
+
     @GetMapping("/create_event")
     public String showCreateEventForm(Model model, HttpSession session) {
         if (session.getAttribute("username") != null) {
@@ -134,7 +167,14 @@ public class EventController {
             System.out.println("Chua dang nhap");
             return "/403Page";
         }
+    }
+    @PostMapping("/admin")
+    public String View(Model model, @RequestParam ("eventName") String keyword) {
+        List<Event> listevent = eventService.findEventByEventName(keyword);
+        model.addAttribute("Events", listevent);
+        model.addAttribute("eventName", keyword);
 
+        return "admin/EventsManager";
     }
 
 }

@@ -15,12 +15,12 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping("/my_account")
 public class ProfileController {
     @Autowired
     private RatingEventService ratingEventService;
 
-
+    @Autowired
     private UserService userService;
 
     @GetMapping("")
@@ -36,6 +36,6 @@ public class ProfileController {
 //        }
         model.addAttribute("RatingHistory", listRatingEvent);
         model.addAttribute("myUser", userService.getUserById(userId));
-        return "Profile";
+        return "profile/Profile";
     }
 }

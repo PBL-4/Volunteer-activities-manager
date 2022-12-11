@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface RatingEventRepository extends JpaRepository<Rating_Event,Long>
 {
-    @Query(value = "SELECT * FROM Rating u WHERE user_id = ?1",nativeQuery = true)
+    @Query(value = "SELECT * FROM Rating WHERE user_user_id =?1",nativeQuery = true)
     public List<Rating_Event> findRatingByUserId(Long UserID);
 }
