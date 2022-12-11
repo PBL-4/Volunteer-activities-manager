@@ -43,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <a th:href="@{/events/create_event}" class="nav-item nav-link">Recruit Volunteers</a>
+                    <a th:href="@{/events/my_event}" class="nav-item nav-link">Recruit Volunteers</a>
                     <!--                <a href="contact.html" class="nav-item nav-link">Contact</a>-->
                 </div>
                 <div class="nav-item dropdown" th:if="${session.username}">
@@ -51,7 +51,7 @@
                        class="btn btn-primary py-2 px-4 d-none d-lg-block nav-link dropdown-toggle">Hello <span
                             th:text="' '+${session.username}"></span></a>
                     <div class="dropdown-menu m-0">
-                        <a th:href="@{#}" class="dropdown-item">Tutorial</a>
+                        <a th:href="@{#}" class="dropdown-item">Application Tutorial</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
 
                     </div>

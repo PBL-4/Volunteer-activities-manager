@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Event Profile </title>
     <th:blockquote th:include="/header"></th:blockquote>
+    <hr>
 </head>
 <body>
-<div class="container">
-    <h1>Update your event information</h1>
+<div class="container-fluid m-0">
+    <h1>Describe your event here</h1>
     <h2>Let them know more about your event mission and primary cause to help them connect to you</h2>
     <form th:action="@{/events/create_event}" method="post">
         <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -53,7 +54,7 @@
 
         <!-- Message input -->
         <div class="form-outline mb-4">
-            <label class="form-label" for="content"></label>
+            <label class="form-label" for="content">Nội dung mô tả sự kiện</label>
             <textarea class="form-control" id="content" rows="4" name="content"></textarea>
         </div>
         <!-- Donation input -->
@@ -61,10 +62,10 @@
             <label class="form-label" for="donation">Quỹ hiện có</label>
             <input type="number" id="donation" class="form-control" name="donation"/>
         </div>
-        <div class="form-outline mb-4">
-            <label class="form-label" for="hostname">Tên người tổ chức cần hiển thị</label>
-            <input type="text" id="hostname" class="form-control" name="hostname"/>
-        </div>
+<!--        <div class="form-outline mb-4">-->
+<!--            <label class="form-label" for="hostname">Tên người tổ chức cần hiển thị</label>-->
+<!--            <input type="text" id="hostname" class="form-control" name="hostname"/>-->
+<!--        </div>-->
 
         <!--    &lt;!&ndash; Checkbox &ndash;&gt;-->
         <!--    <div class="form-check d-flex justify-content-center mb-4">-->

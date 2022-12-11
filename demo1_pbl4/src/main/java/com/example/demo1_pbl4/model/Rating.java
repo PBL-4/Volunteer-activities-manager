@@ -11,7 +11,13 @@ public class Rating {
     private Long idRate;
     @OneToOne
     private User user;
-    private double star;// Diem trung binh
+    private double star;// Diem trung binh cua event
+
+    private String description;
+
+    private int hostPoint1;
+    private int hostPoint2;
+    private int hostPoint3;
 
     @OneToOne
     private Event event;

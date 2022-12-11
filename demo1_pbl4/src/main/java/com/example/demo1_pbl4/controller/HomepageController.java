@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.IContext;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
@@ -22,6 +24,9 @@ public class HomepageController {
     private CustomUserDetailsService customUserDetailsService;
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private B5EncodePassword b5EncodePassword=new B5EncodePassword();
+
+    @Autowired
+    ServletContext context;
 
     @GetMapping("/")
     public String showHomepage() {
@@ -62,7 +67,9 @@ public class HomepageController {
         {
             System.out.println("Dang nhap thanh cong");
             session.setAttribute("username", username);
-            return "redirect:/home";
+            System.out.println(context.getContextPath());
+           // return "redirect:/"+context.getContextPath();
+            return "redirect:/";
         }else{
       //      System.out.println("Dang nhap that bai"+encodePass);
             model.addAttribute("failMessage","Tai khoan hoac mat khau ko chinh xac");

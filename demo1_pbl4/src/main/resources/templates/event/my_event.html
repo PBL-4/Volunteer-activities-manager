@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Các hoạt động của bạn đã tổ chức</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Favicon -->
+    <link th:href="@{/homepage/img/favicon.ico}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/homepage/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/homepage/css/style.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{/header::headMenu}">
+    <div class="stripe">
+
+    </div>
+</div>
+<div class="container">
+    <button><a th:href="@{/events/create_event}">Thêm mới sự kiện</a></button>
+    <div class="text-center">
+        <h1>Danh sách các hoạt động mà bạn tổ chức</h1>
+        <h5 class="text-danger" th:if="${message}!=null" th:text="${message}"></h5>
+        <div th:if="${message}==null">
+            <table class="events">
+                <thead>
+                <tr>
+                    <th>Event Id</th>
+                    <th>Name</th>
+                    <th>Begin time</th>
+                    <th>End time</th>
+                    <th>Location</th>
+                    <th>Num of member</th>
+                    <th>Trạng thái</th>
+                    <th>Cập nhật</th>
+                    <th>Đánh giá</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="event: ${events}">
+                    <tr>
+                        <td th:text="${event.getEventId()}"></td>
+                        <td th:text="${event.getEventName()}"></td>
+                        <td th:text="${event.getBeginTime()}"></td>
+                        <td th:text="${event.getEndTime()}"></td>
+                        <td th:text="${event.getLocation()}"></td>
+                        <td th:text="${event.getNumOfMem()}"></td>
+                        <td>
+                            <button class="btn-secondary" th:text="${event.getStatus().getStatusName()}"></button>
+                        </td>
+                        <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
+                        <td>
+                            <a th:href="@{'/users/mem_of_event/'+${event.eventId}}">Đánh giá</a>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

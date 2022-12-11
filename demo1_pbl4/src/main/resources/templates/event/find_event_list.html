@@ -502,14 +502,14 @@
             </th:block>
 
             <div class="row text-muted">
-                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>
-                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<!--                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>-->
+<!--                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
                 <a th:if="${currentPage>0}" th:href="@{'/events/page/'+ ${currentPage-1}}">Prev &nbsp;</a>
                 <span style="text-align:right" th:each="i : ${#numbers.sequence(0,myTotalPages)}">
                     <a th:if="${i!=currentPage}" th:href="@{'/events/page/'+ ${i}}">[[${i+1}]]</a>&nbsp;
                     <span class="text-danger" th:if="${i==currentPage}">[[${i+1}]]</span>&nbsp;&nbsp;
                 </span>
-                <a th:if="${currentPage<myTotalPages}" th:href="@{'/events/page/'+ ${currentPage}+1}">Next</a>
+                <a th:if="${currentPage<myTotalPages}" th:href="@{'/events/page/'+ ${currentPage+1}}">Next</a>
             </div>
         </div>
     </main>

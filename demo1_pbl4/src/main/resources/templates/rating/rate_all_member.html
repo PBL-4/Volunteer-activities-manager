@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách các thành viên cần đánh giá trong sự kiện</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Tên thành viên</th>
+        <th>Thang điểm 1</th>
+        <th>Thang điểm 2</th>
+        <th>Thang điểm 3</th>
+        <th>Điểm trung bình</th>
+        <th>Đánh giá</th>
+    </tr>
+    <th:block th:each="member : ${members}">
+        <td><a th:href="@{/profile}" th:text="${member.getFirstName()}+' '+ ${member.getLastName()}"></a></td>
+        <td th:if="${member.getMemPoint1()!=null}">${member.memPoint1}</td>
+        <td th:if="${member.getMemPoint1()==null}">N/a</td>
+        <td th:if="${member.getMemPoint2()!=null}">${member.memPoint2}</td>
+        <td th:if="${member.getMemPoint2()==null}">N/a</td>
+        <td th:if="${member.getMemPoint3()!=null}">${member.memPoint3}</td>
+        <td th:if="${member.getMemPoint3()==null}">N/a</td>
+        <td></td>
+        <td><a th:href="@{rating//show_rating_member}">Đánh giá thành viên này</a></td>
+    </th:block>
+</table>
+</body>
+</html>
