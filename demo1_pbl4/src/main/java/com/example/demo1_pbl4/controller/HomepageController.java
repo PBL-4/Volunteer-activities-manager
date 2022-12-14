@@ -31,7 +31,7 @@ public class HomepageController {
 //    @Autowired
 //    ServletContext context;
 
-    @GetMapping(value = {"/","home"})
+    @GetMapping(value = {"/", "home"})
     public String showHomepage() {
         return "homepage/homepage";
     }
@@ -78,8 +78,8 @@ public class HomepageController {
 
         if (userService.checkLogin(username, password)) {
             System.out.println("Dang nhap thanh cong");
-          //  session.setAttribute("username", username);
-            session.setAttribute("user",userService.findUserByUsername(username));
+            //  session.setAttribute("username", username);
+            session.setAttribute("user", userService.findUserByUsername(username));
             //  System.out.println(context.getContextPath());
             // return "redirect:/"+context.getContextPath();
             Cookie cookie1 = new Cookie("username", username);
@@ -122,13 +122,16 @@ public class HomepageController {
         return "/403Page";
     }
 
-    @GetMapping("/sponsor")
-    public String showSponsorPage() {
-        return "sponsor/sponsor";
+
+
+    @GetMapping("/history_donation")
+    public String showHistoryDonation(HttpSession session) {
+        return "user/history_donation";
     }
 
 
     @GetMapping("logout")
+
     public String logout(HttpSession session) {
         session.setAttribute("user", null);
         return "redirect:/";

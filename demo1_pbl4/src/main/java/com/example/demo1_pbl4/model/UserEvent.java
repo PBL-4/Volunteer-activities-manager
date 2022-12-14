@@ -59,6 +59,11 @@ public class UserEvent {
     public UserEvent() {
     }
 
+    public UserEvent(User user, String eventRole) {
+        this.user = user;
+        this.eventRole = eventRole;
+    }
+
     public UserEvent(UserEventId userEventId, Event event, User user, String eventRole, Boolean isApproval) {
         this.userEventId = userEventId;
         this.event = event;
