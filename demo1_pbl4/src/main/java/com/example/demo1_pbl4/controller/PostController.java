@@ -1,14 +1,14 @@
 package com.example.demo1_pbl4.controller;
 
 import com.example.demo1_pbl4.model.Post;
+import com.example.demo1_pbl4.model.Rating_Event;
 import com.example.demo1_pbl4.service.CommentService;
 import com.example.demo1_pbl4.service.PostService;
+import com.example.demo1_pbl4.service.RatingEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -19,6 +19,9 @@ public class PostController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private RatingEventService ratingService;
 
     public PostController(CommentService commentService) {
         this.commentService = commentService;
@@ -37,6 +40,12 @@ public class PostController {
         model.addAttribute("post",post);
         model.addAttribute("comments",commentService.getAllComments());
         model.addAttribute("total",commentService.countComment());
-        return "/post/post_of_event";
+        return "post/post_of_event";
+    }
+    @PostMapping("/saverating")
+    public String processRating(@ModelAttribute(value="Rating_Event")Rating_Event rating_event)
+    {
+
+        return "post/post_of_event";
     }
 }

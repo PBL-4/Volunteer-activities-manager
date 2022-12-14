@@ -18,6 +18,8 @@ public class Rating_Event {
     private int point4;
     private int point5;
     private int point6;
+    private String comment;
+
 //    private String eventname;
 //
 //    private Date beginTime;
@@ -75,6 +77,14 @@ public class Rating_Event {
 
     public void setPoint6(int point6) {
         this.point6 = point6;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Long getIdRate() {
@@ -150,6 +160,20 @@ public class Rating_Event {
         this.event = event;
     }
 
+    public Rating_Event(User user, int point1, int point2, int point3, String comment, Event event) {
+        this.user = user;
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.comment = comment;
+        this.event = event;
+    }
 
-
+    public Rating_Event(User user, int point4, int point5, int point6, Event event) {
+        this.user = user;
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
+        this.event = event;
+    }
 }

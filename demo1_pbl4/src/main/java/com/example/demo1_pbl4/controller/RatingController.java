@@ -2,7 +2,6 @@ package com.example.demo1_pbl4.controller;
 
 import com.example.demo1_pbl4.model.Rating_Event;
 import com.example.demo1_pbl4.service.RatingEventService;
-import com.example.demo1_pbl4.service.RatingMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
