@@ -8,7 +8,7 @@ import java.util.Set;
 public class Status {
     @Id
     @Column(name="status_id")
-    private int id;
+    private Long id;
 
     private String statusName;
 
@@ -18,16 +18,22 @@ public class Status {
     public Status() {
     }
 
-    public Status(int id, String statusName) {
+    public Status(Long id, String statusName) {
         this.id = id;
         this.statusName = statusName;
     }
 
-    public int getId() {
+    public Status(Long id, String statusName, Set<Event> events) {
+        this.id = id;
+        this.statusName = statusName;
+        this.events = events;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

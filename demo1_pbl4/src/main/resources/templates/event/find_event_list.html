@@ -10,7 +10,22 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Favicon -->
+    <link th:href="@{/homepage/img/favicon.ico}" rel="icon">
 
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600;700&family=Open+Sans:wght@400;600&display=swap"
+          rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link th:href="@{/homepage/lib/owlcarousel/assets/owl.carousel.min.css}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link th:href="@{/homepage/css/style.css}" rel="stylesheet">
     <!--    <div th:insert="header ::head_css"></div>-->
     <style>
         body {
@@ -355,45 +370,45 @@
 </head>
 <body>
 
+
+<!--      &lt;!&ndash; Sử dụng class container-fluid thay cho container &ndash;&gt;-->
+<!--        <div class="padding">-->
+<!--            <div class="row">&lt;!&ndash; class="grid gl-hdr" &ndash;&gt;-->
+<!--                <div class="col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity" style="padding-left:20px">-->
+<!--                    &lt;!&ndash;            col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity&ndash;&gt;-->
+<!--                    <img id="logo" alt="no image"-->
+<!--                         src="https://thumbs.dreamstime.com/b/volunteer-handwritten-word-text-rainbow-colors-vibrant-swoosh-design-vector-illustration-140554768.jpg"/>-->
+<!--                </div>-->
+
+<!--                <div class="col-8 col-bleed align-self-center gl-hdr-mnu-icn">-->
+<!--                    <div class="main_nav" id="myMainNav">-->
+<!--                        <a th:href="@{/events/find}">Tìm kiếm cơ hội</a>-->
+<!--                        <a th:href="@{/login}">Đăng nhập</a>-->
+<!--                        <a href="#">Giải quyết nghiệp vụ</a>-->
+<!--                        <a href="#">Tuyển tình nguyện viên</a>-->
+<!--                        <a href="#">Đăng ký</a>-->
+<!--                        <a></a>-->
+<!--                        <a href="javascript:void(0);" class="icon" onclick="myFunction()">-->
+<!--                            <i class="fa fa-bars"></i>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <nav class="col-xs-8 col-bleed align-self-center hide gl-hdr-nav">-->
+<!--                </nav>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-bleed sub_nav_header">-->
+<!--                <a href="#">Cơ hội được đề xuất</a>-->
+<!--                <a href="#">Giúp đỡ Covid-19</a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<div th:replace="~{/header::headMenu}">
+    <div class="stripe">
+
+    </div>
+</div>
+<!--<header>    </header>-->
 <div class="container-fluid">
-    <!--      &lt;!&ndash; Sử dụng class container-fluid thay cho container &ndash;&gt;-->
-    <!--        <div class="padding">-->
-    <!--            <div class="row">&lt;!&ndash; class="grid gl-hdr" &ndash;&gt;-->
-    <!--                <div class="col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity" style="padding-left:20px">-->
-    <!--                    &lt;!&ndash;            col-4 col-xs-4 col-bleed align-self-center gl-hdr__identity&ndash;&gt;-->
-    <!--                    <img id="logo" alt="no image"-->
-    <!--                         src="https://thumbs.dreamstime.com/b/volunteer-handwritten-word-text-rainbow-colors-vibrant-swoosh-design-vector-illustration-140554768.jpg"/>-->
-    <!--                </div>-->
-
-    <!--                <div class="col-8 col-bleed align-self-center gl-hdr-mnu-icn">-->
-    <!--                    <div class="main_nav" id="myMainNav">-->
-    <!--                        <a th:href="@{/events/find}">Tìm kiếm cơ hội</a>-->
-    <!--                        <a th:href="@{/login}">Đăng nhập</a>-->
-    <!--                        <a href="#">Giải quyết nghiệp vụ</a>-->
-    <!--                        <a href="#">Tuyển tình nguyện viên</a>-->
-    <!--                        <a href="#">Đăng ký</a>-->
-    <!--                        <a></a>-->
-    <!--                        <a href="javascript:void(0);" class="icon" onclick="myFunction()">-->
-    <!--                            <i class="fa fa-bars"></i>-->
-    <!--                        </a>-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--                <nav class="col-xs-8 col-bleed align-self-center hide gl-hdr-nav">-->
-    <!--                </nav>-->
-    <!--            </div>-->
-    <!--            <div class="col-12 col-bleed sub_nav_header">-->
-    <!--                <a href="#">Cơ hội được đề xuất</a>-->
-    <!--                <a href="#">Giúp đỡ Covid-19</a>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <header>
-        <div th:replace="~{/header::headMenu}">
-            <div class="stripe">
-
-            </div>
-        </div>
-    </header>
 
     <main id="content">
         <!--- Form search begin -->
@@ -487,14 +502,14 @@
             </th:block>
 
             <div class="row text-muted">
-                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>
-                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>
+<!--                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>-->
+<!--                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
                 <a th:if="${currentPage>0}" th:href="@{'/events/page/'+ ${currentPage-1}}">Prev &nbsp;</a>
                 <span style="text-align:right" th:each="i : ${#numbers.sequence(0,myTotalPages)}">
                     <a th:if="${i!=currentPage}" th:href="@{'/events/page/'+ ${i}}">[[${i+1}]]</a>&nbsp;
                     <span class="text-danger" th:if="${i==currentPage}">[[${i+1}]]</span>&nbsp;&nbsp;
                 </span>
-                <a th:if="${currentPage<myTotalPages}" th:href="@{'/events/page/'+ ${currentPage}+1}">Next</a>
+                <a th:if="${currentPage<myTotalPages}" th:href="@{'/events/page/'+ ${currentPage+1}}">Next</a>
             </div>
         </div>
     </main>

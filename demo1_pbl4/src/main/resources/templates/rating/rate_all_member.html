@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách các thành viên cần đánh giá trong sự kiện</title>
+</head>
+<body>
+<div th:replace="~{/header::headMenu}">
+    <div class="stripe">
+
+    </div>
+</div>
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <tr>
+            <th>Tên thành viên</th>
+            <th>Thang điểm 1</th>
+            <th>Thang điểm 2</th>
+            <th>Thang điểm 3</th>
+            <th>Điểm trung bình</th>
+            <th>Đánh giá</th>
+        </tr>
+        <th:block th:each="member : ${members}">
+            <td><a th:href="@{/profile}" th:text="${member.firstName}+' '+ ${member.lastName}"></a></td>
+            <td th:if="${member.getPoint4()!=null}">${member.memPoint1}</td>
+            <td th:if="${member.getPoint4()==null}">N/a</td>
+            <td th:if="${member.getPoint5()!=null}">${member.memPoint2}</td>
+            <td th:if="${member.getPoint5()==null}">N/a</td>
+            <td th:if="${member.getPoint6()!=null}">${member.memPoint3}</td>
+            <td th:if="${member.getPoint6()==null}">N/a</td>
+            <td></td>
+            <td><a th:href="@{'rating/show_rating_member/'+ ${member.userId}}">Đánh giá thành viên này</a></td>
+        </th:block>
+    </table>
+</div>
+
+</body>
+</html>
