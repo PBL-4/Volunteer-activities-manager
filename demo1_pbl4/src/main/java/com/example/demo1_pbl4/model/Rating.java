@@ -10,12 +10,12 @@ public class Rating {
     @Column(name = "rating_id")
     private Long idRate;
 
-    private Integer point1;// diem member danh gia event cau hoi 1
-    private Integer point2;//...                         cau hoi 2
-    private Integer point3;//...                         cau hoi 3
-    private Integer point4;// điểm mà host đánh giá userId này trong cau hoi 1
-    private Integer point5;// điểm mà ... trong câu hỏi 2
-    private Integer point6;// điểm mà ... trong câu hỏi 3
+    private int point1;// diem member danh gia event cau hoi 1
+    private int point2;//...                         cau hoi 2
+    private int point3;//...                         cau hoi 3
+    private int point4;// điểm mà host đánh giá userId này trong cau hoi 1
+    private int point5;// điểm mà ... trong câu hỏi 2
+    private int point6;// điểm mà ... trong câu hỏi 3
 
     private double star;// Diem trung binh cua event
 
@@ -30,6 +30,9 @@ public class Rating {
     private UserEvent userEvent;
 
     public Rating() {
+        this.point4=0;
+        this.point5=0;
+        this.point6=0;
     }
 
     public Rating(Integer point4, Integer point5, Integer point6) {

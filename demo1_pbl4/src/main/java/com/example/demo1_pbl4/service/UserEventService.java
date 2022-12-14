@@ -10,4 +10,6 @@ public interface UserEventService {
 
     UserEvent  insertUser(UserEvent userEvent);
 
+      List<UserEvent> findMemberInEvent(Long eventId, String role);
+
 }
