@@ -28,7 +28,7 @@ public interface UserService {
 
     Page<User> findUsersWithPagination(int offset, int pageSize);
 
-    List<MemberInRating> findMemberInEvent(Long eventId, String role);
+  //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
 
 
 }

@@ -31,12 +31,13 @@ public class UserController {
     @GetMapping("/insertForm")
     public String showCreateForm(Model model) {
         User user = new User();
-        model.addAttribute("myUser", user);
+        model.addAttribute("User", user);
         return "insert_user";
     }
 
     @PostMapping("/insertUser")
     // Voi bien se dung @RequestParam nhung voi doi tuong thi
+
     public ModelAndView createUser(@ModelAttribute("myUser") User myUser) {
         if (myUser != null) {
             userService.insertUser(myUser);
@@ -66,14 +67,14 @@ public class UserController {
         return "redirect:/users/admin";
     }
 
-    @GetMapping("/mem_of_event/{eventId}")
-    public String showAllMemOfEvent(Model model,@PathVariable ("eventId")Long eventId)
-    {
-        List<MemberInRating> members=userService.findMemberInEvent(eventId,"Member");
-       // System.out.println("member="+members);
-        model.addAttribute("members",members);
-        return "rating/rate_all_member";
-    }
+//    @GetMapping("/mem_of_event/{eventId}")
+//    public String showAllMemOfEvent(Model model,@PathVariable ("eventId")Long eventId)
+//    {
+//        List<MemberInRating> members=userService.findMemberInEvent(eventId,"Member");
+//       // System.out.println("member="+members);
+//        model.addAttribute("members",members);
+//        return "rating/rate_all_member";
+//    }
 }
 
 

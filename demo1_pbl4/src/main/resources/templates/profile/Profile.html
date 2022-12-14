@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+
+<script type="text/javascript">
+    function ChangeDisplay(val1, val2)
+    {
+        document.getElementById(val1).style.display = 'block';
+
+        document.getElementById(val2).style.display = 'none';
+
+    }
+</script>
+
+<style>
+    body{
+        background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    }
+    .emp-profile{
+        padding: 3%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        border-radius: 0.5rem;
+        background: #fff;
+    }
+    .profile-img{
+        text-align: center;
+    }
+    .profile-img img{
+        width: 70%;
+        height: 100%;
+    }
+    .profile-img .file {
+        position: relative;
+        overflow: hidden;
+        margin-top: -20%;
+        width: 70%;
+        border: none;
+        border-radius: 0;
+        font-size: 15px;
+        background: #212529b8;
+    }
+    .profile-img .file input {
+        position: absolute;
+        opacity: 0;
+        right: 0;
+        top: 0;
+    }
+    .profile-head h5{
+        color: #333;
+    }
+    .profile-head h6{
+        color: #0062cc;
+    }
+    .profile-edit-btn{
+        border: none;
+        border-radius: 1.5rem;
+        width: 70%;
+        padding: 2%;
+        font-weight: 600;
+        color: #6c757d;
+        cursor: pointer;
+    }
+    .proile-ratingEvent{
+        font-size: 12px;
+        color: #818182;
+        margin-top: 5%;
+    }
+    .proile-ratingEvent span{
+        color: #495057;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    .profile-head .nav-tabs{
+        margin-bottom:5%;
+    }
+    .profile-head .nav-tabs .nav-link{
+        font-weight:600;
+        border: none;
+    }
+    .profile-head .nav-tabs .nav-link.active{
+        border: none;
+        border-bottom:2px solid #0062cc;
+    }
+    .profile-work{
+        padding: 14%;
+        margin-top: -15%;
+    }
+    .profile-work p{
+        font-size: 12px;
+        color: #818182;
+        font-weight: 600;
+        margin-top: 10%;
+    }
+    .profile-work a{
+        text-decoration: none;
+        color: #495057;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    .profile-work ul{
+        list-style: none;
+    }
+    .profile-tab label{
+        font-weight: 600;
+    }
+    .profile-tab p{
+        font-weight: 600;
+        color: #0062cc;
+    }
+</style>
+<body onload="ChangeDisplay('home','profile')">
+<div class="container emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
+                    <div class="file btn btn-lg btn-primary">
+                        Change Photo
+                        <input type="file" name="file"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h5>
+                        Kshiti Ghelani
+                    </h5>
+                    <h6>
+                        Web Developer and Designer
+                    </h6>
+                    <p class="proile-ratingEvent">RANKINGS : <span>8/10</span></p>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#" role="tab" aria-controls="home" aria-selected="true" onclick="ChangeDisplay('home','profile')">Thông tin cá nhân</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#" role="tab" aria-controls="profile" aria-selected="false" onclick="ChangeDisplay('profile','home')">Lịch sử tham gia hoạt động</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                    <p>WORK LINK</p>
+                    <a href="">Lĩnh vực yêu thích</a><br/>
+
+                    <a href="">Bootply Profile</a>
+                    <p>SKILLS</p>
+                    <a href="">Web Designer</a><br/>
+                    <a href="">Web Developer</a><br/>
+                    <a href="">WordPress</a><br/>
+                    <a href="">WooCommerce</a><br/>
+                    <a href="">PHP, .Net</a><br/>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>User Id</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${myUser.userId}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Name</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${myUser.firstName}"></p>
+                                <p th:text="${myUser.lastName}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Email</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${myUser.email}"> </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Phone Number</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${myUser.phoneNum}"></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Gender</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p th:text="${myUser.gender}"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="list-group">
+                        <th:block th:each="rating : ${RatingHistory}">
+                            <a th:href="@{/posts/get(id=${rating.getEvent().getEventId()})}" class="list-group-item list-group-item-action flex-column align-items-start">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1" th:text="${rating.getEvent().getEventName()}" > EventName</h5>
+                                    <small th:text="${#dates.format(rating.getEvent().getBeginTime(), 'dd-MMM-yyyy')}+ ' - ' + ${#dates.format(rating.getEvent().getEndTime(), 'dd-MMM-yyyy')}">eventtime</small>
+                                </div>
+                                <p class="mb-1">Đánh giá về sự kiện của tôi: </p>
+                                <span class="mb-1">Tính hữu ích của sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point1}" th:if="${rating.point1 != -1}">Point1</span>
+                                <span th:text="${rating.point1}" th:if="${rating.point1 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Tính hiệu quả của sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point2}" th:if="${rating.point2 != -1}">Point2</span>
+                                <span th:text="${rating.point2}" th:if="${rating.point2 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Tính chuyên nghiệp của chủ sự kiện : </span>&nbsp;
+
+                                <span th:text="${rating.point3}" th:if="${rating.point3 != -1}">Point3</span>
+                                <span th:text="${rating.point3}" th:if="${rating.point3 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <p class="mb-1">Đánh giá của chủ sự kiện về tôi: </p>
+                                <span class="mb-1">Thái độ tham gia : </span>&nbsp;
+
+                                <span th:text="${rating.point4}" th:if="${rating.point4 != -1}">Point4</span>
+                                <span th:text="${rating.point4}" th:if="${rating.point4 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Sự chuyên nghiệp : </span>&nbsp;
+
+                                <span th:text="${rating.point5}" th:if="${rating.point5 != -1}">Point5</span>
+                                <span th:text="${rating.point5}" th:if="${rating.point5 == -1}">Chưa có đánh giá</span>
+
+                                <br>
+                                <span class="mb-1">Khả năng đóng góp cho sự kiện: </span>&nbsp;
+
+                                <span th:text="${rating.point6}" th:if="${rating.point6 != -1}">Point2</span>
+                                <span th:text="${rating.point6}" th:if="${rating.point6 == -1}">Chưa có đánh giá</span>
+
+                            </a>
+
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </form>
+</div>
+</body>

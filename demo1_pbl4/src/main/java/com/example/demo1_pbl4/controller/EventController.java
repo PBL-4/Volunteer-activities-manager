@@ -7,6 +7,7 @@ import com.example.demo1_pbl4.service.UserEventService;
 import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -195,11 +196,12 @@ public class EventController {
         return "admin/EventsManager";
     }
 
-    //BachLT: Quản lý danh sách hoạt động đang tham gia:
-
+    //BachLT: Quản lý danh sách hoạt động đang tham gia: trang đầu tiên của recuite volunteer
     @GetMapping("/my_event")
-    public String showMyHostEvent(Model model, HttpSession session, Pageable pageable) {
+    public String showMyHostEvent(Model model, HttpSession session) {
         User user = null;
+        int currentPage=0;
+        Pageable pageable = PageRequest.of(0,10);
         if (session.getAttribute("username") != null) {
             String username = session.getAttribute("username").toString();
             user = userService.findUserByUsername(username);
@@ -218,6 +220,5 @@ public class EventController {
             System.out.println("Chưa đăng nhập");
             return "redirect:/login";
         }
-
     }
 }

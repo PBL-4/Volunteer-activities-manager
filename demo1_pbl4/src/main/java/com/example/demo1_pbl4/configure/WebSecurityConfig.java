@@ -1,5 +1,6 @@
 //package com.example.demo1_pbl4.configure;
 //
+
 //import com.example.demo1_pbl4.security.CustomUserDetailsService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
@@ -41,6 +42,7 @@
 //        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 //        authProvider.setUserDetailsService(userDetailsService());
 //        authProvider.setPasswordEncoder(passwordEncoder());
+
 //        return authProvider;
 //    }
 //
@@ -52,6 +54,7 @@
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
+
 //        http.csrf().disable();
 //        //Cac trang khong yeu cau login:
 //        http.authorizeRequests().antMatchers("/", "/login", "/register", "/logout", "/css/**", "/fonts/**", "/images/**", "/js/**", "/homepage/**").permitAll();

@@ -26,8 +26,12 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).get();
     }
 
-    public User insertUser(User user) {
-        return userRepository.save(user);
+    public User insertUser(User user)
+    {
+        User temp = null;
+        if(checkExistedAccount(user) == true) {
+            return userRepository.save(user);
+        } else return temp;
     }
 
     public void updateUser(User user) {
@@ -37,6 +41,13 @@ public class UserServiceImpl implements UserService {
     public boolean deleteUser(Long userId) {
         userRepository.deleteById(userId);
         return false;
+    }
+
+    public boolean checkExistedAccount(User user) {
+        boolean check = false;
+        if (userRepository.findUserByUserName(user.getUsername()) == null && userRepository.findUserByEmail(user.getEmail()) == null)
+            check = true;
+        return check;
     }
 
 
@@ -69,10 +80,10 @@ public class UserServiceImpl implements UserService {
     public Page<User> findUsersWithPagination(int offset, int pageSize) {
         return userRepository.findAll(PageRequest.of(offset, pageSize));
     }
-
-    @Override
-    public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
-        return userRepository.findMemberInEvent(eventId, role);
-    }
+    //BachLT: Chuc nang tim kiem tat ca thanh vien trong su kien cos eventId
+//    @Override
+//    public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
+//        return userRepository.findMemberInEvent(eventId, role);
+//    }
 
 }

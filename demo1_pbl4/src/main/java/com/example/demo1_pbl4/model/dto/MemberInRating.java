@@ -9,16 +9,12 @@ import java.util.Set;
 
 public class MemberInRating {
 
-    private int eventPoint1;
-    private int eventPoint2;
-    private int eventPoint3;
-
-
-    private int memPoint1;
-
-    private int memPoint2;
-
-    private int memPoint3;
+    private int point1;
+    private int point2;
+    private int point3;
+    private int point4;
+    private int point5;
+    private int point6;// rating
 
     private int avgMemPoints;
 
@@ -27,60 +23,35 @@ public class MemberInRating {
     private String firstName;
 
     private String lastName;
-    private String eventRole;
+    private String eventRole;// user_event
     private Boolean isApproval;
 
     public MemberInRating() {
     }
 
-    public MemberInRating(int eventPoint1, int eventPoint2, int eventPoint3, Long userId, String firstName, String lastName, String eventRole, Boolean isApproval) {
-        this.eventPoint1 = eventPoint1;
-        this.eventPoint2 = eventPoint2;
-        this.eventPoint3 = eventPoint3;
+    public MemberInRating(int point4, int point5, int point6, Long userId, String firstName, String lastName, String eventRole) {
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.eventRole = eventRole;
-        this.isApproval = isApproval;
     }
 
-    public MemberInRating(int eventPoint1, int eventPoint2, int eventPoint3, int memPoint1, int memPoint2, int memPoint3, Long userId, String firstName, String lastName, String eventRole, Boolean isApproval) {
-        this.eventPoint1 = eventPoint1;
-        this.eventPoint2 = eventPoint2;
-        this.eventPoint3 = eventPoint3;
-        this.memPoint1 = memPoint1;
-        this.memPoint2 = memPoint2;
-        this.memPoint3 = memPoint3;
+    public MemberInRating(int point1, int point2, int point3, int point4, int point5, int point6, Long userId, String firstName, String lastName, String eventRole) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.eventRole = eventRole;
-        this.isApproval = isApproval;
     }
 
-    public int getEventPoint1() {
-        return eventPoint1;
-    }
-
-    public void setEventPoint1(int eventPoint1) {
-        this.eventPoint1 = eventPoint1;
-    }
-
-    public int getEventPoint2() {
-        return eventPoint2;
-    }
-
-    public void setEventPoint2(int eventPoint2) {
-        this.eventPoint2 = eventPoint2;
-    }
-
-    public int getEventPoint3() {
-        return eventPoint3;
-    }
-
-    public void setEventPoint3(int eventPoint3) {
-        this.eventPoint3 = eventPoint3;
-    }
 
     public Long getUserId() {
         return userId;
@@ -122,27 +93,59 @@ public class MemberInRating {
         isApproval = approval;
     }
 
-    public int getMemPoint1() {
-        return memPoint1;
+    public int getPoint1() {
+        return point1;
     }
 
-    public void setMemPoint1(int memPoint1) {
-        this.memPoint1 = memPoint1;
+    public void setPoint1(int point1) {
+        this.point1 = point1;
     }
 
-    public int getMemPoint2() {
-        return memPoint2;
+    public int getPoint2() {
+        return point2;
     }
 
-    public void setMemPoint2(int memPoint2) {
-        this.memPoint2 = memPoint2;
+    public void setPoint2(int point2) {
+        this.point2 = point2;
     }
 
-    public int getMemPoint3() {
-        return memPoint3;
+    public int getPoint3() {
+        return point3;
     }
 
-    public void setMemPoint3(int memPoint3) {
-        this.memPoint3 = memPoint3;
+    public void setPoint3(int point3) {
+        this.point3 = point3;
+    }
+
+    public int getPoint4() {
+        return point4;
+    }
+
+    public void setPoint4(int point4) {
+        this.point4 = point4;
+    }
+
+    public int getPoint5() {
+        return point5;
+    }
+
+    public void setPoint5(int point5) {
+        this.point5 = point5;
+    }
+
+    public int getPoint6() {
+        return point6;
+    }
+
+    public void setPoint6(int point6) {
+        this.point6 = point6;
+    }
+
+    public int getAvgMemPoints() {
+        return avgMemPoints;
+    }
+
+    public void setAvgMemPoints(int avgMemPoints) {
+        this.avgMemPoints = avgMemPoints;
     }
 }
