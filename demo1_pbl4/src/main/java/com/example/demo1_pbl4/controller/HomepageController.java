@@ -21,7 +21,7 @@ public class HomepageController {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private B5EncodePassword b5EncodePassword=new B5EncodePassword();
+    private B5EncodePassword b5EncodePassword = new B5EncodePassword();
 
     @GetMapping("/")
     public String showHomepage() {
@@ -53,19 +53,18 @@ public class HomepageController {
 //    }
 
     @PostMapping("/process_login") // action form
-    public String loginAccount(Model model, HttpSession session,@RequestParam("username")String username,@RequestParam("password")String password) {
-         session.setAttribute("username", username);
-     //   UserDetails userDetails = customUserDetailsService.loadUserByUsername(principal.getName());
-     //   session.setAttribute("username",userDetails.getUsername());
-      //  String encodePass=b5EncodePassword.encodePass(password);
-        if(userService.checkLogin(username,password))
-        {
+    public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password) {
+        session.setAttribute("username", username);
+        //   UserDetails userDetails = customUserDetailsService.loadUserByUsername(principal.getName());
+        //   session.setAttribute("username",userDetails.getUsername());
+        //  String encodePass=b5EncodePassword.encodePass(password);
+        if (userService.checkLogin(username, password)) {
             System.out.println("Dang nhap thanh cong");
-            session.setAttribute("username", username);
+            session.setAttribute("user", userService.findUserByUsername(username));
             return "redirect:/home";
-        }else{
-      //      System.out.println("Dang nhap that bai"+encodePass);
-            model.addAttribute("failMessage","Tai khoan hoac mat khau ko chinh xac");
+        } else {
+            //      System.out.println("Dang nhap that bai"+encodePass);
+            model.addAttribute("failMessage", "Tai khoan hoac mat khau ko chinh xac");
             return "/homepage/login_form";
         }
     }
@@ -76,7 +75,7 @@ public class HomepageController {
         Role role = new Role();
         user.setRole(role);
         String rawPassword = user.getPassword();
-     //   String encodePass = b5EncodePassword.encodePass(rawPassword);
+        //   String encodePass = b5EncodePassword.encodePass(rawPassword);
         user.setPassword(rawPassword);
         userService.insertUser(user);
         return "redirect:/users";

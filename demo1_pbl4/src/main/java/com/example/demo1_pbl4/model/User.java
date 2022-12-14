@@ -49,6 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Post> comments;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Donate> donates;
+
     public User() {
 
     }
