@@ -23,15 +23,15 @@ public class HomepageController {
     @Autowired
     private UserService userService;
 
-//    @Autowired
+
+    //    @Autowired
 //    private CustomUserDetailsService customUserDetailsService; // Dung de phan quyen trong spring boot
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//    private B5EncodePassword b5EncodePassword = new B5EncodePassword();
-//
-//    @Autowired
-//    ServletContext context;
+    private B5EncodePassword b5EncodePassword = new B5EncodePassword();
 
-    @GetMapping(value = {"/","home"})
+
+    @GetMapping(value = {"/", "home"})
+
     public String showHomepage() {
         return "homepage/homepage";
     }
@@ -42,6 +42,9 @@ public class HomepageController {
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
         //   password=cookies[1].getValue();
+
+        // @CookieValue("username") String username, @CookieValue("password") String password
+
 //        if (username != null && password != null) {
 //
 //            model.addAttribute("username", username);
@@ -71,15 +74,15 @@ public class HomepageController {
 
     @PostMapping("/process_login") // action form
     public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) {
+
+
         session.setAttribute("username", username);
-        //   UserDetails userDetails = customUserDetailsService.loadUserByUsername(principal.getName());
-        //   session.setAttribute("username",userDetails.getUsername());
-        //  String encodePass=b5EncodePassword.encodePass(password);
 
         if (userService.checkLogin(username, password)) {
             System.out.println("Dang nhap thanh cong");
-          //  session.setAttribute("username", username);
-            session.setAttribute("user",userService.findUserByUsername(username));
+            //  session.setAttribute("username", username);
+            session.setAttribute("user", userService.findUserByUsername(username));
+
             //  System.out.println(context.getContextPath());
             // return "redirect:/"+context.getContextPath();
             Cookie cookie1 = new Cookie("username", username);
@@ -122,9 +125,10 @@ public class HomepageController {
         return "/403Page";
     }
 
-    @GetMapping("/sponsor")
-    public String showSponsorPage() {
-        return "sponsor/sponsor";
+
+    @GetMapping("/history_donation")
+    public String showHistoryDonation(HttpSession session) {
+        return "user/history_donation";
     }
 
 
@@ -133,4 +137,5 @@ public class HomepageController {
         session.setAttribute("user", null);
         return "redirect:/";
     }
+
 }

@@ -6,6 +6,8 @@ import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import com.example.demo1_pbl4.repository.RatingEventRepository;
 import com.example.demo1_pbl4.service.RatingEventService;
+import com.example.demo1_pbl4.service.UserEventService;
+import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,14 @@ import java.util.List;
 
 @Service
 public class RatingEventServiceImpl implements RatingEventService {
+
+    @Autowired
+    private UserService userService;
     @Autowired
     private RatingEventRepository ratingEventRepository;
 
+    @Autowired
+    private UserEventService userEventService;
     @Override
     public List<Rating> getAllRatings() {
         return ratingEventRepository.findAll();
@@ -52,26 +59,33 @@ public class RatingEventServiceImpl implements RatingEventService {
     @Override
     public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
         List<MemberInRating> members = new ArrayList<>();
-        for (UserEvent userEvent : ratingEventRepository.findMemberInEvent(eventId, role)) {
+
+        for (UserEvent userEvent : userEventService.findMemberInEvent(eventId, role)) {
             MemberInRating member = new MemberInRating();
-            User user= ratingEventRepository.findUserInEvent(userEvent.getUser().getUserId());
+            User user= userService.getUserById(userEvent.getUser().getUserId());
             Rating rating =ratingEventRepository.findRatingInEvent(user.getUserId(),userEvent.getEvent().getEventId());
             member.setUserId(userEvent.getUser().getUserId());
             member.setFirstName(user.getFirstName());
             member.setLastName(user.getLastName());
             member.setEventRole(userEvent.getEventRole());
-            member.setPoint4(rating.getPoint4());
-            member.setPoint5(rating.getPoint5());
-            member.setPoint6(rating.getPoint6());
+
+            if(rating!=null)
+            {
+                member.setPoint4(rating.getPoint4());
+                member.setPoint5(rating.getPoint5());
+                member.setPoint6(rating.getPoint6());
+            }
             System.out.println("\n first name: "+member.getFirstName());
             members.add(member);
         }
         return members;
     }
 
+
     @Override
     public Rating findRatingByUserEventId(Long eventId, Long userId)
     {
         return ratingEventRepository.findRatingByUserEventId(eventId,userId);
     }
+
 }

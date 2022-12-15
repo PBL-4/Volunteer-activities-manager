@@ -49,13 +49,18 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Post> comments;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Donate> donates;
+
     public User() {
 
     }
 
+    public User(Long userId) {
+        this.userId = userId;
+    }
 
-
-    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password,String country) {
+    public User(Long userId, String firstName, String lastName, String phoneNum, String email, String username, String password, String country) {
 
     }
 

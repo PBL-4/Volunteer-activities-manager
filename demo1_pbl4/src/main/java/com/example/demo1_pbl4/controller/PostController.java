@@ -1,6 +1,9 @@
 package com.example.demo1_pbl4.controller;
 
+import com.example.demo1_pbl4.model.Donate;
+import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Post;
+
 import com.example.demo1_pbl4.model.Rating;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.UserEvent;
@@ -15,12 +18,21 @@ import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
+
 @Controller
 @RequestMapping("/posts")
 public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private EventService eventService;
     @Autowired
     private CommentService commentService;
 
@@ -32,14 +44,16 @@ public class PostController {
     @Autowired
     private UserEventService userEventService;
 
+
+    private DonateService donateService;
     public PostController(CommentService commentService) {
         this.commentService = commentService;
     }
 
 
     @GetMapping("")
-    public ModelAndView showAllPost(){
-        return new ModelAndView("/post/post_list","posts",postService.getAllPosts());
+    public ModelAndView showAllPost() {
+        return new ModelAndView("/post/post_list", "posts", postService.getAllPosts());
     }
 
     @GetMapping("/get{id}")         // ko co dau .  , dau ? thanh %20
@@ -102,4 +116,40 @@ public class PostController {
         }
         return "redirect:/posts/get?id=" + eventId.toString();
     }
+
+    @GetMapping("/donation")
+    public String ShowDonation(Model model, HttpSession session, @RequestParam("postId") Long id) {
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("postId", id);
+            model.addAttribute("userId",user.getUserId());
+            return "post/DonationVolunteer";
+        } else {
+            return "redirect:/login";
+        }
+
+    }
+
+    @PostMapping("/donation")
+    public String ShowBach(Model model,HttpSession session, @RequestParam("donation") double donation, @RequestParam("postId") Long id, @RequestParam("userId") Long userId) {
+        Post post = postService.getPostById(id);
+        Event event = post.getEvent();
+        double quy = event.getDonation() + donation;
+        event.setDonation(quy);
+        eventService.updateEvent(event);
+
+        //donate
+        Donate donate = new Donate();
+        donate.setUser((User) session.getAttribute("user"));
+        donate.setEvent(event);
+        donate.setMoney(donation);
+        donate.setDonateDate(new Date(System.currentTimeMillis()));
+        donateService.updateDonate(donate);
+
+
+        return "redirect:/posts/get?id=" + id;
+
+
+    }
 }
+

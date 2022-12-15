@@ -31,4 +31,6 @@ public interface UserService {
   //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
 
 
+
+
 }

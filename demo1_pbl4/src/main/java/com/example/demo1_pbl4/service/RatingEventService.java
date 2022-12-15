@@ -17,5 +17,6 @@ public interface RatingEventService {
     //BachLT
     List<MemberInRating> findMemberInEvent(Long eventId, String role);
 
+
     Rating findRatingByUserEventId(Long eventId,Long userId);
 }

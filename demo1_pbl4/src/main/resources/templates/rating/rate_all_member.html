@@ -21,6 +21,7 @@
             <th>Đánh giá</th>
         </tr>
         <th:block th:each="member : ${members}">
+<<<<<<< HEAD
             <td><a th:href="@{/profile}" th:text="${member.firstName}+' '+ ${member.lastName}"></a></td>
             <td th:if="${member.getPoint4()!=null}">${member.memPoint1}</td>
             <td th:if="${member.getPoint4()==null}">N/a</td>
@@ -30,6 +31,16 @@
             <td th:if="${member.getPoint6()==null}">N/a</td>
             <td></td>
             <td><a th:href="@{'rating/show_rating_member/'+ ${member.userId}}">Đánh giá thành viên này</a></td>
+=======
+            <tr>
+                <td><a th:href="@{/profile}" th:text="${member.firstName}+' '+ ${member.lastName}"></a></td>
+                <td th:text="${member.point4}"></td>
+                <td th:text="${member.point5}"></td>
+                <td th:text="${member.point6}"></td>
+                <td th:text="${member.point6}">...</td>
+                <td><a th:href="@{'rating/show_rating_member/'+ ${member.userId}}">Đánh giá thành viên này</a></td>
+            </tr>
+>>>>>>> 2233aed19dc46741ca40d0c1950e139d8088be83
         </th:block>
     </table>
 </div>

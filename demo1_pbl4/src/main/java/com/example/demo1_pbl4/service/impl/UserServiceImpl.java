@@ -81,9 +81,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(PageRequest.of(offset, pageSize));
     }
     //BachLT: Chuc nang tim kiem tat ca thanh vien trong su kien cos eventId
+<<<<<<< HEAD
 //    @Override
 //    public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
 //        return userRepository.findMemberInEvent(eventId, role);
 //    }
+=======
+
+>>>>>>> 2233aed19dc46741ca40d0c1950e139d8088be83
 
 }

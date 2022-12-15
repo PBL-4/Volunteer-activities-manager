@@ -21,7 +21,6 @@ public class Rating {
 
     private String description;
 
-
     //    @OneToOne
 //    private User user;
 //    @OneToOne
@@ -32,6 +31,9 @@ public class Rating {
     private UserEvent userEvent;
 
     public Rating() {
+        this.point4=0;
+        this.point5=0;
+        this.point6=0;
     }
 
     public Rating(int point1, int point2, int point3) {
@@ -46,7 +48,13 @@ public class Rating {
         this.point2 = point2;
         this.point3 = point3;
         this.userEvent = userEvent;
-        this.star = (this.point1 + this.point2 + this.point3)/3;
+        this.star = (this.point1 + this.point2 + this.point3) / 3;
+    }
+
+    public Rating(Integer point4, Integer point5, Integer point6) {
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
     }
 
     public Rating(Long idRate, int point1, int point2, int point3, int point4, int point5, int point6, UserEvent userEvent) {
@@ -58,7 +66,6 @@ public class Rating {
         this.point5 = point5;
         this.point6 = point6;
         this.userEvent = userEvent;
-        this.star = (this.point1 + this.point2 + this.point3)/3;
     }
 
     public Rating(Long idRate, int point4, int point5, int point6, UserEvent userEvent) {
@@ -67,7 +74,6 @@ public class Rating {
         this.point5 = point5;
         this.point6 = point6;
         this.userEvent = userEvent;
-
     }
 
     public int getPoint1() {
@@ -214,7 +220,6 @@ public class Rating {
 //        this.point6 = point6;
 //        this.event = event;
 //    }
-
 
     public void setPoint1(Integer point1) {
         this.point1 = point1;
