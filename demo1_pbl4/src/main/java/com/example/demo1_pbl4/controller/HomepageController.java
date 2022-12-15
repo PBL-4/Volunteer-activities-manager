@@ -23,6 +23,7 @@ public class HomepageController {
     @Autowired
     private UserService userService;
 
+
     //    @Autowired
 //    private CustomUserDetailsService customUserDetailsService; // Dung de phan quyen trong spring boot
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -30,6 +31,7 @@ public class HomepageController {
 
 
     @GetMapping(value = {"/", "home"})
+
     public String showHomepage() {
         return "homepage/homepage";
     }
@@ -40,7 +42,9 @@ public class HomepageController {
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
         //   password=cookies[1].getValue();
+
         // @CookieValue("username") String username, @CookieValue("password") String password
+
 //        if (username != null && password != null) {
 //
 //            model.addAttribute("username", username);
@@ -71,12 +75,14 @@ public class HomepageController {
     @PostMapping("/process_login") // action form
     public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) {
 
+
         session.setAttribute("username", username);
 
         if (userService.checkLogin(username, password)) {
             System.out.println("Dang nhap thanh cong");
             //  session.setAttribute("username", username);
             session.setAttribute("user", userService.findUserByUsername(username));
+
             //  System.out.println(context.getContextPath());
             // return "redirect:/"+context.getContextPath();
             Cookie cookie1 = new Cookie("username", username);
@@ -85,6 +91,7 @@ public class HomepageController {
             cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
             response.addCookie(cookie1);
             response.addCookie(cookie2);
+
             return "redirect:/home";
         } else {
             //      System.out.println("Dang nhap that bai"+encodePass);
@@ -126,9 +133,9 @@ public class HomepageController {
 
 
     @GetMapping("logout")
-
     public String logout(HttpSession session) {
         session.setAttribute("user", null);
         return "redirect:/";
     }
+
 }

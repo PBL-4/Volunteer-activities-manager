@@ -82,5 +82,4 @@ public class UserServiceImpl implements UserService {
     }
     //BachLT: Chuc nang tim kiem tat ca thanh vien trong su kien cos eventId
 
-
 }

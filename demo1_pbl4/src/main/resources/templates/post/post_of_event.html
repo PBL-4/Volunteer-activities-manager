@@ -15,18 +15,18 @@
     <!-- MDB -->
     <link rel="stylesheet" href="/css/mdb.min.css"/>
     <style>
-        .outer
-        {
+        .outer {
             /*width:100%;*/
-            margin:10px;
+            margin: 10px;
         }
-        .inner
-        {
+
+        .inner {
             /*display: inline-block;*/
-            margin:10px
+            margin: 10px
         }
     </style>
 </head>
+
 <body>
 <!--Main Navigation-->
 <header>
@@ -57,7 +57,8 @@
         <div class="container-fluid">
             <!-- Navbar brand -->
             <a class="navbar-brand" target="_blank" href="/">
-                <img src="https://thumbs.dreamstime.com/b/volunteer-handwritten-word-text-rainbow-colors-vibrant-swoosh-design-vector-illustration-140554768.jpg" height="40px" width="120px" alt=""
+                <img src="https://thumbs.dreamstime.com/b/volunteer-handwritten-word-text-rainbow-colors-vibrant-swoosh-design-vector-illustration-140554768.jpg"
+                     height="40px" width="120px" alt=""
                      loading="lazy"
                      style="margin-top: -3px;"/>
             </a>
@@ -131,11 +132,41 @@
                     <div style="padding-bottom:10px">
                         <span style="font-size: 20px; padding-bottom:10px" th:text="${post.title}"></span>
                     </div>
+
                     <div class="row align-items-center mb-4">
+                        <div th:if="${Eventend}  > 0" >
+                            <div th:if="${IamMember} == 0">
                         <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
                             <button type="submit" data-toggle="modal"
                                     data-target="#joinRequest" class="join">Tôi muốn tham gia
                             </button>
+                        </div>
+                            </div>
+
+                            <div th:if="${IamMember} == 1">
+                                <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
+                                    <button type="submit" data-toggle="modal"
+                                            data-target="#joinRequest" class="join" disabled style="background-color: black">Tôi muốn tham gia
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:if="${Eventend}  <= 0" >
+
+                            <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
+                                <button type="submit" data-toggle="modal"
+                                        data-target="#joinRequest" class="join" disabled style="background-color: black">Tôi muốn tham gia
+                                </button>
+                            </div>
+                        <br>
+                            <div></div>
+                            <div th:if="${IamMember} == 1">
+                        <div class="col-lg-6 text-center text-lg-start mb-3 m-lg-0">
+                            <button type="button" data-toggle="modal"
+                                    data-target="#writerating" class="join"> Đánh giá
+                            </button>
+                        </div>
+                            </div>
                         </div>
                         <!-- Begin Model-->
                         <div class="modal fade" id="joinRequest" tabindex="-1" role="dialog"
@@ -157,16 +188,58 @@
                                         <textarea col="4" row="4" name="skill"></textarea>
                                     </div>
                                     <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary outer"
-                                                    data-dismiss="modal">Cancel
-                                            </button>
-                                            <a href="/events/sendRequest"
-                                               class="btn btn-danger btn btn-primary">Yes,Send!</a>
-                                        </div>
+                                        <button type="button" class="btn btn-secondary outer"
+                                                data-dismiss="modal">Cancel
+                                        </button>
+                                        <a href="/events/sendRequest"
+                                           class="btn btn-danger btn btn-primary">Yes,Send!</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- End Model-->
+
+                        <!-- Begin Model 2-->
+                        <div class="modal" tabindex="-1" role="dialog" id="writerating">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Viết đánh giá sự kiện</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form th:action="@{/posts/saverating}" th:object="${Rating_Event}"
+                                              method="POST">
+                                            <div class="form-group">
+                                                <label>Bạn có thấy sự kiện này hữu ích không ? (chấm từ 1 - 10)</label>
+                                                <input type="number" min="1" max="10" class="form-control" id="point1"
+                                                       name="point1" th:field="*{point1}">
+                                                <br>
+                                                <label>Bạn có thấy sự này thú vị không ? (chấm từ 1 - 10)</label>
+                                                <input type="number" min="1" max="10" class="form-control" id="point2"
+                                                       name="point2" th:field="*{point2}">
+                                                <br>
+                                                <label>Bạn có thấy người tổ chức sự kiện có chuyên nghiệp hay không ?
+                                                    (chấm từ 1 - 10)</label>
+                                                <input type="number" min="1" max="10" class="form-control" id="point3"
+                                                       name="point3" th:field="*{point3}">
+                                                <input type="hidden" id="id" name="id" th:value="${post.getEvent().getEventId()}">
+
+                                            </div>
+                                            <button type="submit" class="btn btn-default">Hoàn thành</button>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- End Model 2-->
 
                         <div class="col-lg-6 text-center text-lg-end">
                             <button type="button" class="btn btn-primary px-3 me-1" style="background-color: #3b5998;">

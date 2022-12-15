@@ -59,6 +59,7 @@ public class RatingEventServiceImpl implements RatingEventService {
     @Override
     public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
         List<MemberInRating> members = new ArrayList<>();
+
         for (UserEvent userEvent : userEventService.findMemberInEvent(eventId, role)) {
             MemberInRating member = new MemberInRating();
             User user= userService.getUserById(userEvent.getUser().getUserId());
@@ -67,6 +68,7 @@ public class RatingEventServiceImpl implements RatingEventService {
             member.setFirstName(user.getFirstName());
             member.setLastName(user.getLastName());
             member.setEventRole(userEvent.getEventRole());
+
             if(rating!=null)
             {
                 member.setPoint4(rating.getPoint4());
@@ -77,6 +79,13 @@ public class RatingEventServiceImpl implements RatingEventService {
             members.add(member);
         }
         return members;
+    }
+
+
+    @Override
+    public Rating findRatingByUserEventId(Long eventId, Long userId)
+    {
+        return ratingEventRepository.findRatingByUserEventId(eventId,userId);
     }
 
 }
