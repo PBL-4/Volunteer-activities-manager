@@ -42,20 +42,24 @@
                     <th>Begin time</th>
                     <th>End time</th>
                     <th>Location</th>
-                    <th>Num of member</th>
-                    <th>Trạng thái</th>
-                    <th>Cập nhật</th>
-                    <th>Đánh giá</th>
+                    <th>Current number</th>
+                    <th>Max member</th>
+                    <th>State</th>
+                    <th>Update</th>
+                    <th>Rating</th>
+                    <th>Waiting Approval</th>
                 </tr>
                 </thead>
                 <tbody>
                 <th:block th:each="event: ${events}">
                     <tr>
                         <td th:text="${event.getEventId()}"></td>
-                        <td th:text="${event.getEventName()}"></td>
+                        <td><a th:href="@{'/events/list_of_member/'+${event.getEventId()}}"
+                               th:text="${event.getEventName()}"></a></td>
                         <td th:text="${event.getBeginTime()}"></td>
                         <td th:text="${event.getEndTime()}"></td>
                         <td th:text="${event.getLocation()}"></td>
+                        <td th:text="${event.getCurrentMem()}"></td>
                         <td th:text="${event.getNumOfMem()}"></td>
                         <td>
                             <button class="btn-secondary" th:text="${event.getStatus().getStatusName()}"></button>
@@ -63,6 +67,8 @@
                         <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
                         <td>
                             <a th:href="@{'/rating/mem_of_event/'+${event.eventId}}">Đánh giá</a>
+                        </td>
+                        <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}" th:text="${event.getWaitingApproval()}"></a>
                         </td>
                     </tr>
                 </th:block>

@@ -19,6 +19,14 @@ public class Event {
     private int age;
     @Column(name = "num_of_member")
     private int numOfMem;
+
+    @Column(name = "curent_member")
+    private int currentMem;
+
+    @Column(name = "waiting_approval")
+    private int waitingApproval;
+
+
     private Date beginTime;
     private Date endTime;
 
@@ -30,6 +38,8 @@ public class Event {
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
+
+
 //    @ManyToMany(mappedBy = "eventList", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
 //    private Set<User> users= new HashSet<>();
 
@@ -39,6 +49,8 @@ public class Event {
     private Post post;
 
     public Event() {
+        this.currentMem = 0;
+        this.waitingApproval = 0;
     }
 
     public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double donation, Post post) {
@@ -147,5 +159,21 @@ public class Event {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public int getCurrentMem() {
+        return currentMem;
+    }
+
+    public void setCurrentMem(int currentMem) {
+        this.currentMem = currentMem;
+    }
+
+    public int getWaitingApproval() {
+        return waitingApproval;
+    }
+
+    public void setWaitingApproval(int waitingApproval) {
+        this.waitingApproval = waitingApproval;
     }
 }

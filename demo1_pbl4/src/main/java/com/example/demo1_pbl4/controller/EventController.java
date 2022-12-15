@@ -152,30 +152,29 @@ public class EventController {
             , @RequestParam("content") String content
     ) {
         if ((session.getAttribute("username")) != null) {
-        User user = userService.findUserByUsername(session.getAttribute("username").toString());
+            User user = userService.findUserByUsername(session.getAttribute("username").toString());
 
             Long millis = System.currentTimeMillis();
             Date datePost = new Date(millis);
             Post post = new Post(eventName, content, datePost, user);
-            String hostname=user.getLastName();
+            String hostname = user.getLastName();
             Event event = new Event(eventName, location, agePermit, numOfMem, beginDate, endDate, hostname, donation, post);
             event.setStatus(new Status(1L, "Chưa bắt đầu"));
             post.setEvent(event);
             eventService.insertEvent(event);
             postService.insertPost(post);
-            UserEvent ue =new UserEvent(event,user,"Host",true);
-            UserEvent checkOne=userEventService.insertUser(ue);
-            if(checkOne!=null)
-            {
+            UserEvent ue = new UserEvent(event, user, "Host", true);
+            UserEvent checkOne = userEventService.insertUser(ue);
+            if (checkOne != null) {
                 System.out.println("Thêm mới thành công");
             }
-        //    eventService.createEventByHost(user.getUserId(), event.getEventId(), "Host", true);
+            //    eventService.createEventByHost(user.getUserId(), event.getEventId(), "Host", true);
             System.out.println("eventId=" + event.getEventId());
-          //  return "redirect:/"+ context.getContextPath()+"/my_event";
+            //  return "redirect:/"+ context.getContextPath()+"/my_event";
             return "redirect:/events/my_event";
         } else {
             System.out.println("Chua dang nhap");
-            model.addAttribute("message","Bạn chưa xác thực để thực hiện hành động này");
+            model.addAttribute("message", "Bạn chưa xác thực để thực hiện hành động này");
             return "/403Page";
         }
     }
@@ -200,13 +199,13 @@ public class EventController {
     @GetMapping("/my_event")
     public String showMyHostEvent(Model model, HttpSession session) {
         User user = null;
-        int currentPage=0;
-        Pageable pageable = PageRequest.of(0,10);
+        int currentPage = 0;
+        Pageable pageable = PageRequest.of(0, 10);
         if (session.getAttribute("user") != null) {
-            user = (User)session.getAttribute("user");
+            user = (User) session.getAttribute("user");
         }
         if (user != null) {
-            Page<Event> eventPages = eventService.findHostOfEvent(user.getUserId(), "host", pageable);
+            Page<Event> eventPages = eventService.findEventOfHost(user.getUserId(), "host", pageable);
             List<Event> eventList = eventPages.getContent();
             if (eventList.isEmpty()) {
                 model.addAttribute("message", "Không có dữ liệu ");
@@ -215,9 +214,32 @@ public class EventController {
             }
             return "event/my_event";
         } else {
-            System.out.println("context: "+context.getContextPath());
+            System.out.println("context: " + context.getContextPath());
             System.out.println("Chưa đăng nhập");
             return "redirect:/login";
         }
+    }
+
+    @GetMapping("/list_of_member/{eventId}")
+    public String showAllMemberOfEvent(Model model, @PathVariable("eventId") Long eventId) {
+        List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
+        if (memberList != null) {
+            model.addAttribute("members", memberList);
+        } else {
+            model.addAttribute("message", "Không có dữ liệu");
+        }
+
+        return "event/list_of_member";
+    }
+    @GetMapping("/waiting_list/{eventId}")
+    public String showWaitingVolunteerOfEvent(Model model, @PathVariable("eventId") Long eventId) {
+        List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
+        if (memberList != null) {
+            model.addAttribute("members", memberList);
+        } else {
+            model.addAttribute("message", "Không có dữ liệu");
+        }
+
+        return "event/list_of_member";
     }
 }

@@ -40,7 +40,29 @@ public class UserEventServiceImpl implements UserEventService {
     }
 
     @Override
+    public List<UserEvent> findAllMemberInEvent(Long eventId) {
+        List<UserEvent> userEventList = new ArrayList<>();
+        for (UserEvent userEvent : userEventRepository.findAll()) {
+            if (userEvent.getEvent().getEventId() == eventId) {
+                userEventList.add(userEvent);
+            }
+        }
+        return userEventList;
+    }
+
+    @Override
+    public List<UserEvent> findAllWaitingApproval(Long eventId) {
+        List<UserEvent> userEventList = new ArrayList<>();
+        for (UserEvent userEvent : userEventRepository.findAll()) {
+            if (userEvent.getEvent().getEventId() == eventId && !userEvent.getApproval()) {
+                userEventList.add(userEvent);
+            }
+        }
+        return userEventList;
+    }
+
+    @Override
     public UserEvent getUserEventById(Long userId, Long eventId) {
-        return userEventRepository.findById(new UserEventId(userId,eventId)).get();
+        return userEventRepository.findById(new UserEventId(userId, eventId)).get();
     }
 }

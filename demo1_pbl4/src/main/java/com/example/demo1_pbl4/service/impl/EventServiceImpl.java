@@ -94,9 +94,22 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> findHostOfEvent(Long userId, String role, Pageable pageable) {
+    public Page<Event> findEventOfHost(Long userId, String role, Pageable pageable) {
         setStatusByDateTime(eventRepository.findAll());
-        return eventRepository.findHostOfEvent(userId, role, pageable);
+        Page<Event> eventPages= eventRepository.findEventOfHost(userId, role, pageable);
+   //     List<Event> events=new ArrayList<>();
+        for(Event e: eventPages.getContent())
+        {
+            e.setCurrentMem(eventRepository.countCurrentMember(e.getEventId()));
+            e.setWaitingApproval(eventRepository.countWaitingApproval(e.getEventId()));
+      //      System.out.println("idEvent: "+e.getEventId());
+          System.out.println("curent mem: "+eventRepository.countCurrentMember(e.getEventId()));
+        //    events.add(e);
+            e=eventRepository.save(e);
+            System.out.println("curent mem after save: "+(e.getCurrentMem()));
+        }
+
+        return eventRepository.findEventOfHost(userId, role, pageable);
     }
 
     public void setStatusByDateTime(List<Event> eventList) {

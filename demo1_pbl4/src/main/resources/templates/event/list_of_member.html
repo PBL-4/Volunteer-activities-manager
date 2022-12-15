@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách tất cả thành viên trong sự kiện</title>
+</head>
+<h1>Danh sách thành viên</h1>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>Member id</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Gender</th>
+        <th>Phone Number</th>
+        <th>Email</th>
+        <th>Address</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="member: ${members}">
+        <tr>
+            <td th:text="${member.getUser().getUserId()}"></td>
+            <td th:text="${member.getUser().getFirstName()}"></td>
+            <td th:text="${member.getUser().getLastName()}"></td>
+            <td th:text="${member.getUser().getGender()}? Male :Female"></td>
+            <td th:text="${member.getUser().getPhoneNum()}"></td>
+            <td th:text="${member.getUser().getEmail()}"></td>
+            <td th:text="${member.getUser().getAddress()}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+    <tr>
+
+    </tr>
+</table>
+</body>
+</html>
