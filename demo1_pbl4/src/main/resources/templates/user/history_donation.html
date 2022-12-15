@@ -32,6 +32,7 @@
                 <th>Event_Id</th>
                 <th>DonationDate</th>
                 <th>MoneyDonation</th>
+
             </tr>
             </thead>
             <tbody>
@@ -45,11 +46,12 @@
                     <td th:text="${d.getEvent().getEventId()}"></td>
                     <td th:text="${d.getDonateDate()}"></td>
                     <td th:text="${d.getMoney()}"></td>
-
                 </tr>
             </th:block>
-
         </table>
+        <div>
+            <p>TotalMoney: <span th:text="${totalmoney}"> </span></p>
+        </div>
     </div>
 </div>
 </body>
