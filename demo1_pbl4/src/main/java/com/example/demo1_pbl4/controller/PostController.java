@@ -1,9 +1,11 @@
 package com.example.demo1_pbl4.controller;
 
+import com.example.demo1_pbl4.model.Donate;
 import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Post;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.service.CommentService;
+import com.example.demo1_pbl4.service.DonateService;
 import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class PostController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private DonateService donateService;
     public PostController(CommentService commentService) {
         this.commentService = commentService;
     }
@@ -54,6 +58,7 @@ public class PostController {
         if (session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
             model.addAttribute("postId", id);
+            model.addAttribute("userId",user.getUserId());
             return "post/DonationVolunteer";
         } else {
             return "redirect:/login";
@@ -62,15 +67,24 @@ public class PostController {
     }
 
     @PostMapping("/donation")
-    public String ShowBach(Model model, @RequestParam("donation") double donation, @RequestParam("postId") Long id) {
+    public String ShowBach(Model model,HttpSession session, @RequestParam("donation") double donation, @RequestParam("postId") Long id, @RequestParam("userId") Long userId) {
         Post post = postService.getPostById(id);
         Event event = post.getEvent();
         double quy = event.getDonation() + donation;
         event.setDonation(quy);
-     //
-        event.setDonateDate(new Date(System.currentTimeMillis()));
         eventService.updateEvent(event);
+
+        //donate
+        Donate donate = new Donate();
+        donate.setUser((User) session.getAttribute("user"));
+        donate.setEvent(event);
+        donate.setMoney(donation);
+        donate.setDonateDate(new Date(System.currentTimeMillis()));
+        donateService.updateDonate(donate);
+
+
         return "redirect:/posts/get?id=" + id;
+
 
     }
 }

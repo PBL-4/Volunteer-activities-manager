@@ -26,7 +26,6 @@ public class Event {
     private float rating;
 
     private double donation;
-    private Date donateDate;
 
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
@@ -150,11 +149,4 @@ public class Event {
         this.post = post;
     }
 
-    public Date getDonateDate() {
-        return donateDate;
-    }
-
-    public void setDonateDate(Date donateDate) {
-        this.donateDate = donateDate;
-    }
 }

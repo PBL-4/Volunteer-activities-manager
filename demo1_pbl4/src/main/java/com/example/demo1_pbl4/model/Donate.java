@@ -23,6 +23,20 @@ public class Donate {
 
     private Date donateDate;
 
+    private double Money;
+
+    public double getMoney() {
+        return Money;
+    }
+
+    public void setMoney(double money) {
+        Money = money;
+    }
+
+    public Donate(double money) {
+        Money = money;
+    }
+
     public User getUser() {
         return user;
     }

@@ -7,5 +7,7 @@ public interface DonateService {
 
      List<Donate> getAllDonates();
      public List<Donate> findAllDonatebyUser(Long user_id);
+
+     void updateDonate(Donate donate);
 }
 

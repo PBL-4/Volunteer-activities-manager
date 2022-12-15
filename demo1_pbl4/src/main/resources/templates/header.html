@@ -2,14 +2,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <div th:fragment="head_css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-      </div>
+    <div th:fragment="head_css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+    </div>
 </head>
 <body>
+<!-- Navbar Start -->
+<div th:fragment="headMenu">
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
+            <a href="/" class="navbar-brand ml-lg-3">
+                <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>Volunteer Expert</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav mx-auto py-0">
+                    <a th:href="@{/}" class="nav-item nav-link active">Home</a>
+                    <a th:href="@{/my_account}" class="navAccount-item nav-link active">My Account </a>
+                    <!--                <a href="about.html" class="nav-item nav-link">About</a>-->
+                    <a th:href="@{/events/page}" class="nav-item nav-link">Find our opportunities</a>
+                    <div th:if="${session.user==null}">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Join us</a>
+                            <div class="dropdown-menu m-0">
+                                <a th:href="@{/login}" class="dropdown-item">Login</a>
+                                <a th:href="@{/register}" class="dropdown-item">Register</a>
+                            </div>
+                        </div>
+                    </div>
 
+                    <a th:href="@{/events/my_event}" class="nav-item nav-link">Recruit Volunteers</a>
+                    <th:block th:if="${session.user!=null}">
+                        <a th:if="${session.user.getRole().getRoleName()=='ADMIN'}" th:href="@{/admin_home}" class="nav-item nav-link">Admin</a>
+                    </th:block>
+                    <!--                <a href="contact.html" class="nav-item nav-link">Contact</a>-->
+                </div>
+                <div class="nav-item dropdown" th:if="${session.user!=null}">
+                    <a href="#" data-toggle="dropdown"
+                       class="btn btn-primary py-2 px-4 d-none d-lg-block nav-link dropdown-toggle">Hello <span
+                            th:text="' '+${session.user.username}"></span></a>
+                    <div class="dropdown-menu m-0">
+                        <a th:href="@{#}" class="dropdown-item">Application Tutorial</a>
+                        <a th:href="@{'/donate/list?userId='+ ${session.user.userId}}" class="dropdown-item">Donation History</a>
+                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- Navbar End -->
+
+<script th:src="@{/homepage/lib/easing/easing.min.js}"></script>
+<script th:src="@{/homepage/lib/waypoints/waypoints.min.js}"></script>
+<script th:src="@{/homepage/lib/counterup/counterup.min.js}"></script>
+<script th:src="@{/homepage/lib/owlcarousel/owl.carousel.min.js}"></script>
+
+<!-- Template Javascript -->
+<script th:src="@{/homepage/js/main.js}"></script>
 </body>
+
 </html>

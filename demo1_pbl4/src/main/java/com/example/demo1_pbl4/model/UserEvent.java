@@ -1,9 +1,23 @@
 package com.example.demo1_pbl4.model;
 
+import com.example.demo1_pbl4.model.dto.MemberInRating;
 import lombok.Data;
 
 import javax.persistence.*;
 
+//@NamedNativeQuery(name = "UserPlay.findPlayerNameDtoById_Named",
+//        query = "SELECT r.point4,r.point5,r.point6,userevent.eventRole,userevent.user.userId,u.firstName,u.lastName from UserEvent userevent left join userevent.user u left join userevent.rating r where userevent.event.eventId=?1 and userevent.eventRole=?2",
+//        resultSetMapping = "Mapping.MemberInRating")
+//@SqlResultSetMapping(name = "Mapping.MemberInRating",
+//        classes = @ConstructorResult(targetClass = MemberInRating.class,
+//                columns = {@ColumnResult(name = "point4"),
+//                        @ColumnResult(name = "point5"),
+//                        @ColumnResult(name = "point6"),
+//                        @ColumnResult(name = "eventRole"),
+//                        @ColumnResult(name = "userId"),
+//                        @ColumnResult(name = "firstName"),
+//                        @ColumnResult(name = "lastName")
+//                }))
 @Entity
 @Table(name = "user_event")
 @Data
@@ -25,7 +39,29 @@ public class UserEvent {
     @Column(name = "is_approval")
     private Boolean isApproval;
 
+//    @Column(name = "point1_of_member")
+//    private int memPoint1;
+//    @Column(name = "point2_of_member")
+//    private int memPoint2;
+//    @Column(name = "point3_of_member")
+//    private int memPoint3;
+//
+//    @Column(name = "point1_of_event")
+//    private int eventPoint1;
+//    @Column(name = "point2_of_event")
+//    private int eventPoint2;
+//    @Column(name = "point3_of_event")
+//    private int eventPoint3;
+
+    @OneToOne(mappedBy = "userEvent")
+    private Rating rating;
+
     public UserEvent() {
+    }
+
+    public UserEvent(User user, String eventRole) {
+        this.user = user;
+        this.eventRole = eventRole;
     }
 
     public UserEvent(UserEventId userEventId, Event event, User user, String eventRole, Boolean isApproval) {
@@ -35,6 +71,15 @@ public class UserEvent {
         this.eventRole = eventRole;
         this.isApproval = isApproval;
     }
+
+    public UserEvent(Event event, User user, String eventRole, Boolean isApproval) {
+        this.event = event;
+        this.user = user;
+        this.eventRole = eventRole;
+        this.isApproval = isApproval;
+        this.userEventId = new UserEventId(user.getUserId(), event.getEventId());
+    }
+
 
     public UserEventId getUserEventId() {
         return userEventId;
@@ -74,5 +119,13 @@ public class UserEvent {
 
     public void setApproval(Boolean approval) {
         isApproval = approval;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 }

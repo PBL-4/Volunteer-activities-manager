@@ -24,6 +24,10 @@ public class DonateServiceImpl implements DonateService {
     {
         return donateRepository.findAllDonatebyUser(user_id);
     }
+    @Override
+    public void updateDonate(Donate donate){
+         donateRepository.save(donate);
+    }
 
 }
 

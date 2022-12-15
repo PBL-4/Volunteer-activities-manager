@@ -2,6 +2,8 @@ package com.example.demo1_pbl4;
 
 import com.example.demo1_pbl4.model.Role;
 import com.example.demo1_pbl4.model.User;
+import com.example.demo1_pbl4.model.dto.MemberInRating;
+import com.example.demo1_pbl4.repository.RatingEventRepository;
 import com.example.demo1_pbl4.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -18,6 +22,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class UserRepositoryTests {
     @Autowired
     private UserRepository repos;
+    @Autowired
+    private RatingEventRepository ratingEventRepository;
 
     @Autowired
     private TestEntityManager tester;
@@ -40,10 +46,18 @@ public class UserRepositoryTests {
 //        assertThat(userCheck.getEmail().equals(saveUser.getEmail()));
 //    }
 
+//    @Test
+//    public void TestFindUsername() {
+//        String username = "bachlee";
+//        User user = repos.findUserByUsername(username);
+//        assertThat(user).isNotNull();
+//    }
+
     @Test
-    public void TestFindUsername() {
-        String username = "bachlee";
-        User user = repos.findUserByUsername(username);
-        assertThat(user).isNotNull();
+    public void TestFindMember() {
+        String role= "Member";
+        List<MemberInRating> memberInRating=ratingEventRepository.findMemberInEvent(1L,role);
+        System.out.println(memberInRating.get(1));
+        assertThat(memberInRating).isNotNull();
     }
 }
