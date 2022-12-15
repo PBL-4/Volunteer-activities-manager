@@ -31,6 +31,11 @@ public class DonateController {
     }
 
 
+    @GetMapping("/admin")
+    public String showDonateOnAdmin(Model model) {
+        model.addAttribute("donate",donateService.getAllDonates());
+        return "admin/HistoryDonation";
+    }
 
 
 

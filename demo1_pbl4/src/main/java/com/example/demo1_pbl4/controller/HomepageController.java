@@ -5,6 +5,7 @@ import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.security.CustomUserDetailsService;
 import com.example.demo1_pbl4.service.UserService;
 import com.example.demo1_pbl4.utils.B5EncodePassword;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,8 +57,15 @@ public class HomepageController {
     }
 
     @GetMapping("/admin_home")
-    public String goAdminHome() {
-        return "admin/admin";
+    public String goAdminHome(Model model, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("myUser", user);
+            return "admin/admin";
+        }
+        else{
+            return "redirect:/login";
+        }
     }
 
 //    @GetMapping("/process_login") // action form
