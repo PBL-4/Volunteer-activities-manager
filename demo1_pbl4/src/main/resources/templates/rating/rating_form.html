@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang đánh giá thành viên</title>
+</head>
+<body>
+<a th:href="@{/}">Quay về danh sách</a>
+<h1>Thành viên tên [[${name}]]</h1>
+<form th:action="@{/rating_member}" method="post">
+    <table>
+        <tr>
+            <td>Thành viên này có tham gia?</td>
+            <!--        <td><input id="yesOpt" type="checkbox" name="yesOpt" value="yes"><label for="yesOpt">Có</label>-->
+            <!--            <input id="noOpt" type="checkbox" name="noOpt" value="no"><label for="noOpt">Không</label>-->
+            <td>
+                <input type="number" width="100px" name="point1" value="" max="10" min="0"
+                      value="" placeholder="Chấm trên thang 10">
+            </td>
+        </tr>
+        <tr>
+            <td>Thành viên này có đóng góp tích cực?</td>
+            <td>
+                <input type="number" width="100px" name="point2" value="" max="10" min="0"
+                       placeholder="Chấm trên thang 10">
+            </td>
+        </tr>
+        <tr>
+            <td>Thành viên sẽ tham gia những hoạt động khác do bạn tổ chức?</td>
+            <td>
+                <input type="number" width="100px" name="point3" value="" max="10" min="0"
+                       placeholder="Chấm trên thang 10">
+            </td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Send"></td>
+            <td><input type="reset" value="Reset"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

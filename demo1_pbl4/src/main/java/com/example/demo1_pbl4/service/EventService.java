@@ -3,6 +3,7 @@ package com.example.demo1_pbl4.service;
 import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -20,6 +21,10 @@ public interface EventService {
 
     List<Event> findEventWithSorting(String field);
     Page<Event> findEventWithPagination(int offset,int pageSize);
+
+    Page<Event> findHostOfEvent(Long userId, String role, Pageable pageable);
+
+    //void createEventByHost(Long userId,Long eventId, String role,Boolean isApproval);
 
 
 }

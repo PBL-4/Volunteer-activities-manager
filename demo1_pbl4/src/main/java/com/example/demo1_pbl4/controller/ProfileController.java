@@ -1,6 +1,6 @@
 package com.example.demo1_pbl4.controller;
 
-import com.example.demo1_pbl4.model.Rating_Event;
+import com.example.demo1_pbl4.model.Rating;
 import com.example.demo1_pbl4.service.RatingEventService;
 import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +23,22 @@ public class ProfileController {
 
     @GetMapping("")
     public String showListRating(Model model, HttpSession session) {
-        String username = session.getAttribute("username").toString();
-        Long userId = userService.findUserByUsername(username).getUserId();
-        List<Rating_Event> listRatingEvent = ratingEventService.findRatingByUserId(userId);
+        if (session.getAttribute("username") != null) {
+            String username = session.getAttribute("username").toString();
+            Long userId = userService.findUserByUsername(username).getUserId();
+            List<Rating> listRatingEvent = ratingEventService.findRatingByUserId(userId);
 //        for(Rating_Event re: listRatingEvent)
 //        {
 //            re.setEventname(re.getEvent().getEventName());
 //            re.setBeginTime(re.getEvent().getBeginTime());
 //            re.setEndTime(re.getEvent().getEndTime());
 //        }
-        model.addAttribute("RatingHistory", listRatingEvent);
-        model.addAttribute("myUser", userService.getUserById(userId));
-        return "profile/Profile";
+            model.addAttribute("RatingHistory", listRatingEvent);
+            model.addAttribute("myUser", userService.getUserById(userId));
+            return "profile/Profile";
+        } else {
+            System.out.println("Chua dang nhap");
+            return "redirect:/login";
+        }
     }
 }

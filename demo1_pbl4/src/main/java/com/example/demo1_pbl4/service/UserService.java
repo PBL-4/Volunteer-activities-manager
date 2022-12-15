@@ -1,6 +1,7 @@
 package com.example.demo1_pbl4.service;
 
 import com.example.demo1_pbl4.model.User;
+import com.example.demo1_pbl4.model.dto.MemberInRating;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface UserService {
     List<User> findUserWithSorting(String field);
 
     Page<User> findUsersWithPagination(int offset, int pageSize);
+
+  //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
 
 
 }

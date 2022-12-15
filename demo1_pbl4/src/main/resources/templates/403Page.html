@@ -8,9 +8,11 @@
 <!-- Include _menu.html -->
 <!--<th:block th:include="/_menu"></th:block>-->
 
-<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
-
-
+<h3 th:if="${message != null}" th:utext="${message}" style="color: red;">
+    Bạn chưa đăng nhập.
+</h3>
+<a th:href="@{/login}">Đăng nhập tại đây </a>
+<a th:href="@{/}">Trang chủ</a>
 </body>
 
 </html>

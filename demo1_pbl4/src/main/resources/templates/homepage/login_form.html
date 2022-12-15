@@ -17,12 +17,12 @@
 <form id="login" th:action="@{/process_login}" method="post">
     <h1>Log In</h1>
     <fieldset id="inputs">
-        <input id="username" type="text" placeholder="Username" name="username">
-        <input id="password" type="password" placeholder="Password" name="password">
+        <input id="username" type="text" placeholder="Username" name="username" th:value="${username}">
+        <input id="password" type="password" placeholder="Password" name="password" th:value="${password}">
     </fieldset>
     <fieldset id="actions">
         <input type="submit" id="submit" value="Log in">
-        <a href="#">Forgot your password?</a><a href="/register">Register</a>
+        <a href="#">Forgot your password?</a><a th:href="@{/register}">Register</a>
     </fieldset>
     <a th:href="@{/home}" id="back">Back to home ...</a>
 </form>
