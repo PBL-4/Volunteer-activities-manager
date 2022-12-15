@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RatingEventServiceImpl implements RatingEventService {
@@ -24,6 +25,7 @@ public class RatingEventServiceImpl implements RatingEventService {
 
     @Autowired
     private UserEventService userEventService;
+
     @Override
     public List<Rating> getAllRatings() {
         return ratingEventRepository.findAll();
@@ -55,28 +57,47 @@ public class RatingEventServiceImpl implements RatingEventService {
         return ratingEventRepository.findRatingByUserId(UserId);
     }
 
+    @Override
+    public Rating findRatingByUserAndEvent(Long userId, Long eventId) {
+        return ratingEventRepository.findRatingByUserAndEvent(userId, eventId);
+    }
+
 
     @Override
     public List<MemberInRating> findMemberInEvent(Long eventId, String role) {
         List<MemberInRating> members = new ArrayList<>();
         for (UserEvent userEvent : userEventService.findMemberInEvent(eventId, role)) {
             MemberInRating member = new MemberInRating();
-            User user= userService.getUserById(userEvent.getUser().getUserId());
-            Rating rating =ratingEventRepository.findRatingInEvent(user.getUserId(),userEvent.getEvent().getEventId());
-            member.setUserId(userEvent.getUser().getUserId());
-            member.setFirstName(user.getFirstName());
-            member.setLastName(user.getLastName());
-            member.setEventRole(userEvent.getEventRole());
-            if(rating!=null)
-            {
+            User user = userService.getUserById(userEvent.getUser().getUserId());
+            System.out.println(user.getUserId());
+            Rating rating = ratingEventRepository.findRatingByUserAndEvent(user.getUserId(), userEvent.getEvent().getEventId());
+            if (rating == null) {
+                rating = new Rating();
+                System.out.println("Rating được tạo");
+            }else{
                 member.setPoint4(rating.getPoint4());
                 member.setPoint5(rating.getPoint5());
                 member.setPoint6(rating.getPoint6());
             }
-            System.out.println("\n first name: "+member.getFirstName());
+            member.setUserId(userEvent.getUser().getUserId());
+            member.setEventId(userEvent.getEvent().getEventId());
+            member.setFirstName(user.getFirstName());
+            member.setLastName(user.getLastName());
+            member.setEventRole(userEvent.getEventRole());
+            System.out.println("\n first name: " + member.getFirstName());
             members.add(member);
         }
         return members;
+    }
+
+    @Override
+    public MemberInRating findMemberInEventById(Long userId, Long eventId, String role) {
+        for (MemberInRating member : findMemberInEvent(eventId, role)) {
+            if (member.getUserId() == userId) {
+                return member;
+            }
+        }
+        return null;
     }
 
 }

@@ -202,9 +202,8 @@ public class EventController {
         User user = null;
         int currentPage=0;
         Pageable pageable = PageRequest.of(0,10);
-        if (session.getAttribute("username") != null) {
-            String username = session.getAttribute("username").toString();
-            user = userService.findUserByUsername(username);
+        if (session.getAttribute("user") != null) {
+            user = (User)session.getAttribute("user");
         }
         if (user != null) {
             Page<Event> eventPages = eventService.findHostOfEvent(user.getUserId(), "host", pageable);
@@ -216,7 +215,7 @@ public class EventController {
             }
             return "event/my_event";
         } else {
-            System.out.println(context.getContextPath());
+            System.out.println("context: "+context.getContextPath());
             System.out.println("Chưa đăng nhập");
             return "redirect:/login";
         }

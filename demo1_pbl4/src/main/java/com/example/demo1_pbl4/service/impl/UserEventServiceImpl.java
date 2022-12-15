@@ -1,6 +1,7 @@
 package com.example.demo1_pbl4.service.impl;
 
 import com.example.demo1_pbl4.model.UserEvent;
+import com.example.demo1_pbl4.model.UserEventId;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import com.example.demo1_pbl4.repository.UserEventRepository;
 import com.example.demo1_pbl4.service.UserEventService;
@@ -36,5 +37,10 @@ public class UserEventServiceImpl implements UserEventService {
             }
         }
         return userEventList;
+    }
+
+    @Override
+    public UserEvent getUserEventById(Long userId, Long eventId) {
+        return userEventRepository.findById(new UserEventId(userId,eventId)).get();
     }
 }

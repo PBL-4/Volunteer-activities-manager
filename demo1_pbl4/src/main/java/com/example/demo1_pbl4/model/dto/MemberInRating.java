@@ -19,6 +19,7 @@ public class MemberInRating {
     private int avgMemPoints;
 
     private Long userId;
+    private Long eventId;
 
     private String firstName;
 
@@ -59,6 +60,14 @@ public class MemberInRating {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
     public String getFirstName() {

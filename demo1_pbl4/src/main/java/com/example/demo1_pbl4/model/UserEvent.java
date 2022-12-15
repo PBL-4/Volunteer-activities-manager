@@ -5,21 +5,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-//@NamedNativeQuery(name = "UserPlay.findPlayerNameDtoById_Named",
-//        query = "SELECT r.point4,r.point5,r.point6,userevent.eventRole,userevent.user.userId,u.firstName,u.lastName from UserEvent userevent left join userevent.user u left join userevent.rating r where userevent.event.eventId=?1 and userevent.eventRole=?2",
-//        resultSetMapping = "Mapping.MemberInRating")
-//@SqlResultSetMapping(name = "Mapping.MemberInRating",
-//        classes = @ConstructorResult(targetClass = MemberInRating.class,
-//                columns = {@ColumnResult(name = "point4"),
-//                        @ColumnResult(name = "point5"),
-//                        @ColumnResult(name = "point6"),
-//                        @ColumnResult(name = "eventRole"),
-//                        @ColumnResult(name = "userId"),
-//                        @ColumnResult(name = "firstName"),
-//                        @ColumnResult(name = "lastName")
-//                }))
+
 @Entity
 @Table(name = "user_event")
+@AssociationOverrides(value = {
+        @AssociationOverride(name = "pk.user_user_id", joinColumns = @JoinColumn(referencedColumnName = "user_user_id")),
+        @AssociationOverride(name = "pk.event_event_id", joinColumns = @JoinColumn(referencedColumnName = "event_event_id"))
+})
 @Data
 public class UserEvent {
     @EmbeddedId

@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Danh sách các thành viên cần đánh giá trong sự kiện</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
 <div th:replace="~{/header::headMenu}">
@@ -26,12 +29,78 @@
                 <td th:text="${member.point4}"></td>
                 <td th:text="${member.point5}"></td>
                 <td th:text="${member.point6}"></td>
-                <td th:text="${member.point6}">...</td>
-                <td><a th:href="@{'rating/show_rating_member/'+ ${member.userId}}">Đánh giá thành viên này</a></td>
+                <td th:text="${member.avgMemPoints}">...</td>
+                <!--                <td><a th:href="@{'/rating/member/'+ ${member.userId}+ '&'+ ${member.eventId}}">Đánh giá thành viên này</a></td>-->
+                <td>
+                    <button type="button" data-toggle="modal" th:attr="data-target=${'#ratingForm'}+${member.userId}">
+                        Đánh giá
+                    </button>
+                </td>
             </tr>
         </th:block>
     </table>
-</div>
+    <!-- Modal -->
+    <div class="modal fade" id="ratingForm" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true"
+         th:each="member : ${members}" th:attr="id=${'ratingForm' + member.userId}"
+    >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form th:action="@{/rating/rating_member}" method="post">
+                    <input type="hidden" name="eventId" th:value="${member.eventId}">
+                    <input type="hidden" name="userId" th:value="${member.userId}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Đánh giá thành viên [[${member.firstName}]]
+                            [[${member.lastName}]]</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td>Thành viên này có tham gia?</td>
+                                <td>
+                                    <input type="number" width="400px" name="point4" max="10" min="0"
+                                           th:value="${member.point4}" placeholder="Chấm trên thang 10">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thành viên này có đóng góp tích cực?</td>
+                                <td>
+                                    <input type="number" width="400px" name="point5" max="10" min="0"
+                                           th:value="${member.point5}" placeholder="Chấm trên thang 10">
 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Thành viên sẽ tham gia những hoạt động khác do bạn tổ chức?</td>
+                                <td>
+                                    <input type="number" width="400px" name="point6" max="10" min="0"
+                                           th:value="${member.point6}"
+                                           placeholder="Chấm trên thang 10">
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

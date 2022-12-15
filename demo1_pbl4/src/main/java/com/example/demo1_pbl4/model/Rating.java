@@ -25,20 +25,25 @@ public class Rating {
 //    @OneToOne
 //    private Event event;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JoinColumn(name = "event_id") // 2columns
+    @JoinColumns({
+            @JoinColumn(name = "user_id",referencedColumnName = "user_user_id"),
+            @JoinColumn(name = "event_id",referencedColumnName = "event_event_id") // 2columns
+    }
+    )
+
     private UserEvent userEvent;
 
     public Rating() {
-        this.point4=0;
-        this.point5=0;
-        this.point6=0;
+        this.point4 = 0;
+        this.point5 = 0;
+        this.point6 = 0;
     }
 
-    public Rating(Integer point4, Integer point5, Integer point6) {
+    public Rating(int point4, int point5, int point6, String description) {
         this.point4 = point4;
         this.point5 = point5;
         this.point6 = point6;
+        this.description = description;
     }
 
     public Rating(Long idRate, int point1, int point2, int point3, int point4, int point5, int point6, UserEvent userEvent) {
@@ -140,7 +145,14 @@ public class Rating {
         this.userEvent = userEvent;
     }
 
-    //    public User getUser() {
+    public void setMemberPoint(int point4, int point5, int point6) {
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
+    }
+}
+
+//    public User getUser() {
 //        return user;
 //    }
 //
@@ -206,4 +218,4 @@ public class Rating {
 //    }
 
 
-}
+
