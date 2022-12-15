@@ -1,7 +1,7 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name = "events")
@@ -176,4 +176,5 @@ public class Event {
     public void setWaitingApproval(int waitingApproval) {
         this.waitingApproval = waitingApproval;
     }
+
 }

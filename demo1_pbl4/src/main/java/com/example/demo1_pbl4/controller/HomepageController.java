@@ -23,13 +23,11 @@ public class HomepageController {
     @Autowired
     private UserService userService;
 
-//    @Autowired
+    //    @Autowired
 //    private CustomUserDetailsService customUserDetailsService; // Dung de phan quyen trong spring boot
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//    private B5EncodePassword b5EncodePassword = new B5EncodePassword();
-//
-//    @Autowired
-//    ServletContext context;
+    private B5EncodePassword b5EncodePassword = new B5EncodePassword();
+
 
     @GetMapping(value = {"/", "home"})
     public String showHomepage() {
@@ -37,16 +35,17 @@ public class HomepageController {
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model, @CookieValue("username") String username, @CookieValue("password") String password) {
+    public String goLogin(Model model) {
         //Dungf HttpServletRequest khong lay name dc
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
         //   password=cookies[1].getValue();
-        if (username != null && password != null) {
-
-            model.addAttribute("username", username);
-            model.addAttribute("password", password);
-        }
+        // @CookieValue("username") String username, @CookieValue("password") String password
+//        if (username != null && password != null) {
+//
+//            model.addAttribute("username", username);
+//            model.addAttribute("password", password);
+//        }
         return "homepage/login_form";
     }
 
@@ -71,10 +70,8 @@ public class HomepageController {
 
     @PostMapping("/process_login") // action form
     public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) {
+
         session.setAttribute("username", username);
-        //   UserDetails userDetails = customUserDetailsService.loadUserByUsername(principal.getName());
-        //   session.setAttribute("username",userDetails.getUsername());
-        //  String encodePass=b5EncodePassword.encodePass(password);
 
         if (userService.checkLogin(username, password)) {
             System.out.println("Dang nhap thanh cong");
@@ -88,8 +85,8 @@ public class HomepageController {
             cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
             response.addCookie(cookie1);
             response.addCookie(cookie2);
+            return "redirect:/home";
 
-            return "redirect:";
         } else {
             //      System.out.println("Dang nhap that bai"+encodePass);
             model.addAttribute("failMessage", "Tai khoan hoac mat khau ko chinh xac");
@@ -121,7 +118,6 @@ public class HomepageController {
 
         return "/403Page";
     }
-
 
 
     @GetMapping("/history_donation")
