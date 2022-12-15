@@ -13,4 +13,6 @@ import java.util.List;
 public interface DonateRepository extends JpaRepository<Donate, Long> {
     @Query(value = "SELECT * from donation e where user_id=?1 ", nativeQuery = true)
     public List<Donate> findAllDonatebyUser(Long user_id);
+
+
 }

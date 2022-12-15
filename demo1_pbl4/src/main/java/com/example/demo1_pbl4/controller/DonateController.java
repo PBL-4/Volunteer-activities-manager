@@ -5,6 +5,8 @@ import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Post;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.service.DonateService;
+import com.example.demo1_pbl4.service.UserEventService;
+import com.example.demo1_pbl4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,8 @@ import java.util.List;
 public class DonateController {
     @Autowired
     private DonateService donateService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/list")
     public String showAllDonate(Model model,@RequestParam("userId")Long id,HttpSession session) {
@@ -37,6 +41,14 @@ public class DonateController {
         return "admin/HistoryDonation";
     }
 
+//    @PostMapping("/admin")
+//    public String Search(Model model, @RequestParam("username") String keyword) {
+//        List<User> listuser = userService.search(keyword);
+//        model.addAttribute("donate", listuser);
+//        model.addAttribute("username", keyword);
+//
+//        return "admin/HistoryDonation";
+//    }
 
 
 }

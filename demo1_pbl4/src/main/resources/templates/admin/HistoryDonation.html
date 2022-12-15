@@ -9,6 +9,15 @@
 <body>
 <div class="container-fluid text-center">
     <div><h2>History Donation</h2></div>
+    <div>
+        <form th:action="@{/donate/admin}" th:method="post">
+            <input type="text" name="username" id="keyword" size="50" th:value="${username}"  />
+            &nbsp;
+            <input type="submit" value="Search" />
+            &nbsp;
+            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+        </form>
+    </div>
 
     <div>
         <table class="table table-bordered">
