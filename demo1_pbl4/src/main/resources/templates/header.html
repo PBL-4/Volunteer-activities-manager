@@ -56,7 +56,7 @@
                             th:text="' '+${session.user.username}"></span></a>
                     <div class="dropdown-menu m-0">
                         <a th:href="@{#}" class="dropdown-item">Application Tutorial</a>
-                        <a th:href="@{/history_donate}" class="dropdown-item">Donation History</a>
+                        <a th:href="@{'/donate/list?userId='+ ${session.user.userId}}" class="dropdown-item">Donation History</a>
                         <a th:href="@{/logout}" class="dropdown-item">Logout</a>
 
                     </div>
