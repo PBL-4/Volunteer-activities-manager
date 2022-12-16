@@ -5,6 +5,7 @@ import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.security.CustomUserDetailsService;
 import com.example.demo1_pbl4.service.UserService;
 import com.example.demo1_pbl4.utils.B5EncodePassword;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ public class HomepageController {
     @Autowired
     private UserService userService;
 
+
     //    @Autowired
 //    private CustomUserDetailsService customUserDetailsService; // Dung de phan quyen trong spring boot
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -30,22 +32,23 @@ public class HomepageController {
 
 
     @GetMapping(value = {"/", "home"})
+
     public String showHomepage() {
         return "homepage/homepage";
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model) {
+    public String goLogin(Model model, @CookieValue("username") String username, @CookieValue("password") String password) {
         //Dungf HttpServletRequest khong lay name dc
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
         //   password=cookies[1].getValue();
-        // @CookieValue("username") String username, @CookieValue("password") String password
-//        if (username != null && password != null) {
-//
-//            model.addAttribute("username", username);
-//            model.addAttribute("password", password);
-//        }
+
+        if (username != null && password != null) {
+
+            model.addAttribute("username", username);
+            model.addAttribute("password", password);
+        }
         return "homepage/login_form";
     }
 
@@ -56,20 +59,20 @@ public class HomepageController {
     }
 
     @GetMapping("/admin_home")
-    public String goAdminHome() {
-        return "admin/admin";
+    public String goAdminHome(Model model, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("myUser", user);
+            return "admin/admin";
+        } else {
+            return "redirect:/login";
+        }
     }
 
-//    @GetMapping("/process_login") // action form
-//    public String showLoginSuccess(Model model, HttpSession session, @RequestParam("username")String username,@RequestParam("password")String password) {
-//        //   session.setAttribute("username", username);
-//        //  customUserDetailsService.loadUserByUsername()
-//       // CustomUserDetails customUserDetails=new CustomUserDetails()
-//        return "redirect:/";
-//    }
-
     @PostMapping("/process_login") // action form
-    public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) {
+    public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password,
+                               @RequestParam(value="rememberMe",required = false) Boolean remember, HttpServletResponse response) {
+
 
         session.setAttribute("username", username);
 
@@ -77,14 +80,18 @@ public class HomepageController {
             System.out.println("Dang nhap thanh cong");
             //  session.setAttribute("username", username);
             session.setAttribute("user", userService.findUserByUsername(username));
+
             //  System.out.println(context.getContextPath());
             // return "redirect:/"+context.getContextPath();
-            Cookie cookie1 = new Cookie("username", username);
-            cookie1.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
-            Cookie cookie2 = new Cookie("password", password);
-            cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
-            response.addCookie(cookie1);
-            response.addCookie(cookie2);
+            System.out.println(remember);
+            if (remember!=null) {
+                Cookie cookie1 = new Cookie("username", username);
+                cookie1.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
+                Cookie cookie2 = new Cookie("password", password);
+                cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
+                response.addCookie(cookie1);
+                response.addCookie(cookie2);
+            }
             return "redirect:/home";
 
         } else {
@@ -127,9 +134,18 @@ public class HomepageController {
 
 
     @GetMapping("logout")
-
     public String logout(HttpSession session) {
         session.setAttribute("user", null);
         return "redirect:/";
     }
+
 }
+
+
+//    @GetMapping("/process_login") // action form
+//    public String showLoginSuccess(Model model, HttpSession session, @RequestParam("username")String username,@RequestParam("password")String password) {
+//        //   session.setAttribute("username", username);
+//        //  customUserDetailsService.loadUserByUsername()
+//       // CustomUserDetails customUserDetails=new CustomUserDetails()
+//        return "redirect:/";
+//    }

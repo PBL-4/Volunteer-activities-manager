@@ -21,6 +21,23 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link th:href="@{/homepage/css/style.css}" rel="stylesheet">
+    <div th:replace="~{/header::head_bootstrap}"></div>
+    <style>
+        .case1 {
+            background-color: green;
+            color: white;
+        }
+
+        .case2 {
+            background-color: yellow;
+            color: white;
+        }
+
+        .case3 {
+            background-color: red;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{/header::headMenu}">
@@ -62,13 +79,19 @@
                         <td th:text="${event.getCurrentMem()}"></td>
                         <td th:text="${event.getNumOfMem()}"></td>
                         <td>
-                            <button class="btn-secondary" th:text="${event.getStatus().getStatusName()}"></button>
+                            <button th:if="${event.status.id}==1" class="btn-secondary bg-success"
+                                    th:text="${event.getStatus().getStatusName()}"></button>
+                            <button th:if="${event.status.id}==2" class="btn-secondary bg-warning"
+                                    th:text="${event.getStatus().getStatusName()}"></button>
+                            <button th:if="${event.status.id}==3" class="btn-secondary bg-danger"
+                                    th:text="${event.getStatus().getStatusName()}"></button>
                         </td>
                         <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
                         <td>
                             <a th:href="@{'/rating/mem_of_event/'+${event.eventId}}">Đánh giá</a>
                         </td>
-                        <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}" th:text="${event.getWaitingApproval()}"></a>
+                        <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}"
+                               th:text="${event.getWaitingApproval()}"></a>
                         </td>
                     </tr>
                 </th:block>

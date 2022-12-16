@@ -3,37 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>Danh sách tất cả thành viên trong sự kiện</title>
+    <div th:replace="~{/header::head_bootstrap}"></div>
 </head>
-<h1>Danh sách thành viên</h1>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>Member id</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Gender</th>
-        <th>Phone Number</th>
-        <th>Email</th>
-        <th>Address</th>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:each="member: ${members}">
+<div th:replace="~{/header::headMenu}"></div>
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a href="#">Danh sách thành viên trong sự kiện </a>
+                <a th:href="@{'/events/waiting_list/'+ ${eventId}}">Danh sách thành viên đang
+                    chờ duyệt </a>
+                <a th:href="@{'/events/my_event/'}">Quay về danh sách sự kiện</a>
+            </div>
+        </div>
+    </nav>
+    <h1>Danh sách thành viên</h1>
+    <table>
+        <thead>
         <tr>
-            <td th:text="${member.getUser().getUserId()}"></td>
-            <td th:text="${member.getUser().getFirstName()}"></td>
-            <td th:text="${member.getUser().getLastName()}"></td>
-            <td th:text="${member.getUser().getGender()}? Male :Female"></td>
-            <td th:text="${member.getUser().getPhoneNum()}"></td>
-            <td th:text="${member.getUser().getEmail()}"></td>
-            <td th:text="${member.getUser().getAddress()}"></td>
+            <th>Member id</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Gender</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Address</th>
         </tr>
-    </th:block>
-    </tbody>
-    <tr>
+        </thead>
+        <tbody>
+        <th:block th:each="member: ${members}">
+            <tr>
+                <td th:text="${member.getUser().getUserId()}"></td>
+                <td th:text="${member.getUser().getFirstName()}"></td>
+                <td th:text="${member.getUser().getLastName()}"></td>
+                <td th:text="${member.getUser().getGender()}? Male :Female"></td>
+                <td th:text="${member.getUser().getPhoneNum()}"></td>
+                <td th:text="${member.getUser().getEmail()}"></td>
+                <td th:text="${member.getUser().getAddress()}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+        <tr>
 
-    </tr>
-</table>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

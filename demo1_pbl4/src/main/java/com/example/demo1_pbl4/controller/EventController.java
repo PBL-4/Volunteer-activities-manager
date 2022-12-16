@@ -223,6 +223,7 @@ public class EventController {
     @GetMapping("/list_of_member/{eventId}")
     public String showAllMemberOfEvent(Model model, @PathVariable("eventId") Long eventId) {
         List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
+        model.addAttribute("eventId",eventId);
         if (memberList != null) {
             model.addAttribute("members", memberList);
         } else {
@@ -233,13 +234,22 @@ public class EventController {
     }
     @GetMapping("/waiting_list/{eventId}")
     public String showWaitingVolunteerOfEvent(Model model, @PathVariable("eventId") Long eventId) {
-        List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
+        List<UserEvent> memberList = userEventService.findAllWaitingApproval(eventId);
+        model.addAttribute("eventId",eventId);
         if (memberList != null) {
             model.addAttribute("members", memberList);
         } else {
             model.addAttribute("message", "Không có dữ liệu");
         }
 
-        return "event/list_of_member";
+        return "event/waiting_approval";
+    }
+
+    @PostMapping("/approval")
+    public String approvalMember(Model model, @RequestParam("userId") Long userId,@RequestParam("eventId") Long eventId){
+        UserEvent userEvent=userEventService.findUserEventByUserAndEventId(eventId,userId);
+        userEvent.setApproval(true);
+        userEventService.insertUser(userEvent);
+        return "redirect:/waiting_list/"+eventId;
     }
 }

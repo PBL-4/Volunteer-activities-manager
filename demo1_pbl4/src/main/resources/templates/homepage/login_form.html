@@ -20,6 +20,8 @@
         <input id="username" type="text" placeholder="Username" name="username" th:value="${username}">
         <input id="password" type="password" placeholder="Password" name="password" th:value="${password}">
     </fieldset>
+    <br>
+    <input type="checkbox" name="rememberMe"> <label>Remember Me</label>
     <fieldset id="actions">
         <input type="submit" id="submit" value="Log in">
         <a href="#">Forgot your password?</a><a th:href="@{/register}">Register</a>

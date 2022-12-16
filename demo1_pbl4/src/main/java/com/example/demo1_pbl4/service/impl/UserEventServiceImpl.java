@@ -1,12 +1,15 @@
 package com.example.demo1_pbl4.service.impl;
 
 import com.example.demo1_pbl4.model.UserEvent;
+
 import com.example.demo1_pbl4.model.UserEventId;
+
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import com.example.demo1_pbl4.repository.UserEventRepository;
 import com.example.demo1_pbl4.service.UserEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,10 @@ public class UserEventServiceImpl implements UserEventService {
     }
 
     @Override
+    public UserEvent findUserEventByUserAndEventId(Long eventId, Long UserId) {
+        return userEventRepository.findRatingByUserAndEventId(eventId, UserId);
+    }
+
     public List<UserEvent> findMemberInEvent(Long eventId, String role) {
         List<UserEvent> userEventList = new ArrayList<>();
         for (UserEvent userEvent : userEventRepository.findAll()) {

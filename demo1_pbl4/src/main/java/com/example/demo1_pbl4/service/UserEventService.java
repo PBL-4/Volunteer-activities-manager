@@ -8,7 +8,10 @@ import java.util.List;
 public interface UserEventService {
     List<UserEvent> getAllUserEvents();
 
+
     UserEvent insertUser(UserEvent userEvent);
+
+    UserEvent findUserEventByUserAndEventId(Long eventId, Long userId);
 
     List<UserEvent> findMemberInEvent(Long eventId, String role);
 

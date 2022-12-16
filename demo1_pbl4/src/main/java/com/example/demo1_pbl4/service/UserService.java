@@ -13,7 +13,7 @@ public interface UserService {
 
     User insertUser(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
     boolean deleteUser(Long userId);
 
@@ -27,6 +27,8 @@ public interface UserService {
     List<User> findUserWithSorting(String field);
 
     Page<User> findUsersWithPagination(int offset, int pageSize);
+
+  //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
 
 
 

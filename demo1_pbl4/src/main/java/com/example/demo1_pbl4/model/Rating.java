@@ -20,14 +20,15 @@ public class Rating {
     private double star;// Diem trung binh cua event
 
     private String description;
+
     //    @OneToOne
 //    private User user;
 //    @OneToOne
 //    private Event event;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumns({
-            @JoinColumn(name = "user_id",referencedColumnName = "user_user_id"),
-            @JoinColumn(name = "event_id",referencedColumnName = "event_event_id") // 2columns
+            @JoinColumn(name = "user_id", referencedColumnName = "user_user_id"),
+            @JoinColumn(name = "event_id", referencedColumnName = "event_event_id") // 2columns
     }
     )
 
@@ -39,12 +40,30 @@ public class Rating {
         this.point6 = 0;
     }
 
+
     public Rating(int point4, int point5, int point6, String description) {
         this.point4 = point4;
         this.point5 = point5;
         this.point6 = point6;
         this.description = description;
     }
+
+
+    public Rating(int point1, int point2, int point3) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.star = (this.point1 + this.point2 + this.point3) / 3;
+    }
+
+    public Rating(int point1, int point2, int point3, UserEvent userEvent) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.userEvent = userEvent;
+        this.star = (this.point1 + this.point2 + this.point3) / 3;
+    }
+
 
     public Rating(Long idRate, int point1, int point2, int point3, int point4, int point5, int point6, UserEvent userEvent) {
         this.idRate = idRate;
@@ -151,71 +170,4 @@ public class Rating {
         this.point6 = point6;
     }
 }
-
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//
-//    public Event getEvent()
-//    {
-//        return event;
-//    }
-//
-//    public void setEvent(Event event) {
-//        this.event = event;
-//    }
-
-//    public String getEventname() {
-//        return eventname;
-//    }
-//
-//    public void setEventname(String eventname) {
-//        this.eventname = eventname;
-//    }
-//
-//    public Date getBeginTime() {
-//        return beginTime;
-//    }
-//
-//    public void setBeginTime(Date beginTime) {
-//        this.beginTime = beginTime;
-//    }
-//
-//    public Date getEndTime() {
-//        return endTime;
-//    }
-//
-//    public void setEndTime(Date endTime) {
-//        this.endTime = endTime;
-//    }
-
-//    public Rating(Long idRate, User user, int point1, int point2, int point3, int point4, int point5, int point6, Event event) {
-//        this.idRate = idRate;
-//        this.user = user;
-//        this.point1 = point1;
-//        this.point2 = point2;
-//        this.point3 = point3;
-//        this.point4 = point4;
-//        this.point5 = point5;
-//        this.point6 = point6;
-//        this.event = event;
-//    }
-//
-//    public Rating(User user, int point1, int point2, int point3, int point4, int point5, int point6, Event event) {
-//        this.user = user;
-//        this.point1 = point1;
-//        this.point2 = point2;
-//        this.point3 = point3;
-//        this.point4 = point4;
-//        this.point5 = point5;
-//        this.point6 = point6;
-//        this.event = event;
-//    }
-
-
 
