@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+<!--    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>-->
+<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <!------ Include the above in your HEAD tag ---------->
     <meta charset="UTF-8">
     <title>Profile</title>
@@ -117,6 +122,7 @@
     }
 </style>
 <body onload="ChangeDisplay('home','profile')">
+<div th:replace="~{/header::headMenu}"></div>
 <div class="container emp-profile">
     <form method="post">
         <div class="row">
@@ -124,48 +130,89 @@
                 <div class="profile-img">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
                     <div class="file btn btn-lg btn-primary">
-                        Change Photo
+
                         <input type="file" name="file"/>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="profile-head">
-                    <h5>
-                        Kshiti Ghelani
+                    <h5 th:text="${myUser.firstName} + ' ' + ${myUser.lastName}">
+
                     </h5>
-                    <h6>
-                        Web Developer and Designer
-                    </h6>
-                    <p class="proile-ratingEvent">RANKINGS : <span>8/10</span></p>
+
+
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#" role="tab" aria-controls="home" aria-selected="true" onclick="ChangeDisplay('home','profile')">Thông tin cá nhân</a>
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="" role="tab" aria-controls="home" aria-selected="true" onclick="ChangeDisplay('home','profile')">Thông tin cá nhân</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#" role="tab" aria-controls="profile" aria-selected="false" onclick="ChangeDisplay('profile','home')">Lịch sử tham gia hoạt động</a>
+                            <a class="nav-link active" id="profile-tab" data-toggle="tab" href="" role="tab" aria-controls="profile" aria-selected="false" onclick="ChangeDisplay('profile','home')">Lịch sử tham gia hoạt động</a>
                         </li>
 
                     </ul>
                 </div>
             </div>
             <div class="col-md-2">
-                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+                <input type="button" data-toggle="modal"
+                       data-target="#editprofile"  class="profile-edit-btn" name="editprofile" value="Edit Profile"/>
             </div>
+
+            <!-- Begin Model 2-->
+            <div class="modal" tabindex="-1" role="dialog" id="editprofile">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Điều chỉnh thông tin cá nhân</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/my_account/edituser}" th:object="${useredit}"
+                                  method="post">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text"  class="form-control" id="firstName"
+                                           name="firstName" th:field="*{firstName}" >
+                                    <br>
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" id="lastName"
+                                           name="lastName" th:field="*{lastName}" >
+                                    <br>
+                                    <label>Email</label>
+                                    <input type="email"  class="form-control" id="email"
+                                           name="email" th:field="*{email}" >
+                                    <br>
+                                    <label>Phone Number</label>
+                                    <input type="number"  class="form-control" id="phoneNum"
+                                           name="phoneNum" th:field="*{phoneNum}" >
+                                    <br>
+                                    <select th:field="*{gender}" class="form-control">
+                                        <option th:value="Male" th:text="Male"></option>
+                                        <option th:value="Female" th:text="Female"></option>
+                                    </select>
+                                    <input type="hidden" id="id" name="id" th:field="*{userId}" >
+
+                                </div>
+                                <button type="submit" class="btn btn-default">Hoàn thành</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Model 2-->
+
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-work">
-                    <p>WORK LINK</p>
-                    <a href="">Lĩnh vực yêu thích</a><br/>
 
-                    <a href="">Bootply Profile</a>
-                    <p>SKILLS</p>
-                    <a href="">Web Designer</a><br/>
-                    <a href="">Web Developer</a><br/>
-                    <a href="">WordPress</a><br/>
-                    <a href="">WooCommerce</a><br/>
-                    <a href="">PHP, .Net</a><br/>
                 </div>
             </div>
             <div class="col-md-8">
@@ -184,8 +231,7 @@
                                 <label>Name</label>
                             </div>
                             <div class="col-md-6">
-                                <p th:text="${myUser.firstName}"></p>
-                                <p th:text="${myUser.lastName}"></p>
+                                <p th:text="${myUser.firstName} + ' ' + ${myUser.lastName}"></p>
                             </div>
                         </div>
                         <div class="row">
@@ -217,10 +263,10 @@
                     <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                         <div class="list-group">
                         <th:block th:each="rating : ${RatingHistory}">
-                            <a th:href="@{/posts/get(id=${rating.getEvent().getEventId()})}" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <a th:href="@{/posts/get(id=${rating.getUserEvent().getEvent().getEventId()})}" class="list-group-item list-group-item-action flex-column align-items-start">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1" th:text="${rating.getEvent().getEventName()}" > EventName</h5>
-                                    <small th:text="${#dates.format(rating.getEvent().getBeginTime(), 'dd-MMM-yyyy')}+ ' - ' + ${#dates.format(rating.getEvent().getEndTime(), 'dd-MMM-yyyy')}">eventtime</small>
+                                    <h5 class="mb-1" th:text="${rating.getUserEvent().getEvent().getEventName()}" > EventName</h5>
+                                    <small th:text="${#dates.format(rating.getUserEvent().getEvent().getBeginTime(), 'dd-MMM-yyyy')}+ ' - ' + ${#dates.format(rating.getUserEvent().getEvent().getEndTime(), 'dd-MMM-yyyy')}">eventtime</small>
                                 </div>
                                 <p class="mb-1">Đánh giá về sự kiện của tôi: </p>
                                 <span class="mb-1">Tính hữu ích của sự kiện : </span>&nbsp;
@@ -229,7 +275,7 @@
                                 <span th:text="${rating.point1}" th:if="${rating.point1 == -1}">Chưa có đánh giá</span>
 
                                 <br>
-                                <span class="mb-1">Tính hiệu quả của sự kiện : </span>&nbsp;
+                                <span class="mb-1">Tính thú vị, hứng thú của sự kiện : </span>&nbsp;
 
                                 <span th:text="${rating.point2}" th:if="${rating.point2 != -1}">Point2</span>
                                 <span th:text="${rating.point2}" th:if="${rating.point2 == -1}">Chưa có đánh giá</span>

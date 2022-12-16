@@ -20,6 +20,7 @@ public class Rating {
     private double star;// Diem trung binh cua event
 
     private String description;
+
     //    @OneToOne
 //    private User user;
 //    @OneToOne
@@ -33,6 +34,21 @@ public class Rating {
         this.point4=0;
         this.point5=0;
         this.point6=0;
+    }
+
+    public Rating(int point1, int point2, int point3) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.star = (this.point1 + this.point2 + this.point3)/3;
+    }
+
+    public Rating(int point1, int point2, int point3, UserEvent userEvent) {
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
+        this.userEvent = userEvent;
+        this.star = (this.point1 + this.point2 + this.point3) / 3;
     }
 
     public Rating(Integer point4, Integer point5, Integer point6) {
@@ -205,5 +221,27 @@ public class Rating {
 //        this.event = event;
 //    }
 
+    public void setPoint1(Integer point1) {
+        this.point1 = point1;
+    }
 
+    public void setPoint2(Integer point2) {
+        this.point2 = point2;
+    }
+
+    public void setPoint3(Integer point3) {
+        this.point3 = point3;
+    }
+
+    public void setPoint4(Integer point4) {
+        this.point4 = point4;
+    }
+
+    public void setPoint5(Integer point5) {
+        this.point5 = point5;
+    }
+
+    public void setPoint6(Integer point6) {
+        this.point6 = point6;
+    }
 }
