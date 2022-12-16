@@ -140,32 +140,47 @@
                         <div th:if="${Eventend}  > 0">
                             <div th:if="${IamMember} == 0">
                                 <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
-                                    <button type="submit" data-toggle="modal"
+                                    <button type="button" data-toggle="modal"
                                             data-target="#joinRequest" class="join">Tôi muốn tham gia
                                     </button>
                                 </div>
                             </div>
-
-                            <div th:if="${IamMember} == 1">
+                            <!--                                Nếu bạn là thành viên mà thời gian đã kết thúc-->
+                            <div th:if="${IamMember} == 1 && ${Eventend}  <= 0">
                                 <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                     <div style="display: flex;flex-direction: column">
-                                        <button type="submit" data-toggle="modal"
-                                                data-target="#joinRequest" class="join" disabled
-                                                style="background-color: black">Tôi muốn tham gia
+                                        <button type="button" data-toggle="modal"
+                                                data-target="#joinRequest" class="bg-secondary text-white join" disabled
+                                        >Tôi muốn tham gia
                                         </button>
-                                        <label>Bạn chưa đăng nhập</label>
+                                        <label>Bạn đã đăng ký sự kiện</label>
                                     </div>
 
                                 </div>
+                            </div>
+                            <!--  Nếu bạn là thành viên mà thời gian đã kết thúc-->
+                            <div th:if="${IamMember} == 1 && ${Eventend}  > 0">
+                                <form th:action="@{/events/deleteRequest}" method="post">
+                                    <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
+                                        <div style="display: flex;flex-direction: column">
+                                            <button type="submit" data-toggle="modal"
+                                                    data-target="#deleteRequest" class="bg-alert text-white">Tôi muốn
+                                                tham gia
+                                            </button>
+                                            <label>Hủy đăng ký</label>
+                                        </div>
+
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         <div th:if="${Eventend}  <= 0">
 
                             <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                 <div style="display: flex;flex-direction: column">
-                                    <button type="submit" data-toggle="modal"
-                                            data-target="#joinRequest" class="join" disabled
-                                            style="background-color: black">Tôi muốn tham gia
+                                    <button type="button" data-toggle="modal"
+                                            data-target="#joinRequest" class="bg-secondary text-white join" disabled>
+                                        Tôi muốn tham gia
                                     </button>
                                     <label>Sự kiện đã kết thúc</label>
                                 </div>
@@ -184,7 +199,9 @@
                         <div class="modal fade" id="joinRequest" tabindex="-1" role="dialog"
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
-                                <form th:action="@{'/events/sendRequest'+${post.postId}}">
+                                <form th:action="@{'/posts/sendRequest'}" method="post">
+                                    <input type="hidden" name="userId" th:value="${user.userId}">
+                                    <input type="hidden" name="eventId" th:value="${event.eventId}">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Gửi thông tin cho người tổ
@@ -197,7 +214,7 @@
                                         </div>
                                         <div class="modal-body">
                                             <p><b>Hãy nêu thông tin của bạn</b></p>
-                                            <textarea col="4" row="4" name="personal_info" required></textarea>
+                                            <textarea col="4" row="4" name="personalInfo" required></textarea>
                                             <p>Sở trường của bạn trong lính vực nào?</p>
                                             <textarea col="4" row="4" name="skill"></textarea>
                                         </div>
@@ -304,27 +321,7 @@
                 <!--Section: Share buttons-->
 
                 <!--Section: Author-->
-                <!--    <section class="border-bottom mb-4 pb-4">
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(23).jpg"
-                                     class="img-fluid shadow-1-strong rounded" alt=""/>
-                            </div>
 
-                            <div class="col-9">
-                                <p class="mb-2"><strong>Anna Maria Doe</strong></p>
-                                <a href="" class="text-dark"><i class="fab fa-facebook-f me-1"></i></a>
-                                <a href="" class="text-dark"><i class="fab fa-twitter me-1"></i></a>
-                                <a href="" class="text-dark"><i class="fab fa-linkedin me-1"></i></a>
-                                <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio est ab iure
-                                    inventore dolorum consectetur? Molestiae aperiam atque quasi consequatur aut?
-                                    Repellendus alias dolor ad nam, soluta distinctio quis accusantium!
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-                    -->
                 <!--Section: Author-->
 
                 <!--Section: Comments-->
@@ -403,7 +400,7 @@
                         <div class="bg-image hover-overlay ripple mb-4">
                             <h5>Thời gian diễn ra sự kiện</h5>
                             <!--                            <span class="title">Thời gian</span> #dates.format(event.beginTime, 'dd-MMM-yyyy')-->
-                            <p th:text="${#dates.format(post.event.beginTime, 'dd-MMM-yyyy')}"></p>
+                            <p th:text="'Từ ngày '+ ${#dates.format(post.event.beginTime, 'dd-MMM-yyyy')} +' đến ' + ${#dates.format(post.event.endTime, 'dd-MMM-yyyy')}"></p>
                         </div>
                     </section>
                     <!--Section: Ad-->

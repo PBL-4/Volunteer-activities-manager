@@ -178,6 +178,11 @@
                            aria-controls="profile" aria-selected="false" onclick="ChangeDisplay('profile','home')">Lịch
                             sử tham gia hoạt động</a>
                     </li>
+<!--                    Đang chỉnh nhưng js này lạ-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link active" id="event_active" data-toggle="tab" href="" role="tab"-->
+<!--                           aria-controls="profile" aria-selected="false" onclick="ChangeDisplay('profile','home')">Hoạt động đang tham gia</a>-->
+<!--                    </li>-->
 
                 </ul>
             </div>
@@ -344,21 +349,12 @@
                                 <span th:text="${rating.point6}" th:if="${rating.point6 != -1}">Point2</span>
                                 <span th:text="${rating.point6}"
                                       th:if="${rating.point6 == -1}">Chưa có đánh giá</span>
-
                             </a>
-
                         </th:block>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
 </div>
 </body>

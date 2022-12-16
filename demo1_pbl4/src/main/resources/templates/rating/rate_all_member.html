@@ -16,6 +16,8 @@
     </div>
 </div>
 <div class="container-fluid">
+    <h1 class="text-center">Danh sách đánh giá từng thành viên trong sự kiện</h1>
+    <h3 class="text-center"><a th:href="@{'/posts/get?id='+ ${event.eventId}}" th:text="${event.eventName}"></a></h3>
     <table class="table table-bordered">
         <tr>
             <th>Tên thành viên</th>

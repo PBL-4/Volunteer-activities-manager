@@ -9,7 +9,9 @@ public interface UserEventService {
     List<UserEvent> getAllUserEvents();
 
 
-    UserEvent insertUser(UserEvent userEvent);
+    UserEvent insertUserEvent(UserEvent userEvent);
+
+    UserEvent updateUserEvent(UserEvent userEvent);
 
     UserEvent findUserEventByUserAndEventId(Long eventId, Long userId);
 
@@ -20,5 +22,10 @@ public interface UserEventService {
     List<UserEvent> findAllWaitingApproval(Long eventId);
 
     UserEvent getUserEventById(Long userId, Long eventId);
+
+    List<UserEvent> findAllEventWithMember(Long userId,String role);
+
+    boolean deleteUserEvent(Long userId, Long eventId);
+
 
 }

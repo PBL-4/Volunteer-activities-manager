@@ -26,9 +26,14 @@ public class UserEventServiceImpl implements UserEventService {
     }
 
     @Override
-    public UserEvent insertUser(UserEvent userEvent) {
+    public UserEvent insertUserEvent(UserEvent userEvent) {
         return userEventRepository.save(userEvent);
 
+    }
+
+    @Override
+    public UserEvent updateUserEvent(UserEvent userEvent) {
+        return userEventRepository.save(userEvent);
     }
 
     @Override
@@ -71,5 +76,20 @@ public class UserEventServiceImpl implements UserEventService {
     @Override
     public UserEvent getUserEventById(Long userId, Long eventId) {
         return userEventRepository.findById(new UserEventId(userId, eventId)).get();
+    }
+
+    @Override
+    public List<UserEvent> findAllEventWithMember(Long userId, String role) {
+        return userEventRepository.findAllEventWithMember(userId, role);
+    }
+
+    @Override
+    public boolean deleteUserEvent(Long userId, Long eventId) {
+        if (getUserEventById(userId, eventId) != null) {
+            userEventRepository.deleteById(new UserEventId(userId, eventId));
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class MemberInRating {
     private int point5;
     private int point6;// rating
 
-    private int avgMemPoints;
+    private double avgMemPoints;
 
     private Long userId;
     private Long eventId;
@@ -150,11 +150,11 @@ public class MemberInRating {
         this.point6 = point6;
     }
 
-    public int getAvgMemPoints() {
+    public double getAvgMemPoints() {
         return avgMemPoints;
     }
 
-    public void setAvgMemPoints(int avgMemPoints) {
+    public void setAvgMemPoints(double avgMemPoints) {
         this.avgMemPoints = avgMemPoints;
     }
 }

@@ -31,19 +31,11 @@ public class UserEvent {
     @Column(name = "is_approval")
     private Boolean isApproval;
 
-//    @Column(name = "point1_of_member")
-//    private int memPoint1;
-//    @Column(name = "point2_of_member")
-//    private int memPoint2;
-//    @Column(name = "point3_of_member")
-//    private int memPoint3;
-//
-//    @Column(name = "point1_of_event")
-//    private int eventPoint1;
-//    @Column(name = "point2_of_event")
-//    private int eventPoint2;
-//    @Column(name = "point3_of_event")
-//    private int eventPoint3;
+    @Column(name = "info_of_mem")
+    private String infoOfMem;
+
+    @Column(name = "skill")
+    private String skill;
 
     @OneToOne(mappedBy = "userEvent")
     private Rating rating;
@@ -119,5 +111,21 @@ public class UserEvent {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public String getInfoOfMem() {
+        return infoOfMem;
+    }
+
+    public void setInfoOfMem(String infoOfMem) {
+        this.infoOfMem = infoOfMem;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 }

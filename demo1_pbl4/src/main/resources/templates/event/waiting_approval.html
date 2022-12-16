@@ -18,22 +18,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a th:href="@{'/events/list_of_member/'+${eventId}}">Danh sách thành viên trong sự
+                <a class="nav-link" th:href="@{'/events/list_of_member/'+${eventId}}">Danh sách thành viên trong sự
                     kiện </a>
-                <a href="#">Danh sách thành viên đang chờ duyệt </a>
-                <a th:href="@{'/events/my_event/'}">Quay về danh sách sự kiện</a>
+                <a class="nav-link active" href="#">Danh sách thành viên đang chờ duyệt </a>
+                <a class="nav-link" th:href="@{'/events/my_event/'}">Quay về danh sách sự kiện</a>
             </div>
         </div>
     </nav>
-    <h1>Danh sách thành viên đang chờ</h1>
+    <h1 class="text-center">Danh sách thành viên đang chờ</h1>
+    <h2 class="text-center" ><a th:href="@{'/posts/get?id='+ ${event.eventId}}" th:text="${event.eventName}"></a></h2>
     <div th:if="${message}">
         [[${message}]]
     </div>
     <div th:if="${members!=null}">
         <form th:action="@{'/events/approval'}" method="post">
-            <table class="">
+            <table class="table">
                 <thead>
-                <tr>
+                <tr scope="row">
                     <th>Member id</th>
                     <th>First name</th>
                     <th>Last name</th>
@@ -46,7 +47,7 @@
                 </thead>
                 <tbody>
                 <th:block th:each="member: ${members}">
-                    <tr>
+                    <tr scope="row">
                         <td th:text="${member.getUser().getUserId()}"></td>
                         <td th:text="${member.getUser().getFirstName()}"></td>
                         <td th:text="${member.getUser().getLastName()}"></td>
@@ -55,9 +56,9 @@
                         <td th:text="${member.getUser().getEmail()}"></td>
                         <td th:text="${member.getUser().getAddress()}"></td>
                         <input type="hidden" name="userId" th:value="${member.getUser().getUserId()}">
-                        <input type="hidden" name="eventId" th:value="${member.get().getEventId()}">
+                        <input type="hidden" name="eventId" th:value="${member.getEvent().getEventId()}">
                         <td>
-                            <button type="submit" class="">Phê duyệt</button>
+                            <button type="submit" class="btn btn-primary">Phê duyệt</button>
                         </td>
                     </tr>
                 </th:block>

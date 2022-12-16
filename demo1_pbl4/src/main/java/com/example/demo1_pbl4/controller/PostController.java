@@ -1,12 +1,7 @@
 package com.example.demo1_pbl4.controller;
 
-import com.example.demo1_pbl4.model.Donate;
-import com.example.demo1_pbl4.model.Event;
-import com.example.demo1_pbl4.model.Post;
+import com.example.demo1_pbl4.model.*;
 
-import com.example.demo1_pbl4.model.Rating;
-import com.example.demo1_pbl4.model.User;
-import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,6 +64,9 @@ public class PostController {
         model.addAttribute("comments", commentService.getAllComments());
         model.addAttribute("total", commentService.countComment());
         model.addAttribute("Rating_Event", new Rating());
+        //BachLT
+        model.addAttribute("user",user);
+        model.addAttribute("event",post.getEvent());
         Date date = new Date(System.currentTimeMillis());
         int timeCompare = post.getEvent().getEndTime().compareTo(date);
         model.addAttribute("Eventend", timeCompare);
@@ -141,12 +138,26 @@ public class PostController {
 
         return "redirect:/posts/get?id=" + id;
     }
-
+    // xu ly send request
     @PostMapping("/sendRequest")
-    public String processJoin(@RequestParam("userId")Long userId,@RequestParam("eventId")Long eventId)
-    {
-        UserEvent userEvent=userEventService.findUserEventByUserAndEventId(eventId,userId);
-        return "redirect:/";
+    public String processJoin(@RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId,
+                              @RequestParam("personalInfo") String personalInfo, @RequestParam("skill") String skill) {
+        UserEvent userEvent = new UserEvent();
+        User user = userService.getUserById(userId);
+        System.out.println("userId"+ user.getUserId());
+
+        userEvent.setUser(user);
+        Event event = eventService.getEventById(eventId);
+        System.out.println("eventId"+ event.getEventId());
+        userEvent.setEvent(event);
+        userEvent.setApproval(false);
+        userEvent.setInfoOfMem(personalInfo);
+        userEvent.setSkill(skill);
+        userEvent.setEventRole("Member");
+        userEvent.setUserEventId(new UserEventId(userId,eventId));
+        userEventService.insertUserEvent(userEvent);// Tạo khóa chính
+        Long postId = event.getPost().getPostId();
+        return "redirect:/posts/get?id="+postId;
     }
 }
 

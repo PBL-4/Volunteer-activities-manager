@@ -17,6 +17,8 @@ public class Rating {
     private int point5;// điểm mà ... trong câu hỏi 2
     private int point6;// điểm mà ... trong câu hỏi 3
 
+    @Column(name = "avg_mem_point")
+    private double avgMemPoint;
     private double star;// Diem trung binh cua event
 
     private String description;
@@ -168,6 +170,14 @@ public class Rating {
         this.point4 = point4;
         this.point5 = point5;
         this.point6 = point6;
+    }
+
+    public double getAvgMemPoint() {
+        return avgMemPoint;
+    }
+
+    public void setAvgMemPoint(double avgMemPoint) {
+        this.avgMemPoint = avgMemPoint;
     }
 }
 

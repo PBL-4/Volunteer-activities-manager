@@ -1,8 +1,10 @@
 package com.example.demo1_pbl4.controller;
 
+import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Rating;
 import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
+import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.RatingEventService;
 import com.example.demo1_pbl4.service.UserEventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class RatingController {
     private RatingEventService ratingEventService;
 
     @Autowired
+    private EventService eventService;
+    @Autowired
     private UserEventService userEventService;
 
 
@@ -33,55 +37,33 @@ public class RatingController {
     public String showAllMemOfEvent(Model model, @PathVariable("eventId") Long eventId) {
         System.out.println(eventId);
         List<MemberInRating> members = ratingEventService.findMemberInEvent(eventId, "Member");
-        // System.out.println("member="+members);
         model.addAttribute("members", members);
-       // model.addAttribute("name", member.getFirstName() + " " + member.getLastName());
-//        Long userId=1;
-//        Rating rating = ratingEventService.findRatingByUserAndEvent(userId, eventId);
-//        System.out.println("rating=" + rating);
-//        //   model.addAttribute("myRating", new Rating());
-//        if (rating != null) {
-//            model.addAttribute("myRating", rating);
-//        } else {
-//            model.addAttribute("myRating", new Rating());
-//        }
+        Event e = eventService.getEventById(eventId);
+        model.addAttribute("event", e);
         return "rating/rate_all_member";
     }
 
-    //BachLT: Hiển thị form đánh giá member cho host.
-    @GetMapping("/member/{userId}&{eventId}")
-    public String rateMemberByHost(Model model, @PathVariable("userId") Long userId, @PathVariable("eventId") Long eventId) {
-        MemberInRating member = ratingEventService.findMemberInEventById(userId, eventId, "Member");
-        model.addAttribute("member", member);
-        model.addAttribute("name", member.getFirstName() + " " + member.getLastName());
-        model.addAttribute("eventId", eventId);
-        model.addAttribute("userId", userId);
-//        Rating rating = ratingEventService.findRatingByUserAndEvent(userId, eventId).get();
-//        System.out.println("rating=" + rating);
-     //   model.addAttribute("myRating", new Rating());
-//        if (rating != null) {
-//            model.addAttribute("myRating", rating);
-//        } else {
-//            model.addAttribute("myRating", new Rating());
-//        }
-        return "rating/rating_form";
-    }
+
 
     @PostMapping("/rating_member")
     public String ratingMember(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId, @ModelAttribute("myRating") Rating myRating
             , @RequestParam("point4") int point4, @RequestParam("point5") int point5
             , @RequestParam("point6") int point6) {
         myRating.setMemberPoint(point4, point5, point6);
-        UserEvent userEvent= userEventService.getUserEventById(userId,eventId);
-        System.out.println("userId= "+userId);
-        System.out.println("eventId"+eventId);
+        UserEvent userEvent = userEventService.getUserEventById(userId, eventId);
         myRating.setUserEvent(userEvent);
-        Rating rating=ratingEventService.findRatingByUserAndEvent(userId, eventId);// lay rating hien tai
-//        System.out.println(rating.getIdRate());
-        if (rating  != null) {
-            rating.setPoint4(myRating.getPoint4());
-            rating.setPoint5(myRating.getPoint5());
-            rating.setPoint6(myRating.getPoint6());
+        Rating rating = ratingEventService.findRatingByUserAndEvent(userId, eventId);// lay rating hien tai
+        Event e = eventService.getEventById(eventId);
+        model.addAttribute("event", e);
+        if (rating != null) {
+            int p4 = myRating.getPoint4();
+            int p5 = myRating.getPoint4();
+            int p6 = myRating.getPoint4();
+            double avgPoint = (p4 + p5 + p6) / 3.0;
+            rating.setPoint4(p4);
+            rating.setPoint5(p5);
+            rating.setPoint6(p6);
+            rating.setAvgMemPoint(avgPoint);
             ratingEventService.updateRating(rating);
         } else {
             ratingEventService.insertRating(myRating);
@@ -89,3 +71,14 @@ public class RatingController {
         return "redirect:/rating/mem_of_event/" + eventId;
     }
 }
+
+//    //BachLT: Hiển thị form đánh giá member cho host.
+//    @GetMapping("/member/{userId}&{eventId}")
+//    public String rateMemberByHost(Model model, @PathVariable("userId") Long userId, @PathVariable("eventId") Long eventId) {
+//        MemberInRating member = ratingEventService.findMemberInEventById(userId, eventId, "Member");
+//        model.addAttribute("member", member);
+//        model.addAttribute("name", member.getFirstName() + " " + member.getLastName());
+//        model.addAttribute("eventId", eventId);
+//        model.addAttribute("userId", userId);
+//        return "rating/rating_form";
+//    }

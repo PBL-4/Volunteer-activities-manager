@@ -76,9 +76,14 @@ public class RatingEventServiceImpl implements RatingEventService {
                 rating = new Rating();
                 System.out.println("Rating được tạo");
             } else {
+                int p4 = rating.getPoint4();
+                int p5 = rating.getPoint5();
+                int p6 = rating.getPoint6();
+                double avgPoint = (p4 + p5 + p6) / 3.0;
                 member.setPoint4(rating.getPoint4());
                 member.setPoint5(rating.getPoint5());
                 member.setPoint6(rating.getPoint6());
+                member.setAvgMemPoints(avgPoint);
             }
             member.setUserId(userEvent.getUser().getUserId());
             member.setEventId(userEvent.getEvent().getEventId());
