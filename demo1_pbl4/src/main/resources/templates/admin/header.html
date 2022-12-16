@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="container-fluid" th:fragment="navDonate">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/donate/admin}">Tất cả</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/donate/total}">Đóng góp của từng TNV</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+</body>
+</html>

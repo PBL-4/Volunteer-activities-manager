@@ -9,15 +9,16 @@
 <body>
 <div class="container-fluid text-center">
     <div><h2>History Donation</h2></div>
-    <div>
-        <form th:action="@{/donate/admin}" th:method="post">
-            <input type="text" name="username" id="keyword" size="50" th:value="${username}"  />
-            &nbsp;
-            <input type="submit" value="Search" />
-            &nbsp;
-            <input type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
-        </form>
-    </div>
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/donate/admin}">Tất cả</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/donate/total}">Đóng góp của từng TNV</a>
+            </li>
+        </ul>
+    </nav>
 
     <div>
         <table class="table table-bordered">
@@ -43,7 +44,7 @@
                     <td th:text="${d.getEvent().getEventName()}"></td>
                     <td th:text="${d.getEvent().getEventId()}"></td>
                     <td th:text="${d.getDonateDate()}"></td>
-                    <td th:text="${d.getMoney()}"></td>
+                    <td th:text="${#numbers.formatCurrency(d.getMoney())}"></td>
 
                 </tr>
             </th:block>

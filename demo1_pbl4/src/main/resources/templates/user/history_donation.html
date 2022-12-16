@@ -45,12 +45,12 @@
                     <td th:text="${d.getEvent().getEventName()}"></td>
                     <td th:text="${d.getEvent().getEventId()}"></td>
                     <td th:text="${d.getDonateDate()}"></td>
-                    <td th:text="${d.getMoney()}"></td>
+                    <td th:text="${#numbers.formatCurrency(d.getMoney())}"></td>
                 </tr>
             </th:block>
         </table>
         <div>
-            <p>TotalMoney: <span th:text="${totalmoney}"> </span></p>
+            <p>TotalMoney: <span th:text="${#numbers.formatCurrency(totalmoney)}"> </span></p>
         </div>
     </div>
 </div>
