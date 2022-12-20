@@ -86,9 +86,9 @@ public class HomepageController {
             System.out.println(remember);
             if (remember!=null) {
                 Cookie cookie1 = new Cookie("username", username);
-                cookie1.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
+                cookie1.setMaxAge(5* 60); // expires in 5mins
                 Cookie cookie2 = new Cookie("password", password);
-                cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
+                cookie2.setMaxAge(5* 60); // expires in 5mins
                 response.addCookie(cookie1);
                 response.addCookie(cookie2);
             }
@@ -122,7 +122,6 @@ public class HomepageController {
             model.addAttribute("message", message);
 
         }
-
         return "/403Page";
     }
 

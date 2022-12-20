@@ -24,15 +24,15 @@ public class ProfileController {
     @Autowired
     private UserService userService;
 
+    //BachLT- Có fix lại
     @GetMapping("")
     public String showListRating(Model model, HttpSession session) {
-        if (session.getAttribute("username") != null) {
-            String username = session.getAttribute("username").toString();
-            Long userId = userService.findUserByUsername(username).getUserId();
-            List<Rating> listRatingEvent = ratingEventService.findRatingByUserId(userId);
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            List<Rating> listRatingEvent = ratingEventService.findRatingByUserId(user.getUserId());
             model.addAttribute("RatingHistory", listRatingEvent);
-            model.addAttribute("myUser", userService.getUserById(userId));
-            model.addAttribute("userEdit", userService.getUserById(userId));
+            model.addAttribute("myUser", userService.getUserById(user.getUserId()));
+            model.addAttribute("userEdit", userService.getUserById(user.getUserId()));
             return "profile/Profile";
         } else {
             System.out.println("Chua dang nhap");
@@ -42,8 +42,17 @@ public class ProfileController {
 
     @PostMapping("/edit_user")
     public String editUser(Model model, @ModelAttribute(value = "userEdit") User user) {
-        User user1 = userService.updateUser(user);
-        System.out.println(user1.getUserId());
+        // If you use it, try again with other solution.
+//        User user1 = userService.updateUser(user);
+//        System.out.println(user1.getUserId());
+        User myNewUser = userService.getUserById(user.getUserId());
+        myNewUser.setFirstName(user.getFirstName());
+        myNewUser.setLastName(user.getLastName());
+        myNewUser.setEmail(user.getEmail());
+        myNewUser.setPhoneNum(user.getPhoneNum());
+        myNewUser.setGender(user.getGender()); // error soon
+        myNewUser.setAddress(user.getAddress());
+        userService.updateUser(myNewUser);
         return "redirect:/my_account";
     }
 }
