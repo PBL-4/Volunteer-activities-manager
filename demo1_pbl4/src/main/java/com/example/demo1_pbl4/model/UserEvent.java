@@ -5,21 +5,13 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-//@NamedNativeQuery(name = "UserPlay.findPlayerNameDtoById_Named",
-//        query = "SELECT r.point4,r.point5,r.point6,userevent.eventRole,userevent.user.userId,u.firstName,u.lastName from UserEvent userevent left join userevent.user u left join userevent.rating r where userevent.event.eventId=?1 and userevent.eventRole=?2",
-//        resultSetMapping = "Mapping.MemberInRating")
-//@SqlResultSetMapping(name = "Mapping.MemberInRating",
-//        classes = @ConstructorResult(targetClass = MemberInRating.class,
-//                columns = {@ColumnResult(name = "point4"),
-//                        @ColumnResult(name = "point5"),
-//                        @ColumnResult(name = "point6"),
-//                        @ColumnResult(name = "eventRole"),
-//                        @ColumnResult(name = "userId"),
-//                        @ColumnResult(name = "firstName"),
-//                        @ColumnResult(name = "lastName")
-//                }))
+
 @Entity
 @Table(name = "user_event")
+@AssociationOverrides(value = {
+        @AssociationOverride(name = "pk.user_user_id", joinColumns = @JoinColumn(referencedColumnName = "user_user_id")),
+        @AssociationOverride(name = "pk.event_event_id", joinColumns = @JoinColumn(referencedColumnName = "event_event_id"))
+})
 @Data
 public class UserEvent {
     @EmbeddedId
@@ -39,19 +31,11 @@ public class UserEvent {
     @Column(name = "is_approval")
     private Boolean isApproval;
 
-//    @Column(name = "point1_of_member")
-//    private int memPoint1;
-//    @Column(name = "point2_of_member")
-//    private int memPoint2;
-//    @Column(name = "point3_of_member")
-//    private int memPoint3;
-//
-//    @Column(name = "point1_of_event")
-//    private int eventPoint1;
-//    @Column(name = "point2_of_event")
-//    private int eventPoint2;
-//    @Column(name = "point3_of_event")
-//    private int eventPoint3;
+    @Column(name = "info_of_mem")
+    private String infoOfMem;
+
+    @Column(name = "skill")
+    private String skill;
 
     @OneToOne(mappedBy = "userEvent")
     private Rating rating;
@@ -127,5 +111,21 @@ public class UserEvent {
 
     public void setRating(Rating rating) {
         this.rating = rating;
+    }
+
+    public String getInfoOfMem() {
+        return infoOfMem;
+    }
+
+    public void setInfoOfMem(String infoOfMem) {
+        this.infoOfMem = infoOfMem;
+    }
+
+    public String getSkill() {
+        return skill;
+    }
+
+    public void setSkill(String skill) {
+        this.skill = skill;
     }
 }

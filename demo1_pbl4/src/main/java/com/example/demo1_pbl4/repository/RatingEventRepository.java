@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RatingEventRepository extends JpaRepository<Rating, Long> {
@@ -16,27 +17,28 @@ public interface RatingEventRepository extends JpaRepository<Rating, Long> {
     public List<Rating> findRatingByUserId(Long UserID);
 
 
+    @Query(value = "SELECT * FROM Rating " +
+            "WHERE user_id=?1 and event_id=?2", nativeQuery = true)
+    Rating findRatingByUserAndEvent(Long userId, Long eventId);
+
+
     //SELECT 1 trong USER_EVENT
     @Query(value = "SELECT user_event.user_user_id,role_of_event FROM user_event " +
             "WHERE user_event.event_event_id=?1 and role_of_event=?2 and is_approval=1 ", nativeQuery = true)
     List<UserEvent> findMemberInEvent(Long eventId, String role);
 
-//    //SELECT 1 trong USER_EVENT
-//    @Query(value = "SELECT user_event.user_user_id,role_of_event FROM user_event " +
-//            "WHERE user_event.event_event_id=?1 and role_of_event=?2 and is_approval=1 ", nativeQuery = true)
-//    List<UserEvent> findMemberInEvent(Long eventId, String role);
 
 
-    @Query(value="SELECT user_id,first_name,last_name FROM users " +
-            "WHERE user_id=?1",nativeQuery=true)
+    @Query(value = "SELECT user_id,first_name,last_name FROM users " +
+            "WHERE user_id=?1", nativeQuery = true)
     User findUserInEvent(Long userId);
 
-    @Query(value="SELECT point4,point5,point6 FROM rating " +
-            "WHERE user_id=?1 and event_id=?2",nativeQuery=true)
-    Rating findRatingInEvent(Long userId,Long eventId);
+    @Query(value = "SELECT point4,point5,point6 FROM rating " +
+            "WHERE user_id=?1 and event_id=?2", nativeQuery = true)
+    Rating findRatingInEvent(Long userId, Long eventId);
 
-
-    @Query(value = "SELECT * FROM Rating where event_event_id =?1 and user_user_id=?2", nativeQuery = true)
+    // sửa lại phần column của rating
+    @Query(value = "SELECT * FROM Rating where event_id =?1 and user_id=?2", nativeQuery = true)
     Rating findRatingByUserEventId(Long eventId, Long userId);
 
 }

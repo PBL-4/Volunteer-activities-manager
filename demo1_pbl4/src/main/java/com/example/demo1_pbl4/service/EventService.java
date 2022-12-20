@@ -22,7 +22,7 @@ public interface EventService {
     List<Event> findEventWithSorting(String field);
     Page<Event> findEventWithPagination(int offset,int pageSize);
 
-    Page<Event> findHostOfEvent(Long userId, String role, Pageable pageable);
+    Page<Event> findEventOfHost(Long userId, String role, Pageable pageable);
 
     //void createEventByHost(Long userId,Long eventId, String role,Boolean isApproval);
 

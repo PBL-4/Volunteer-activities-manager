@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoạt động bạn đang tổ chức</title>
+    <div th:replace="~{/header::head_bootstrap}"></div>
+</head>
+<body>
+<button><a th:href="@{/events/create_event}">Thêm mới sự kiện</a></button>
+
+<div class="text-center">
+    <h1>Danh sách các hoạt động mà bạn tổ chức</h1>
+    <h5 class="text-danger" th:if="${message}!=null" th:text="${message}"></h5>
+    <div th:if="${message}==null">
+        <table class="events">
+            <thead>
+            <tr>
+                <th>Event Id</th>
+                <th>Name</th>
+                <th>Begin time</th>
+                <th>End time</th>
+                <th>Location</th>
+                <th>Current number</th>
+                <th>Max member</th>
+                <th>State</th>
+                <th>Update</th>
+                <th>Rating</th>
+                <th>Waiting Approval</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="event: ${events}">
+                <tr>
+                    <td th:text="${event.getEventId()}"></td>
+                    <td><a th:href="@{'/events/list_of_member/'+${event.getEventId()}}"
+                           target="_self" th:text="${event.getEventName()}"></a></td>
+                    <td th:text="${event.getBeginTime()}"></td>
+                    <td th:text="${event.getEndTime()}"></td>
+                    <td th:text="${event.getLocation()}"></td>
+                    <td th:text="${event.getCurrentMem()}"></td>
+                    <td th:text="${event.getNumOfMem()}"></td>
+                    <td>
+                        <button th:if="${event.status.id}==1" class="btn-secondary bg-success"
+                                th:text="${event.getStatus().getStatusName()}"></button>
+                        <button th:if="${event.status.id}==2" class="btn-secondary bg-warning"
+                                th:text="${event.getStatus().getStatusName()}"></button>
+                        <button th:if="${event.status.id}==3" class="btn-secondary bg-danger"
+                                th:text="${event.getStatus().getStatusName()}"></button>
+                    </td>
+                    <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
+                    <td>
+                        <a th:href="@{'/rating/mem_of_event/'+${event.eventId}}">Đánh giá</a>
+                    </td>
+                    <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}"
+                           th:text="${event.getWaitingApproval()}"></a>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
