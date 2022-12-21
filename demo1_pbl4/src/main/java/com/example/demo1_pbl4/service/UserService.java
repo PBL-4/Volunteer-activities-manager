@@ -13,7 +13,7 @@ public interface UserService {
 
     User insertUser(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
     boolean deleteUser(Long userId);
 
@@ -22,6 +22,7 @@ public interface UserService {
     boolean checkLogin(String username, String password);
 
     User findUserByUsername(String usernane);
+
 
 
     List<User> findUserWithSorting(String field);

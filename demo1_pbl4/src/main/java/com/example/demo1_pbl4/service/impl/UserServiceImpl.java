@@ -26,16 +26,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).get();
     }
 
-    public User insertUser(User user)
-    {
+    public User insertUser(User user) {
         User temp = null;
-        if(checkExistedAccount(user) == true) {
+        if (checkExistedAccount(user) == true) {
             return userRepository.save(user);
         } else return temp;
     }
 
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User updateUser(User user) {
+        return userRepository.save(user);
     }
 
     public boolean deleteUser(Long userId) {
@@ -57,6 +56,7 @@ public class UserServiceImpl implements UserService {
         }
         return userRepository.findAll();
     }
+
     public boolean checkLogin(String username, String password) {
         for (User user : getAllUsers()) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {

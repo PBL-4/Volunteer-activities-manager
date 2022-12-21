@@ -38,19 +38,17 @@ public class HomepageController {
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model) {
+    public String goLogin(Model model, @CookieValue("username") String username, @CookieValue("password") String password) {
         //Dungf HttpServletRequest khong lay name dc
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
         //   password=cookies[1].getValue();
 
-        // @CookieValue("username") String username, @CookieValue("password") String password
+        if (username != null && password != null) {
 
-//        if (username != null && password != null) {
-//
-//            model.addAttribute("username", username);
-//            model.addAttribute("password", password);
-//        }
+            model.addAttribute("username", username);
+            model.addAttribute("password", password);
+        }
         return "homepage/login_form";
     }
 
@@ -66,22 +64,14 @@ public class HomepageController {
             User user = (User) session.getAttribute("user");
             model.addAttribute("myUser", user);
             return "admin/admin";
-        }
-        else{
+        } else {
             return "redirect:/login";
         }
     }
 
-//    @GetMapping("/process_login") // action form
-//    public String showLoginSuccess(Model model, HttpSession session, @RequestParam("username")String username,@RequestParam("password")String password) {
-//        //   session.setAttribute("username", username);
-//        //  customUserDetailsService.loadUserByUsername()
-//       // CustomUserDetails customUserDetails=new CustomUserDetails()
-//        return "redirect:/";
-//    }
-
     @PostMapping("/process_login") // action form
-    public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) {
+    public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password,
+                               @RequestParam(value="rememberMe",required = false) Boolean remember, HttpServletResponse response) {
 
 
         session.setAttribute("username", username);
@@ -93,14 +83,17 @@ public class HomepageController {
 
             //  System.out.println(context.getContextPath());
             // return "redirect:/"+context.getContextPath();
-            Cookie cookie1 = new Cookie("username", username);
-            cookie1.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
-            Cookie cookie2 = new Cookie("password", password);
-            cookie2.setMaxAge(7 * 24 * 60 * 60); // expires in 7 days
-            response.addCookie(cookie1);
-            response.addCookie(cookie2);
-
+            System.out.println(remember);
+            if (remember!=null) {
+                Cookie cookie1 = new Cookie("username", username);
+                cookie1.setMaxAge(5* 60); // expires in 5mins
+                Cookie cookie2 = new Cookie("password", password);
+                cookie2.setMaxAge(5* 60); // expires in 5mins
+                response.addCookie(cookie1);
+                response.addCookie(cookie2);
+            }
             return "redirect:/home";
+
         } else {
             //      System.out.println("Dang nhap that bai"+encodePass);
             model.addAttribute("failMessage", "Tai khoan hoac mat khau ko chinh xac");
@@ -129,7 +122,6 @@ public class HomepageController {
             model.addAttribute("message", message);
 
         }
-
         return "/403Page";
     }
 
@@ -147,3 +139,12 @@ public class HomepageController {
     }
 
 }
+
+
+//    @GetMapping("/process_login") // action form
+//    public String showLoginSuccess(Model model, HttpSession session, @RequestParam("username")String username,@RequestParam("password")String password) {
+//        //   session.setAttribute("username", username);
+//        //  customUserDetailsService.loadUserByUsername()
+//       // CustomUserDetails customUserDetails=new CustomUserDetails()
+//        return "redirect:/";
+//    }
