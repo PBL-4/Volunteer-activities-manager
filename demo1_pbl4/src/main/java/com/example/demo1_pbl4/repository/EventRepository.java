@@ -24,6 +24,13 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     public List<Event> findEventByEventName(String eventName);
 
     // Lấy sự kiện dựa vào host của event: BachLT
+
+    @Query(value="SELECT * FROM Events LEFT JOIN user_event on events.event_id=user_event.event_event_id" +
+            " WHERE user_user_id=?1  and role_of_event=?2 and is_approval= 1",nativeQuery=true)
+    public Page<Event> findHostOfEvent(Long userId, String role, Pageable pageable);
+    @Query(value = "SELECT COUNT(*) AS so_su_kien FROM events WHERE MONTH(begin_time) = ?1 AND YEAR(begin_time)= ?2",nativeQuery = true)
+    public int numberEventsInMonth(int month, int year);
+    
     /* */
     @Query(value = "SELECT * FROM Events LEFT JOIN user_event on events.event_id=user_event.event_event_id" +
             " WHERE user_user_id=?1 and role_of_event=?2 and is_approval= 1", nativeQuery = true)
@@ -36,5 +43,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     public int countWaitingApproval(Long eventId);
 
 
+    @Query(value= "SELECT * FROM events where YEAR(begin_time) =?1",nativeQuery = true)
+    public List<Event> donationEventinYear(int year);
 
 }
