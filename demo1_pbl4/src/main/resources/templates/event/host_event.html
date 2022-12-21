@@ -3,62 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Hoạt động bạn đang tổ chức</title>
+
     <div th:replace="~{/header::head_bootstrap}"></div>
+    <link th:href="@{/css/my_activity/style.css}" rel="stylesheet">
 </head>
 <body>
-<button><a th:href="@{/events/create_event}">Thêm mới sự kiện</a></button>
+<div th:replace="~{/header::headMenu}">
+    <div class="stripe">
 
-<div class="text-center">
-    <h1>Danh sách các hoạt động mà bạn tổ chức</h1>
-    <h5 class="text-danger" th:if="${message}!=null" th:text="${message}"></h5>
-    <div th:if="${message}==null">
-        <table class="events">
-            <thead>
-            <tr>
-                <th>Event Id</th>
-                <th>Name</th>
-                <th>Begin time</th>
-                <th>End time</th>
-                <th>Location</th>
-                <th>Current number</th>
-                <th>Max member</th>
-                <th>State</th>
-                <th>Update</th>
-                <th>Rating</th>
-                <th>Waiting Approval</th>
-            </tr>
-            </thead>
-            <tbody>
-            <th:block th:each="event: ${events}">
-                <tr>
-                    <td th:text="${event.getEventId()}"></td>
-                    <td><a th:href="@{'/events/list_of_member/'+${event.getEventId()}}"
-                           target="_self" th:text="${event.getEventName()}"></a></td>
-                    <td th:text="${event.getBeginTime()}"></td>
-                    <td th:text="${event.getEndTime()}"></td>
-                    <td th:text="${event.getLocation()}"></td>
-                    <td th:text="${event.getCurrentMem()}"></td>
-                    <td th:text="${event.getNumOfMem()}"></td>
-                    <td>
-                        <button th:if="${event.status.id}==1" class="btn-secondary bg-success"
-                                th:text="${event.getStatus().getStatusName()}"></button>
-                        <button th:if="${event.status.id}==2" class="btn-secondary bg-warning"
-                                th:text="${event.getStatus().getStatusName()}"></button>
-                        <button th:if="${event.status.id}==3" class="btn-secondary bg-danger"
-                                th:text="${event.getStatus().getStatusName()}"></button>
-                    </td>
-                    <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
-                    <td>
-                        <a th:href="@{'/rating/mem_of_event/'+${event.eventId}}">Đánh giá</a>
-                    </td>
-                    <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}"
-                           th:text="${event.getWaitingApproval()}"></a>
-                    </td>
-                </tr>
-            </th:block>
-            </tbody>
-        </table>
     </div>
 </div>
+<div class="container-fluid">
+    <div class="row d-flex d-md-block flex-nowrap wrapper">
+        <div class="col-md-3 float-left col-1 pl-0 pr-0 collapse width show" id="sidebar">
+            <div class="list-group border-0 text-center text-md-left">
+                <a href="#" class="list-group-item d-inline-block collapsed"><i class="fa fa-dashboard"></i> <span
+                        class="d-none d-md-inline">Chào &nbsp; [[${user.username}]]</span> </a>
+                <a th:href="@{/events/host_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed active"><i
+                        class="fa fa-clock-o"></i> <span class="d-none d-md-inline">Hoạt động đang tổ chức</span></a>
+                <a th:href="@{/events/member_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed"><i
+                        class="fa fa-list"></i><span
+                        class="d-none d-md-inline">Hoạt động bạn đã đăng ký tham gia</span></a>
+            </div>
+        </div>
+        <main id="main_content" class="col-md-9 float-left col px-5 pl-md-2 pt-2 main">
+            <a href="#" data-target="#sidebar" data-toggle="collapse"><i
+                    class="text-dark fa fa-navicon fa-lg py-2 p-1"></i></a>
+
+            <button><a th:href="@{/events/create_event}">Thêm mới sự kiện</a></button>
+            <div class="text-center">
+                <h1>Danh sách các hoạt động mà bạn tổ chức</h1>
+                <h5 class="text-danger" th:if="${message}!=null" th:text="${message}"></h5>
+                <div th:if="${message}==null">
+                    <table class="events">
+                        <thead>
+                        <tr>
+                            <th>Event Id</th>
+                            <th>Name</th>
+                            <th>Begin time</th>
+                            <th>End time</th>
+                            <th>Location</th>
+                            <th>Current number</th>
+                            <th>Max member</th>
+                            <th>State</th>
+                            <th>Update</th>
+                            <th>Rating</th>
+                            <th>Waiting Approval</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="event: ${events}">
+                            <tr>
+                                <td th:text="${event.getEventId()}"></td>
+                                <td><a th:href="@{'/events/list_of_member/'+${event.getEventId()}}"
+                                       target="_self" th:text="${event.getEventName()}"></a></td>
+                                <td th:text="${event.getBeginTime()}"></td>
+                                <td th:text="${event.getEndTime()}"></td>
+                                <td th:text="${event.getLocation()}"></td>
+                                <td th:text="${event.getCurrentMem()}"></td>
+                                <td th:text="${event.getNumOfMem()}"></td>
+                                <td>
+                                    <button th:if="${event.status.id}==1" class="btn-secondary bg-success"
+                                            th:text="${event.getStatus().getStatusName()}"></button>
+                                    <button th:if="${event.status.id}==2" class="btn-secondary bg-warning"
+                                            th:text="${event.getStatus().getStatusName()}"></button>
+                                    <button th:if="${event.status.id}==3" class="btn-secondary bg-danger"
+                                            th:text="${event.getStatus().getStatusName()}"></button>
+                                </td>
+                                <td><a th:href="@{/events/update_host_event}">Cap nhat</a></td>
+                                <td>
+                                    <a th:href="@{'/rating/mem_of_event/'+${event.eventId}}">Đánh giá</a>
+                                </td>
+                                <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}"
+                                       th:text="${event.getWaitingApproval()}"></a>
+                                </td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script>
+    
+</script>
 </body>
+
 </html>

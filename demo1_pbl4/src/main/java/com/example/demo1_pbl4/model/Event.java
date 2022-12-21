@@ -20,7 +20,7 @@ public class Event {
     @Column(name = "num_of_member")
     private int numOfMem;
 
-    @Column(name = "curent_member")
+    @Column(name = "current_member")
     private int currentMem;
 
     @Column(name = "waiting_approval")

@@ -69,11 +69,16 @@ public class EventController {
         long totalItems = eventPages.getTotalElements();
         int totalPages = eventPages.getTotalPages();
         List<Event> eventLists = eventPages.getContent();
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("eventList", eventLists);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("myTotalPages", totalPages - 1);
+        if(eventLists.isEmpty())
+        {
+            model.addAttribute("message","Không có dữ liệu có sẵn");
+        }else{
+            model.addAttribute("totalItems", totalItems);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("eventList", eventLists);
+            model.addAttribute("currentPage", currentPage);
+            model.addAttribute("myTotalPages", totalPages - 1);
+        }
         return "/event/find_event_list";
     }
 
@@ -197,20 +202,20 @@ public class EventController {
 
     //BachLT: Quản lý danh sách hoạt động đang tham gia: trang đầu tiên của recruite volunteer
     // Bắt đầu phần my_event:
-    @GetMapping("/my_event")
-    public String showAllMyEvent(Model model, HttpSession session) {
-        User user = null;
-        if (session.getAttribute("user") != null) {
-            user = (User) session.getAttribute("user");
-        }
-        if (user != null) {
-            model.addAttribute("user",user);
-            return "event/my_event";
-        } else {
-            System.out.println("Chưa đăng nhập");
-            return "redirect:/login";
-        }
-    }
+//    @GetMapping("/my_event")
+//    public String showAllMyEvent(Model model, HttpSession session) {
+//        User user = null;
+//        if (session.getAttribute("user") != null) {
+//            user = (User) session.getAttribute("user");
+//        }
+//        if (user != null) {
+//            model.addAttribute("user",user);
+//            return "event/my_event";
+//        } else {
+//            System.out.println("Chưa đăng nhập");
+//            return "redirect:/login";
+//        }
+//    }
 
     // Hiển thị trang host event với những sự kiện do bản thân user tổ chức
     @GetMapping("/host_event")
@@ -229,6 +234,7 @@ public class EventController {
             } else {
                 model.addAttribute("events", eventList);
             }
+            model.addAttribute("user",user);
             return "event/host_event";
         } else {
             System.out.println("context: " + context.getContextPath());
@@ -251,6 +257,7 @@ public class EventController {
             } else {
                 model.addAttribute("myEvents", userEventList);
             }
+            model.addAttribute("user",u);
             return "event/member_event";
         } else {
             model.addAttribute("message", "Bạn chưa đăng nhập thành viên để vào trang này");

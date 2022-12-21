@@ -71,7 +71,7 @@ public class HomepageController {
 
     @PostMapping("/process_login") // action form
     public String loginAccount(Model model, HttpSession session, @RequestParam("username") String username, @RequestParam("password") String password,
-                               @RequestParam(value="rememberMe",required = false) Boolean remember, HttpServletResponse response) {
+                               @RequestParam(value="rememberMe",required = false) Boolean remember, HttpServletResponse response,HttpServletRequest request) {
 
 
         session.setAttribute("username", username);
@@ -92,6 +92,10 @@ public class HomepageController {
                 response.addCookie(cookie1);
                 response.addCookie(cookie2);
             }
+            String url=request.getRequestURL().toString();
+           // request.getServletPath();
+            System.out.println("url: "+url);
+            System.out.println("url1: "+request.getServletPath());
             return "redirect:/home";
 
         } else {
@@ -132,19 +136,13 @@ public class HomepageController {
     }
 
 
-    @GetMapping("logout")
-    public String logout(HttpSession session) {
-        session.setAttribute("user", null);
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+//        session.setAttribute("user", null); ,HttpSession session
+//        return "redirect:/";
+        request.getSession().invalidate();
         return "redirect:/";
     }
-
 }
 
 
-//    @GetMapping("/process_login") // action form
-//    public String showLoginSuccess(Model model, HttpSession session, @RequestParam("username")String username,@RequestParam("password")String password) {
-//        //   session.setAttribute("username", username);
-//        //  customUserDetailsService.loadUserByUsername()
-//       // CustomUserDetails customUserDetails=new CustomUserDetails()
-//        return "redirect:/";
-//    }
