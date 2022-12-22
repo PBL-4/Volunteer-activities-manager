@@ -9,12 +9,7 @@ public interface ReportService {
     public List<Report> reportReportCurrentYear();
     List<Report> reportReportByYear(int year);
 
-    public List<Report> DonationEventinYear();
-
-
-
-
-
-
+    public List<Report> donationEventCurrentYear();
+    List<Report> donationEventByYear(int year);
 
 }

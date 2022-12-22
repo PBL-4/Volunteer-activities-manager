@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -117,10 +118,14 @@ public class EventServiceImpl implements EventService {
             for (Event event : eventList) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 Date now = new Date();//
-                Date beginDate = sdf.parse(event.getBeginTime().toString());
-                Date finishDate = sdf.parse(event.getEndTime().toString());
+                String beginDateStr = sdf.format(event.getBeginTime());
+                String finishDateStr = sdf.format(event.getEndTime());
                 System.out.println("Date hien tai: " + sdf.format(now));
-                now=sdf.parse(now.toString()); // không cùng định dạng sẽ ko ss
+                System.out.println("Date bat dau: " + sdf.parse(beginDateStr).toString());
+
+                Date beginDate=sdf.parse(beginDateStr);
+                Date finishDate=sdf.parse(finishDateStr);
+                now=sdf.parse(sdf.format(now));   // không cùng định dạng sẽ ko ss
                 if (beginDate.after(now)) {
                     Status status=statusRepository.findById(1L).get();
                     event.setStatus(status);
@@ -142,7 +147,39 @@ public class EventServiceImpl implements EventService {
         }
 
     }
-//    @Override
+
+    @Override
+    public Integer countAllEvents() {
+        int count=0;
+        for(Event e: eventRepository.findAll())
+        {
+            count++;
+        }
+        return count;
+    }
+
+    @Override
+    public List<Event> findAllFinishEvent() {
+        List<Event> events=new ArrayList<>();
+        Date now =new Date();
+        for(Event e: eventRepository.findAll())
+        {
+            if(e.getBeginTime().before(now)){
+                events.add(e);
+            }
+        }
+        return events;
+    }
+
+    @Override
+    public Boolean isFinishEvent(Long eventId) {
+        Event e =  eventRepository.findById(eventId).get();
+        Date now=new Date();
+        if(e.getEndTime().before(now))
+            return true;
+        return false;
+    }
+    //    @Override
 //    public void createEventByHost(Long userId, Long eventId, String role, Boolean isApproval) {
 //        eventRepository.createEventByHost(userId, eventId, role, isApproval);
 //    }

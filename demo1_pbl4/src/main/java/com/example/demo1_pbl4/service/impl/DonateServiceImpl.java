@@ -48,9 +48,19 @@ public class DonateServiceImpl implements DonateService {
         }
         return totalDonationOfUserList;
     }
-
-    public double SumofDonate(Long user_id) {
+    @Override
+    public double SumDonateByUser(Long user_id) {
         return donateRepository.SumofDonate(user_id);
+    }
+
+    @Override
+    public double sumAllDonate(){
+        double total=0;
+        for(Donate d: getAllDonates())
+        {
+            total+=d.getMoney();
+        }
+        return total;
     }
 }
 

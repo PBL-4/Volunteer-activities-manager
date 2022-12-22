@@ -19,7 +19,7 @@ public class Rating {
 
     @Column(name = "avg_mem_point")
     private double avgMemPoint;
-    private double star;// Diem trung binh cua event
+    private double avgEventPoint;// Diem trung binh cua event
 
     private String description;
 
@@ -55,7 +55,6 @@ public class Rating {
         this.point1 = point1;
         this.point2 = point2;
         this.point3 = point3;
-        this.star = (this.point1 + this.point2 + this.point3) / 3;
     }
 
     public Rating(int point1, int point2, int point3, UserEvent userEvent) {
@@ -63,7 +62,6 @@ public class Rating {
         this.point2 = point2;
         this.point3 = point3;
         this.userEvent = userEvent;
-        this.star = (this.point1 + this.point2 + this.point3) / 3;
     }
 
 
@@ -142,13 +140,6 @@ public class Rating {
         this.idRate = idRate;
     }
 
-    public double getStar() {
-        return star;
-    }
-
-    public void setStar(double star) {
-        this.star = star;
-    }
 
     public String getDescription() {
         return description;
@@ -178,6 +169,14 @@ public class Rating {
 
     public void setAvgMemPoint(double avgMemPoint) {
         this.avgMemPoint = avgMemPoint;
+    }
+
+    public double getAvgEventPoint() {
+        return avgEventPoint;
+    }
+
+    public void setAvgEventPoint(double avgEventPoint) {
+        this.avgEventPoint = avgEventPoint;
     }
 }
 

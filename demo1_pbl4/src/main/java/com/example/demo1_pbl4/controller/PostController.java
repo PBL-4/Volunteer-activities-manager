@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,32 +55,51 @@ public class PostController {
     @GetMapping("/get{id}")         // ko co dau .  , dau ? thanh %20
     public String showPostById(Model model, @RequestParam("id") Long id, HttpSession session) // Tai sao lai dung @requestParam
     {
-        Long userId = Long.valueOf(-1);
-        User user = null;
-        if (session.getAttribute("user") != null) {
-            user = (User) session.getAttribute("user");
-            userId = user.getUserId();
-        }
-        Post post = postService.getPostById(id);
-        model.addAttribute("post", post);
-        model.addAttribute("comments", commentService.getAllComments());
-        model.addAttribute("total", commentService.countComment());
-        model.addAttribute("Rating_Event", new Rating());
-        //BachLT
-        model.addAttribute("user",user);
-        model.addAttribute("event",post.getEvent());
-        Date date = new Date(System.currentTimeMillis());
-        int timeCompare = post.getEvent().getEndTime().compareTo(date);
-        model.addAttribute("Eventend", timeCompare);
-        //
-        UserEvent ue = userEventService.findUserEventByUserAndEventId(id, userId);
-        if (ue == null) {
-            model.addAttribute("IamMember", 0);
-        } else {
-            model.addAttribute("IamMember", 1);
-        }
+        try {
+            Long userId = Long.valueOf(-1);
+            User user = null;
+            if (session.getAttribute("user") != null) {
+                user = (User) session.getAttribute("user");
+                userId = user.getUserId();
+            }
+            Post post = postService.getPostById(id);
+            model.addAttribute("post", post);
+            model.addAttribute("comments", commentService.getAllComments());
+            model.addAttribute("total", commentService.countComment());
+            model.addAttribute("Rating_Event", new Rating());
+            //BachLT
+            model.addAttribute("user", user);
+            model.addAttribute("event", post.getEvent());
+            Date date = new Date(System.currentTimeMillis());
+            int timeCompare = post.getEvent().getEndTime().compareTo(date);
+            model.addAttribute("Eventend", timeCompare);
+            //
+            UserEvent ue = userEventService.findUserEventByUserAndEventId(id, userId);
+            if (ue == null) {
+                model.addAttribute("IamMember", 0);
+            } else {
+                model.addAttribute("IamMember", 1);
+            }
 
-        return "post/post_of_event";
+            //Kiem tra danh gia vao bai post va danh gia sao cung voi diem trung binh:
+            Long eId = post.getEvent().getEventId();
+            Event e = eventService.getEventById(eId);
+            if (eventService.isFinishEvent(eId)) {
+                ratingService.setStarEachEvent(eId);
+                model.addAttribute("hasRating", true);
+                model.addAttribute("star", e.getStar());
+                System.out.println(e.getStar());
+                model.addAttribute("avgPoint", e.getRating());
+                System.out.println(e.getRating());
+            } else {
+                model.addAttribute("hasRating", false);
+            }
+            model.addAttribute("currentMem", e.getCurrentMem());
+            model.addAttribute("numOfMem", e.getNumOfMem());
+            return "post/post_of_event";
+        } catch (NoSuchElementException e) {
+            return "404Page";
+        }
     }
 
     @PostMapping("/saverating")
@@ -112,11 +133,10 @@ public class PostController {
             User user = (User) session.getAttribute("user");
             model.addAttribute("postId", id);
             model.addAttribute("userId", user.getUserId());
-            return "post/DonationVolunteer";
+            return "post/donation_volunteer";
         } else {
             return "redirect:/login";
         }
-
     }
 
     @PostMapping("/donation")
@@ -138,26 +158,27 @@ public class PostController {
 
         return "redirect:/posts/get?id=" + id;
     }
+
     // xu ly send request
     @PostMapping("/sendRequest")
     public String processJoin(@RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId,
                               @RequestParam("personalInfo") String personalInfo, @RequestParam("skill") String skill) {
         UserEvent userEvent = new UserEvent();
         User user = userService.getUserById(userId);
-        System.out.println("userId"+ user.getUserId());
+        System.out.println("userId" + user.getUserId());
 
         userEvent.setUser(user);
         Event event = eventService.getEventById(eventId);
-        System.out.println("eventId"+ event.getEventId());
+        System.out.println("eventId" + event.getEventId());
         userEvent.setEvent(event);
         userEvent.setApproval(false);
         userEvent.setInfoOfMem(personalInfo);
         userEvent.setSkill(skill);
         userEvent.setEventRole("Member");
-        userEvent.setUserEventId(new UserEventId(userId,eventId));
+        userEvent.setUserEventId(new UserEventId(userId, eventId));
         userEventService.insertUserEvent(userEvent);// Tạo khóa chính
         Long postId = event.getPost().getPostId();
-        return "redirect:/posts/get?id="+postId;
+        return "redirect:/posts/get?id=" + postId;
     }
 }
 

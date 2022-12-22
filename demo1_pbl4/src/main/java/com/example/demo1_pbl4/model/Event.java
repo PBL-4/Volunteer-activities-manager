@@ -31,7 +31,10 @@ public class Event {
     private Date endTime;
 
     private String hostname;
-    private float rating;
+
+    private double rating;
+
+    private int star;
 
     private double donation;
 
@@ -81,13 +84,6 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
 
     public String getLocation() {
         return location;
@@ -177,4 +173,19 @@ public class Event {
         this.waitingApproval = waitingApproval;
     }
 
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
 }

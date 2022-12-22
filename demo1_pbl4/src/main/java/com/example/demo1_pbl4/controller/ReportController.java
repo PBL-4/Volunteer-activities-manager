@@ -1,6 +1,5 @@
 package com.example.demo1_pbl4.controller;
 
-import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.dto.Report;
 import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.ReportService;
@@ -24,23 +23,24 @@ public class ReportController {
     private EventService eventService;
 
     @GetMapping("/thongke")
-    public String thongke(Model model, @RequestParam(value = "year",required = false)Integer myYear) {
+    public String thongke(Model model, @RequestParam(value = "year", required = false) Integer myYear) {
         Integer[] numEvents = new Integer[100];
         Integer[] years = new Integer[100];
-        String[] nameEvents =new String[100];
+        List<String> nameEvents = new ArrayList<>(); //List
         Double[] numDonate = new Double[100];
         String[] months = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
         int count = 0;
-        int num =0;
+        int num = 0;
 
-        List<Report> reports = new ArrayList<>();
-        List<Report> listReport = reportService.DonationEventinYear();
+        List<Report> reports, listDonation;
         int y = Calendar.getInstance().get(Calendar.YEAR);
-        if (myYear!=null) {
+        if (myYear != null) {
             reports = reportService.reportReportByYear(myYear);
+            listDonation = reportService.donationEventByYear(myYear);
             model.addAttribute("cY", myYear);
         } else {
             reports = reportService.reportReportCurrentYear();
+            listDonation = reportService.donationEventCurrentYear();
             model.addAttribute("cY", y);
         }
 
@@ -48,13 +48,11 @@ public class ReportController {
             numEvents[count] = r.getNumberEvents();
             count++;
         }
-
-        for (Report l : listReport) {
-           numDonate[num] = l.getDonationEvents();
-           nameEvents[num] = l.getNameEvents();
-            System.out.println(numDonate[num]);
-            System.out.println(nameEvents[num]);
-           num++;
+        // Lấy tiền donate và tên sự kiện
+        for (Report l : listDonation) {
+            numDonate[num] = l.getDonationEvents();
+            nameEvents.add(l.getNameEvents());
+            num++;
         }
 
         for (int i = 2010; i <= y; i++) {
@@ -63,8 +61,8 @@ public class ReportController {
         model.addAttribute("years", years);
         model.addAttribute("months", months);
         model.addAttribute("numEvents", numEvents);
-        model.addAttribute("numDonates",numDonate);
-        model.addAttribute("nameEvents",nameEvents);
+        model.addAttribute("numDonates", numDonate);
+        model.addAttribute("nameEvents", nameEvents); // Dữ liệu list truyền vào data cho chart
 
         //  model.addAttribute("report", reports);
         return "admin/Report";

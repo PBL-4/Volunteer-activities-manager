@@ -47,7 +47,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<Report> DonationEventinYear() {
+    public List<Report> donationEventCurrentYear() {
         int y = Calendar.getInstance().get(Calendar.YEAR);
         List<Event> reports = eventRepository.donationEventinYear(y);
         List<Report> listReport = new ArrayList<>();
@@ -57,6 +57,19 @@ public class ReportServiceImpl implements ReportService {
             report.setNameEvents(e.getEventName());
             listReport.add(report);
 
+        }
+        return listReport;
+    }
+
+    @Override
+    public List<Report> donationEventByYear(int year) {
+        List<Event> reports = eventRepository.donationEventinYear(year);
+        List<Report> listReport = new ArrayList<>();
+        for(Event e : reports) {
+            Report report = new Report();
+            report.setDonationEvents(e.getDonation());
+            report.setNameEvents(e.getEventName());
+            listReport.add(report);
         }
         return listReport;
     }
