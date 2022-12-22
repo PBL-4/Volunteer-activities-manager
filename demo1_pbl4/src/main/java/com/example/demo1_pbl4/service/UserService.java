@@ -21,7 +21,7 @@ public interface UserService {
 
     boolean checkLogin(String username, String password);
 
-    User findUserByUsername(String usernane);
+    User findUserByUsername(String username);
 
 
 
@@ -30,8 +30,6 @@ public interface UserService {
     Page<User> findUsersWithPagination(int offset, int pageSize);
 
   //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
-
-
-
+    Integer countAllUser();
 
 }

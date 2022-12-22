@@ -30,4 +30,11 @@ public interface RatingEventService {
 
     Rating findRatingByUserEventId(Long eventId, Long userId);
 
+    double calAvgPointOfEvent(Long eventId);
+
+    void setStarEachEvent(Long eventId);
+
+    void setStarAllEvent();
+
+
 }

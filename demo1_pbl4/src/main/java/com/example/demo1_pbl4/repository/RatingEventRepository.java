@@ -41,6 +41,11 @@ public interface RatingEventRepository extends JpaRepository<Rating, Long> {
     @Query(value = "SELECT * FROM Rating where event_id =?1 and user_id=?2", nativeQuery = true)
     Rating findRatingByUserEventId(Long eventId, Long userId);
 
+    //SELECT 1 trong USER_EVENT
+    @Query(value = "SELECT * FROM rating WHERE rating.event_id=?1 ", nativeQuery = true)
+    List<Rating> findRatingInEvent(Long eventId);
+
+
 }
 
 //   @Query(value = "SELECT user_event.user_user_id,first_name,last_name,role_of_event,point4,point5,point6 FROM user_event " +

@@ -1,10 +1,12 @@
 package com.example.demo1_pbl4.service.impl;
 
+import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Rating;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import com.example.demo1_pbl4.repository.RatingEventRepository;
+import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.RatingEventService;
 import com.example.demo1_pbl4.service.UserEventService;
 import com.example.demo1_pbl4.service.UserService;
@@ -25,6 +27,9 @@ public class RatingEventServiceImpl implements RatingEventService {
 
     @Autowired
     private UserEventService userEventService;
+
+    @Autowired
+    private EventService eventService;
 
     @Override
     public List<Rating> getAllRatings() {
@@ -113,4 +118,72 @@ public class RatingEventServiceImpl implements RatingEventService {
 
     }
 
+    @Override
+    public double calAvgPointOfEvent(Long eventId) {
+        double sum=0;
+        int count=0;
+        for(Rating r: ratingEventRepository.findRatingInEvent(eventId))
+        {
+            r.setAvgEventPoint((r.getPoint1()+r.getPoint2()+r.getPoint3())/3.0);
+            sum+=r.getAvgEventPoint();
+            count++;
+        }
+        System.out.println("sum="+sum);
+        System.out.println("count="+count);
+        if(count==0)
+        {
+            return 0;
+        }
+        return sum/count;
+    }
+
+    @Override
+    public void setStarEachEvent(Long eventId) {
+        double avg=calAvgPointOfEvent(eventId);
+        Event e=eventService.getEventById(eventId);
+        e.setRating(avg);
+        System.out.println();
+        if(avg>=9.0)
+        {
+            e.setStar(5);
+        }else if(avg>=8.0&& avg<9.0){
+            e.setStar(4);
+        }
+        else if(avg>=6.0&& avg<8.0){
+            e.setStar(3);
+        }
+        else if(avg>=4.0&& avg<6.0){
+            e.setStar(2);
+        }else if(avg==0){
+            e.setStar(0);
+        }
+        else{
+            e.setStar(1);
+        }
+    }
+
+    @Override
+    public void setStarAllEvent() {
+        for(Event e : eventService.findAllFinishEvent())
+        {
+            double avg=calAvgPointOfEvent(e.getEventId());
+            e.setRating(avg);
+            if(avg>=9.0)
+            {
+                e.setStar(5);
+            }else if(avg>=8.0&& avg<9.0){
+                e.setStar(4);
+            }
+            else if(avg>=6.0&& avg<8.0){
+                e.setStar(3);
+            }
+            else if(avg>=4.0&& avg<6.0){
+                e.setStar(2);
+            }else if(avg>0&& avg<4.0){
+                e.setStar(1);
+            }else{
+                e.setStar(0);
+            }
+        }
+    }
 }

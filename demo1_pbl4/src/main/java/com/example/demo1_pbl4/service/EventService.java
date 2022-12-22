@@ -25,6 +25,10 @@ public interface EventService {
     Page<Event> findEventOfHost(Long userId, String role, Pageable pageable);
 
     //void createEventByHost(Long userId,Long eventId, String role,Boolean isApproval);
+    //
+    Integer countAllEvents();
+    List<Event> findAllFinishEvent();
 
-
+    //check if event is finish
+    Boolean isFinishEvent(Long eventId);
 }

@@ -12,8 +12,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
     <!-- Google Fonts Roboto -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+    <div th:replace="~{/header::head_bootstrap}">
+    </div>
     <!-- MDB -->
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- Intro settings -->
     <style>
         .join {
@@ -41,9 +45,12 @@
 
             }
         }
+
+        .checked {
+            color: orange;
+        }
     </style>
-    <div th:replace="~{/header::head_bootstrap}">
-    </div>
+
 </head>
 
 <body>
@@ -200,7 +207,7 @@
                              aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <form th:action="@{'/posts/sendRequest'}" method="post">
-                                    <input type="hidden" name="userId" th:value="${user.userId}">
+                                    <input type="hidden" th:if="${user!=null}" name="userId" th:value="${user.userId}">
                                     <input type="hidden" name="eventId" th:value="${event.eventId}">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -404,7 +411,7 @@
                         </div>
                     </section>
                     <!--Section: Ad-->
-                    <!--Section: Video-->
+                    <!--Section: Location-->
                     <section class="text-center">
                         <div class="bg-image hover-overlay ripple mb-4">
                             <h5 class="mb-4">Địa điểm</h5>
@@ -416,7 +423,7 @@
                             <p th:text="${post.event.location}"></p>
                         </div>
                     </section>
-                    <!--Section: Video-->
+                    <!--Section: Time-->
                     <section class="text-center">
                         <div class="bg-image hover-overlay ripple mb-4">
                             <h5 class="mb-4">Thời gian đăng bài</h5>
@@ -426,6 +433,42 @@
                             <!--                                    src="https://www.youtube.com/embed/c9B4TPnak1A"-->
                             <!--                                    allowfullscreen></iframe>-->
                             <p th:text="${#dates.format(post.postDate, 'dd-MMM-yyyy')}"></p>
+                        </div>
+                    </section>
+
+                    <section class="text-center">
+                        <div class="bg-image hover-overlay ripple mb-4">
+                            <table class="table-borderless">
+                                <tr>
+                                    <th>Số lượng thành viển hiện tại:</th>
+                                    <td th:text="${currentMem}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Số lượng thành viển tối đa:</th>
+                                    <td th:text="${numOfMem}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section th:if="${hasRating}" class="text-center">
+                        <div class="bg-image hover-overlay ripple mb-4">
+                            <table class="table-borderless">
+                                <tr>
+                                    <th>Điểm</th>
+                                    <td th:text="${avgPoint}"></td>
+                                </tr>
+                                <tr>
+                                    <th>Được đánh giá</th>
+                                    <td>
+                                        <span class="fa fa-star" th:classappend="${star>=1} ? checked"></span>
+                                        <span class="fa fa-star" th:classappend="${star>=2} ? checked"></span>
+                                        <span class="fa fa-star" th:classappend="${star>=3} ? checked"></span>
+                                        <span class="fa fa-star" th:classappend="${star>=4} ? checked"></span>
+                                        <span class="fa fa-star" th:classappend="${star==5} ? checked"></span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </section>
                 </section>
@@ -449,6 +492,7 @@
            target="_blank">
             Donate to Volunteer
         </a>
+
     </div>
 
     <hr class="m-0"/>

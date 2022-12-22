@@ -133,6 +133,7 @@
             #sidebar .list-group > .list-group-item[aria-expanded="true"]::after,
             #sidebar .list-group > .list-group-item[aria-expanded="false"]::after {
                 display: none;
+
             }
         }
 
@@ -172,21 +173,26 @@
             <div class="list-group border-0 text-center text-md-left">
                 <a href="#" class="list-group-item d-inline-block collapsed"><i class="fa fa-dashboard"></i> <span
                         class="d-none d-md-inline">Chào &nbsp; [[${user.username}]]</span> </a>
-                <a th:href="@{/events/host_event}" target="event_frame" class="list-group-item d-inline-block collapsed"><i
+                <a th:href="@{/events/host_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed"><i
                         class="fa fa-clock-o"></i> <span class="d-none d-md-inline">Hoạt động đang tổ chức</span></a>
-                <a th:href="@{/events/member_event}"target="event_frame" class="list-group-item d-inline-block collapsed"><i
+                <a th:href="@{/events/member_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed"><i
                         class="fa fa-list"></i><span
                         class="d-none d-md-inline">Hoạt động bạn đã đăng ký tham gia</span></a>
             </div>
         </div>
-        <main class="col-md-9 float-left col px-5 pl-md-2 pt-2 main" style="height: 720px">
+        <main id="main_content" class="col-md-9 float-left col px-5 pl-md-2 pt-2 main" style="width:100%;height: 720px">
             <a href="#" data-target="#sidebar" data-toggle="collapse"><i
                     class="text-dark fa fa-navicon fa-lg py-2 p-1"></i></a>
-            <iframe width="100%" height="100%" name="event_frame" th:src="@{/events/host_event}">
+            <!--            <iframe width="100%" height="100%" name="event_frame" th:src="@{/events/host_event}">-->
 
-            </iframe>
+            <!--            </iframe>-->
+
         </main>
     </div>
 </div>
 </body>
+<script>
+</script>
 </html>

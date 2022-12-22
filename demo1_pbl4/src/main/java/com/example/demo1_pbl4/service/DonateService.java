@@ -13,7 +13,9 @@ public interface DonateService {
 
      List<TotalDonationOfUser> SumofDonatUser();
 
-     public double SumofDonate(Long user_id);
+     public double SumDonateByUser(Long user_id);
+
+     double sumAllDonate();
 
 }
 
