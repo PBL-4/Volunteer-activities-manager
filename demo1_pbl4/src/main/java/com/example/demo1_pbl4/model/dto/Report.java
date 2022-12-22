@@ -1,11 +1,27 @@
 package com.example.demo1_pbl4.model.dto;
 
+// Class thống kê theo tháng
 public class Report {
     private int month;
 
     private int numberEvents;
 
+    private int numberVolunteers;
+
+
     private double donationEvents;
+
+    public Report() {
+    }
+
+    public Report(String nameEvents) {
+        this.nameEvents = nameEvents;
+    }
+
+    public Report(int month, int numberEvents) {
+        this.month = month;
+        this.numberEvents = numberEvents;
+    }
 
     public String getNameEvents() {
         return nameEvents;
@@ -15,8 +31,12 @@ public class Report {
         this.nameEvents = nameEvents;
     }
 
-    public Report(String nameEvents) {
-        this.nameEvents = nameEvents;
+    public int getNumberVolunteers() {
+        return numberVolunteers;
+    }
+
+    public void setNumberVolunteers(int numberVolunteers) {
+        this.numberVolunteers = numberVolunteers;
     }
 
     private String nameEvents;
@@ -50,9 +70,5 @@ public class Report {
         this.numberEvents = numberEvents;
     }
 
-    public Report(){}
-    public Report(int month, int numberEvents) {
-        this.month = month;
-        this.numberEvents = numberEvents;
-    }
+
 }

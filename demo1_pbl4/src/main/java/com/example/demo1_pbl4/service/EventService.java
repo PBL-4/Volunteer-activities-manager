@@ -31,4 +31,6 @@ public interface EventService {
 
     //check if event is finish
     Boolean isFinishEvent(Long eventId);
+
+    List<Event> sortEventByRating();
 }

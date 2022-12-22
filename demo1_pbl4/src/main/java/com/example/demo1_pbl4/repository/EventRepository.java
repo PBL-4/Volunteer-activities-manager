@@ -46,4 +46,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value= "SELECT * FROM events where YEAR(begin_time) =?1",nativeQuery = true)
     public List<Event> donationEventinYear(int year);
 
+    @Query(value= "SELECT count(current_member) FROM events where MONTH(begin_time) =?1 AND YEAR(begin_time) =?2",nativeQuery = true)
+    public int countVolunteerInMonthAndYear(int month,int year);
 }

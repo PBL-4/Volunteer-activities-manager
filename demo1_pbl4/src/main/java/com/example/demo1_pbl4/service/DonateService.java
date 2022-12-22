@@ -11,7 +11,9 @@ public interface DonateService {
 
      void updateDonate(Donate donate);
 
-     List<TotalDonationOfUser> SumofDonatUser();
+     List<TotalDonationOfUser> sumOfDonateUser();
+
+     List<TotalDonationOfUser> sortByTotalDonate();
 
      public double SumDonateByUser(Long user_id);
 

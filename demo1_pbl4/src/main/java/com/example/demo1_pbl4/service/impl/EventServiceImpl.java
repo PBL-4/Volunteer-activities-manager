@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -97,17 +95,16 @@ public class EventServiceImpl implements EventService {
     @Override
     public Page<Event> findEventOfHost(Long userId, String role, Pageable pageable) {
         setStatusByDateTime(eventRepository.findAll());
-        Page<Event> eventPages= eventRepository.findEventOfHost(userId, role, pageable);
-   //     List<Event> events=new ArrayList<>();
-        for(Event e: eventPages.getContent())
-        {
+        Page<Event> eventPages = eventRepository.findEventOfHost(userId, role, pageable);
+        //     List<Event> events=new ArrayList<>();
+        for (Event e : eventPages.getContent()) {
             e.setCurrentMem(eventRepository.countCurrentMember(e.getEventId()));
             e.setWaitingApproval(eventRepository.countWaitingApproval(e.getEventId()));
-      //      System.out.println("idEvent: "+e.getEventId());
-          System.out.println("curent mem: "+eventRepository.countCurrentMember(e.getEventId()));
-        //    events.add(e);
-            e=eventRepository.save(e);
-            System.out.println("curent mem after save: "+(e.getCurrentMem()));
+            //      System.out.println("idEvent: "+e.getEventId());
+            System.out.println("current mem: " + eventRepository.countCurrentMember(e.getEventId()));
+            //    events.add(e);
+            e = eventRepository.save(e);
+            System.out.println("current mem after save: " + (e.getCurrentMem()));
         }
 
         return eventRepository.findEventOfHost(userId, role, pageable);
@@ -123,19 +120,19 @@ public class EventServiceImpl implements EventService {
                 System.out.println("Date hien tai: " + sdf.format(now));
                 System.out.println("Date bat dau: " + sdf.parse(beginDateStr).toString());
 
-                Date beginDate=sdf.parse(beginDateStr);
-                Date finishDate=sdf.parse(finishDateStr);
-                now=sdf.parse(sdf.format(now));   // không cùng định dạng sẽ ko ss
+                Date beginDate = sdf.parse(beginDateStr);
+                Date finishDate = sdf.parse(finishDateStr);
+                now = sdf.parse(sdf.format(now));   // không cùng định dạng sẽ ko ss
                 if (beginDate.after(now)) {
-                    Status status=statusRepository.findById(1L).get();
+                    Status status = statusRepository.findById(1L).get();
                     event.setStatus(status);
                     System.out.println("Here 1");
                 } else if (beginDate.before(now) && finishDate.after(now)) {
-                    Status status=statusRepository.findById(2L).get();
+                    Status status = statusRepository.findById(2L).get();
                     event.setStatus(status);
                     System.out.println("Here 2");
                 } else if (finishDate.before(now)) { // Thời gian kết thúc muộn hơn thời gian thực
-                    Status status=statusRepository.findById(3L).get();
+                    Status status = statusRepository.findById(3L).get();
                     event.setStatus(status);
                     System.out.println("Here 3");
                 } else {
@@ -150,9 +147,8 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Integer countAllEvents() {
-        int count=0;
-        for(Event e: eventRepository.findAll())
-        {
+        int count = 0;
+        for (Event e : eventRepository.findAll()) {
             count++;
         }
         return count;
@@ -160,11 +156,10 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public List<Event> findAllFinishEvent() {
-        List<Event> events=new ArrayList<>();
-        Date now =new Date();
-        for(Event e: eventRepository.findAll())
-        {
-            if(e.getBeginTime().before(now)){
+        List<Event> events = new ArrayList<>();
+        Date now = new Date();
+        for (Event e : eventRepository.findAll()) {
+            if (e.getBeginTime().before(now)) {
                 events.add(e);
             }
         }
@@ -173,14 +168,19 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Boolean isFinishEvent(Long eventId) {
-        Event e =  eventRepository.findById(eventId).get();
-        Date now=new Date();
-        if(e.getEndTime().before(now))
+        Event e = eventRepository.findById(eventId).get();
+        Date now = new Date();
+        if (e.getEndTime().before(now))
             return true;
         return false;
     }
-    //    @Override
-//    public void createEventByHost(Long userId, Long eventId, String role, Boolean isApproval) {
-//        eventRepository.createEventByHost(userId, eventId, role, isApproval);
-//    }
+
+    @Override
+    public List<Event> sortEventByRating() {
+        List<Event> eventList = eventRepository.findAll();
+        Collections.sort(eventList, (o1, o2) -> {
+            return Double.compare(o2.getRating(), o1.getRating());
+        });// Thay cho new Comparator
+        return eventList;
+    }
 }

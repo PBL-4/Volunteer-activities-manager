@@ -23,10 +23,11 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<Report> reportReportCurrentYear() {
         List<Report> reports = new ArrayList<>();
-        for (int m = 1; m <=12; m++) {
+        for (int m = 1; m <= 12; m++) {
             int y = Calendar.getInstance().get(Calendar.YEAR);
             Report report = new Report();
             report.setNumberEvents(eventRepository.numberEventsInMonth(m, y));
+            report.setNumberVolunteers(eventRepository.countVolunteerInMonthAndYear(m, y));
             report.setMonth(m);
             reports.add(report);
 
@@ -34,12 +35,14 @@ public class ReportServiceImpl implements ReportService {
         return reports;
 
     }
+
     @Override
     public List<Report> reportReportByYear(int year) {
         List<Report> reports = new ArrayList<>();
-        for (int m = 1; m <=12; m++) {
+        for (int m = 1; m <= 12; m++) {
             Report report = new Report();
             report.setNumberEvents(eventRepository.numberEventsInMonth(m, year));
+            report.setNumberVolunteers(eventRepository.countVolunteerInMonthAndYear(m, year));
             report.setMonth(m);
             reports.add(report);
         }
@@ -51,7 +54,7 @@ public class ReportServiceImpl implements ReportService {
         int y = Calendar.getInstance().get(Calendar.YEAR);
         List<Event> reports = eventRepository.donationEventinYear(y);
         List<Report> listReport = new ArrayList<>();
-        for(Event e : reports) {
+        for (Event e : reports) {
             Report report = new Report();
             report.setDonationEvents(e.getDonation());
             report.setNameEvents(e.getEventName());
@@ -65,7 +68,7 @@ public class ReportServiceImpl implements ReportService {
     public List<Report> donationEventByYear(int year) {
         List<Event> reports = eventRepository.donationEventinYear(year);
         List<Report> listReport = new ArrayList<>();
-        for(Event e : reports) {
+        for (Event e : reports) {
             Report report = new Report();
             report.setDonationEvents(e.getDonation());
             report.setNameEvents(e.getEventName());
@@ -74,5 +77,30 @@ public class ReportServiceImpl implements ReportService {
         return listReport;
     }
 
+    @Override
+    public List<Double> getDonatePerMByY(int year) {
+        List<Double> donateASC = new ArrayList<>();
+        for (Report r : donationEventByYear(year)) {
+            donateASC.add(r.getDonationEvents());
+        }
+        return donateASC;
+    }
 
+    @Override
+    public List<Integer> getEventPerMByY(int year) {
+        List<Integer> numOfEventsMonthly = new ArrayList<>();
+        for (Report r : reportReportByYear(year)) {
+            numOfEventsMonthly.add(r.getNumberEvents());
+        }
+        return numOfEventsMonthly;
+    }
+
+    @Override
+    public List<Integer> getUserPerMByY(int year) {
+        List<Integer> numOfUsersMonthly = new ArrayList<>();
+        for (Report r : reportReportByYear(year)) {
+            numOfUsersMonthly.add(r.getNumberVolunteers());
+        }
+        return numOfUsersMonthly;
+    }
 }

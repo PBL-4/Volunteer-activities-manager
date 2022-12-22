@@ -12,4 +12,10 @@ public interface ReportService {
     public List<Report> donationEventCurrentYear();
     List<Report> donationEventByYear(int year);
 
+    //Lấy tất cả tổng donate từng tháng theo năm
+    List<Double> getDonatePerMByY(int year);
+
+    List<Integer> getEventPerMByY(int year);
+
+    List<Integer> getUserPerMByY(int year);
 }
