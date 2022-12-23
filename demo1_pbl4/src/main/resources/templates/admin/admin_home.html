@@ -7,19 +7,15 @@
     <title>Admin home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
     <script src="https://code.highcharts.com"></script>
-    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <!-- plugins:css -->
-    <link rel="stylesheet" th:href="@{/admin_home/assets/vendors/mdi/css/materialdesignicons.min.css}">
-    <link rel="stylesheet" th:href="@{/admin_home/assets/vendors/css/vendor.bundle.base.css}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
-    <link rel="stylesheet" th:href="@{/admin_home/assets/css/style.css}">
-    <!-- End layout styles -->
-    <link rel="shortcut icon" th:href="@{/admin_home/assets/images/favicon.ico}"/>
+
+    <div th:fragment="css">
+        <link rel="stylesheet" th:href="@{/admin_home/assets/vendors/mdi/css/materialdesignicons.min.css}">
+        <link rel="stylesheet" th:href="@{/admin_home/assets/vendors/css/vendor.bundle.base.css}">
+
+        <link rel="stylesheet" th:href="@{/admin_home/assets/css/style.css}">
+        <!-- End layout styles -->
+        <link rel="shortcut icon" th:href="@{/admin_home/assets/images/my_logo.png}"/>
+    </div>
     <style>
         body {
             font-size: 15px;
@@ -29,7 +25,8 @@
 <body>
 <div class="container-scroller">
     <!-- partial:partials/_navbar.html   Top Nav-->
-    <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+
+    <nav th:fragment="head_nav" class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
             <a class="navbar-brand brand-logo" th:href="@{/admin_home}"><img
                     th:src="@{/admin_home/assets/images/my_logo.png}" alt="logo"/></a>
@@ -192,9 +189,10 @@
         </div>
     </nav>
     <!-- partial -->
+
     <div class="container-fluid page-body-wrapper">
         <!-- partial:partials/_sidebar.html -->
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <nav th:fragment="side_nav" class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                 <li class="nav-item nav-profile">
                     <a href="#" class="nav-link">
@@ -212,7 +210,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/my_admin_home}">
+                    <a class="nav-link" th:href="@{/admin_home}">
                         <span class="menu-title">Trang chủ</span>
                         <i class="mdi mdi-home menu-icon"></i>
                     </a>
@@ -535,20 +533,22 @@
 </script>
 <!-- container-scroller -->
 <!-- plugins:js -->
-<script th:src="@{/admin_home/assets/vendors/js/vendor.bundle.base.js}"></script>
-<!-- endinject -->
-<!-- Plugin js for this page -->
-<script th:src="@{/admin_home/assets/vendors/chart.js/Chart.min.js}"></script>
-<script th:src="@{/admin_home/assets/js/jquery.cookie.js}" type="text/javascript"></script>
-<!-- End plugin js for this page -->
-<!-- inject:js -->
-<script th:src="@{/admin_home/assets/js/off-canvas.js}"></script>
-<script th:src="@{/admin_home/assets/js/hoverable-collapse.js}"></script>
-<script th:src="@{/admin_home/assets/js/misc.js}"></script>
-<!-- endinject -->
-<!-- Custom js for this page -->
-<script th:src="@{/admin_home/assets/js/dashboard.js}"></script>
-<script th:src="@{/admin_home/assets/js/todolist.js}"></script>
-<!-- End custom js for this page -->
+<div th:fragment="js">
+    <script th:src="@{/admin_home/assets/vendors/js/vendor.bundle.base.js}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script th:src="@{/admin_home/assets/vendors/chart.js/Chart.min.js}"></script>
+    <script th:src="@{/admin_home/assets/js/jquery.cookie.js}" type="text/javascript"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script th:src="@{/admin_home/assets/js/off-canvas.js}"></script>
+    <script th:src="@{/admin_home/assets/js/hoverable-collapse.js}"></script>
+    <script th:src="@{/admin_home/assets/js/misc.js}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page -->
+    <script th:src="@{/admin_home/assets/js/dashboard.js}"></script>
+    <script th:src="@{/admin_home/assets/js/todolist.js}"></script>
+    <!-- End custom js for this page -->
+</div>
 </body>
 </html>

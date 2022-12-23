@@ -81,14 +81,9 @@ public class HomepageController {
         session.setAttribute("username", username);
 
         if (userService.checkLogin(username, password)) {
-            System.out.println("Dang nhap thanh cong");
             //  session.setAttribute("username", username);
             session.setAttribute("user", userService.findUserByUsername(username));
-
-            //  System.out.println(context.getContextPath());
-            // return "redirect:/"+context.getContextPath();
-            System.out.println(remember);
-            if (remember != null) {
+            if (remember) {
                 Cookie cookie1 = new Cookie("username", username);
                 cookie1.setMaxAge(5); // expires in 5mins
                 Cookie cookie2 = new Cookie("password", password);
@@ -97,9 +92,6 @@ public class HomepageController {
                 response.addCookie(cookie2);
             }
             String url = request.getRequestURL().toString();
-            // request.getServletPath();
-            System.out.println("url: " + url);
-            System.out.println("url1: " + request.getServletPath());
             return "redirect:/home";
 
         } else {

@@ -69,10 +69,9 @@ public class EventController {
         long totalItems = eventPages.getTotalElements();
         int totalPages = eventPages.getTotalPages();
         List<Event> eventLists = eventPages.getContent();
-        if(eventLists.isEmpty())
-        {
-            model.addAttribute("message","Không có dữ liệu có sẵn");
-        }else{
+        if (eventLists.isEmpty()) {
+            model.addAttribute("message", "Không có dữ liệu có sẵn");
+        } else {
             model.addAttribute("totalItems", totalItems);
             model.addAttribute("totalPages", totalPages);
             model.addAttribute("eventList", eventLists);
@@ -138,7 +137,7 @@ public class EventController {
 
     @GetMapping("/create_event")
     public String showCreateEventForm(Model model, HttpSession session) {
-        if (session.getAttribute("username") != null) {
+        if (session.getAttribute("user") != null) {
             return "/event/create_event_host";
         } else {
             return "redirect:/login";
@@ -146,6 +145,19 @@ public class EventController {
 
     }
 
+    @GetMapping("/update_host_event{id}")
+    public String showUpdateEventForm(Model model, HttpSession session, @RequestParam("id") Long id) {
+        if (session.getAttribute("user") != null) {
+            Event e=eventService.getEventById(id);
+            model.addAttribute("event",e);
+            return "/event/update_event_host";
+        } else {
+            return "redirect:/login";
+        }
+
+    }
+
+    //Tạo mới một sự kiện
     @PostMapping("/create_event")
     public String createEvent(Model model, HttpSession session, @RequestParam("eventName") String eventName
             , @RequestParam("location") String location
@@ -156,8 +168,8 @@ public class EventController {
             , @RequestParam("donation") double donation
             , @RequestParam("content") String content
     ) {
-        if ((session.getAttribute("username")) != null) {
-            User user = userService.findUserByUsername(session.getAttribute("username").toString());
+        if ((session.getAttribute("user")) != null) {
+            User user = (User) session.getAttribute("user");
 
             Long millis = System.currentTimeMillis();
             Date datePost = new Date(millis);
@@ -176,7 +188,7 @@ public class EventController {
             //    eventService.createEventByHost(user.getUserId(), event.getEventId(), "Host", true);
             System.out.println("eventId=" + event.getEventId());
             //  return "redirect:/"+ context.getContextPath()+"/my_event";
-            return "redirect:/events/my_event";
+            return "redirect:/events/host_event";
         } else {
             System.out.println("Chua dang nhap");
             model.addAttribute("message", "Bạn chưa xác thực để thực hiện hành động này");
@@ -184,39 +196,49 @@ public class EventController {
         }
     }
 
-    @GetMapping("/admin")
-    public String showEventOnAdmin(Model model) {
-        List<Event> eventLists = eventService.getAllEvents();
-        model.addAttribute("Events", eventLists);
-        return "/admin/EventsManager";
-    }
-
-    @PostMapping("/admin")
-    public String View(Model model, @RequestParam("eventName") String keyword) {
-        List<Event> listevent = eventService.findEventByEventName(keyword);
-        model.addAttribute("Events", listevent);
-        model.addAttribute("eventName", keyword);
-
-        return "admin/EventsManager";
-    }
-
-    //BachLT: Quản lý danh sách hoạt động đang tham gia: trang đầu tiên của recruite volunteer
-    // Bắt đầu phần my_event:
-//    @GetMapping("/my_event")
-//    public String showAllMyEvent(Model model, HttpSession session) {
-//        User user = null;
+//    @GetMapping("/test")
+//    public String test(Model model, HttpSession session) {
 //        if (session.getAttribute("user") != null) {
-//            user = (User) session.getAttribute("user");
+//            User u = (User) session.getAttribute("user");
+//            model.addAttribute("myUser", u);
+//            List<Event> eventLists = eventService.getAllEvents();
+//            model.addAttribute("Events", eventLists);
+//            return "admin/EventsManager";
 //        }
-//        if (user != null) {
-//            model.addAttribute("user",user);
-//            return "event/my_event";
-//        } else {
-//            System.out.println("Chưa đăng nhập");
-//            return "redirect:/login";
+//        else {
+//            return "403Page";
 //        }
 //    }
 
+    @GetMapping("/admin")
+    public String showEventOnAdmin(Model model, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            model.addAttribute("myUser", u);
+            List<Event> eventLists = eventService.getAllEvents();
+            model.addAttribute("Events", eventLists);
+            return "admin/EventsManager";
+        } else {
+            return "403Page";
+        }
+    }
+
+    @PostMapping("/admin")
+    public String View(Model model, @RequestParam("eventName") String keyword, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            model.addAttribute("myUser", u);
+            List<Event> listevent = eventService.findEventByEventName(keyword);
+            model.addAttribute("Events", listevent);
+            model.addAttribute("eventName", keyword);
+            return "admin/EventsManager";
+        } else {
+            return "403Page";
+        }
+
+    }
+
+    //BachLT: Quản lý danh sách hoạt động đang tham gia: trang đầu tiên của recruite volunteer=> my activity
     // Hiển thị trang host event với những sự kiện do bản thân user tổ chức
     @GetMapping("/host_event")
     public String showMyHostEvent(Model model, HttpSession session) {
@@ -234,10 +256,9 @@ public class EventController {
             } else {
                 model.addAttribute("events", eventList);
             }
-            model.addAttribute("user",user);
+            model.addAttribute("user", user);
             return "event/host_event";
         } else {
-            System.out.println("context: " + context.getContextPath());
             System.out.println("Chưa đăng nhập");
             return "redirect:/login";
         }
@@ -257,7 +278,7 @@ public class EventController {
             } else {
                 model.addAttribute("myEvents", userEventList);
             }
-            model.addAttribute("user",u);
+            model.addAttribute("user", u);
             return "event/member_event";
         } else {
             model.addAttribute("message", "Bạn chưa đăng nhập thành viên để vào trang này");
@@ -303,14 +324,12 @@ public class EventController {
     }
 
     @GetMapping("/cancelRequest")
-    public String cancelRequestJoin(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId)
-    {
-       boolean check= userEventService.deleteUserEvent(userId,eventId);
-       if(check)
-       {
-           model.addAttribute("message", "Hủy thành công");
-           System.out.println("Hủy thành công");
-       }
-       return "redirect:/";
+    public String cancelRequestJoin(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
+        boolean check = userEventService.deleteUserEvent(userId, eventId);
+        if (check) {
+            model.addAttribute("message", "Hủy thành công");
+            System.out.println("Hủy thành công");
+        }
+        return "redirect:/";
     }
 }

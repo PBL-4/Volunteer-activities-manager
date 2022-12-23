@@ -37,23 +37,22 @@ public class UserController {
         return "insert_user";
     }
 
-    @PostMapping("/insertUser")
-    // Voi bien se dung @RequestParam nhung voi doi tuong thi
-
+    @PostMapping("/insertUser")// Voi bien se dung @RequestParam nhung voi doi tuong thi
     public ModelAndView createUser(@ModelAttribute("myUser") User myUser) {
         if (myUser != null) {
             userService.insertUser(myUser);
         }       // Chỗ này cần phải tối ưu.
-
-        return new ModelAndView("redirect:/users/");
+        return new ModelAndView("redirect:/users");
     }
 
+    // Trang quản lý tình nguyện viên
     @GetMapping("/admin")
     public String showUserOnAdmin(Model model, HttpSession session) {
         try {
             if (session.getAttribute("user") != null) {
                 User user = (User) session.getAttribute("user");
                 if (user.getRole().getRoleName().equals("ADMIN")) {
+                    model.addAttribute("myUser", user);
                     model.addAttribute("users", userService.getAllUsers());
                     return "admin/UserManager";
                 }
@@ -65,13 +64,25 @@ public class UserController {
         return "403Page";
     }
 
+    //search
     @PostMapping("/admin")
-    public String View(Model model, @RequestParam("keyword") String keyword) {
-        List<User> listuser = userService.search(keyword);
-        model.addAttribute("users", listuser);
-        model.addAttribute("keyword", keyword);
-
-        return "admin/UserManager";
+    public String View(Model model, @RequestParam("keyword") String keyword, HttpSession session) {
+        try {
+            if (session.getAttribute("user") != null) {
+                User user = (User) session.getAttribute("user");
+                if (user.getRole().getRoleName().equals("ADMIN")) {
+                    model.addAttribute("myUser", user);
+                    List<User> listuser = userService.search(keyword);
+                    model.addAttribute("users", listuser);
+                    model.addAttribute("keyword", keyword);
+                    return "admin/UserManager";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "500Page";
+        }
+        return "403Page";
     }
 
     @GetMapping("/admin/delete/{id}")
