@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>UserManager</title>
+    <title>History of donation</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
@@ -12,7 +12,7 @@
     }
 </script>
 <body>
-<div class="container-fluid text-center">
+<div class="container text-center">
     <div><h2>History Donation of You</h2></div>
 
     <div>
@@ -24,14 +24,13 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th>Donation_ID</th>
-                <th>User_ID</th>
-                <th>LastName</th>
-                <th>FirstName</th>
-                <th>EventName</th>
-                <th>Event_Id</th>
-                <th>DonationDate</th>
-                <th>MoneyDonation</th>
+                <th>Donation Id</th>
+                <th>User Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Event Name</th>
+                <th>Donation Date</th>
+                <th>Money Donation</th>
 
             </tr>
             </thead>
@@ -40,18 +39,25 @@
                 <tr>
                     <td th:text="${d.getIdDonation()}"></td>
                     <td th:text="${d.getUser().getUserId()}"></td>
-                    <td th:text="${d.getUser().getLastName()}"></td>
                     <td th:text="${d.getUser().getFirstName()}"></td>
+                    <td th:text="${d.getUser().getLastName()}"></td>
                     <td th:text="${d.getEvent().getEventName()}"></td>
-                    <td th:text="${d.getEvent().getEventId()}"></td>
-                    <td th:text="${d.getDonateDate()}"></td>
-                    <td th:text="${#numbers.formatCurrency(d.getMoney())}"></td>
+                    <td th:text="${#dates.format(d.getDonateDate(), 'hh:mm:ss dd-MMM-yyyy')}"></td>
+                    <td><span
+                            th:inline="text">$ [[${#numbers.formatDecimal(d.getMoney(),0, 'COMMA', 2, 'POINT')}]]</span>
+                    </td>
                 </tr>
             </th:block>
         </table>
         <div>
-            <p>TotalMoney: <span th:text="${#numbers.formatCurrency(totalmoney)}"> </span></p>
+            <p>Total money:
+                <span
+                        th:inline="text">$ [[${#numbers.formatDecimal(totalmoney,0, 'COMMA', 2, 'POINT')}]]</span>
+            </p>
         </div>
+    </div>
+    <div>
+        <a th:href="@{/}">Back to home</a>
     </div>
 </div>
 </body>

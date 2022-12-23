@@ -1,6 +1,6 @@
 package com.example.demo1_pbl4.model.dto;
 
-public class TotalDonationOfUser {
+public class TotalDonationOfUser{
 
     private Long userId;
 
@@ -8,6 +8,9 @@ public class TotalDonationOfUser {
 
     private  String lastName;
 
+    private double Total;
+
+    private String address;
 
     public Long getUserId() {
         return userId;
@@ -41,7 +44,13 @@ public class TotalDonationOfUser {
         Total = total;
     }
 
-    private double Total;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public TotalDonationOfUser(Long user_id, String firsName, String lastName, double total){
         this.userId = user_id;

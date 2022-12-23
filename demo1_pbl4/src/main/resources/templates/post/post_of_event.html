@@ -160,27 +160,25 @@
                                                 data-target="#joinRequest" class="bg-secondary text-white join" disabled
                                         >Tôi muốn tham gia
                                         </button>
-                                        <label>Bạn đã đăng ký sự kiện</label>
+                                        <label class="alert alert-success">Bạn đã đăng ký sự kiện</label>
                                     </div>
 
                                 </div>
                             </div>
-                            <!--  Nếu bạn là thành viên mà thời gian đã kết thúc-->
+                            <!--  Nếu bạn là thành viên mà thời gian chưa kết thúc-->
                             <div th:if="${IamMember} == 1 && ${Eventend}  > 0">
                                 <form th:action="@{/events/deleteRequest}" method="post">
                                     <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                         <div style="display: flex;flex-direction: column">
                                             <button type="submit" data-toggle="modal"
-                                                    data-target="#deleteRequest" class="bg-alert text-white">Tôi muốn
-                                                tham gia
+                                                    data-target="#deleteRequest" class="bg-alert text-white">Hủy đăng ký
                                             </button>
-                                            <label>Hủy đăng ký</label>
                                         </div>
-
                                     </div>
                                 </form>
                             </div>
                         </div>
+                        <!--  Nếu thời gian sự kiện đã kết thúc-->
                         <div th:if="${Eventend}  <= 0">
 
                             <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
@@ -189,7 +187,7 @@
                                             data-target="#joinRequest" class="bg-secondary text-white join" disabled>
                                         Tôi muốn tham gia
                                     </button>
-                                    <label>Sự kiện đã kết thúc</label>
+                                    <label class="alert alert-warning">Sự kiện đã kết thúc</label>
                                 </div>
                             </div>
                             <br>
@@ -322,7 +320,7 @@
                         <i class="fab fa-linkedin"></i>
                     </button>
                     <button type="button" class="btn btn-primary me-1">
-                        <i class="fas fa-comments me-2"></i>Add comment
+                        <i class="fas fa-comments me-2"></i>
                     </button>
                 </section>
                 <!--Section: Share buttons-->
@@ -343,12 +341,23 @@
                                      class="img-fluid shadow-1-strong rounded" alt=""/>
                             </div>
 
-                            <div class="col-10">
+                            <div class="col-8">
                                 <p class="mb-2"><strong><span
                                         th:text="${comment.user.firstName}+' '+ ${comment.user.lastName}"></span></strong>
                                 </p>
                                 <p th:text="${comment.commentContent}">
                                 </p>
+                            </div>
+                            <div class="col-2">
+                                <p class="mb-2"><span
+                                        th:text="'Ngày đăng: '+${#dates.format(comment.commentDate, 'dd-MMM-yyyy')}"></span></strong>
+                                </p>
+                                <form th:if="${session.user!=null}" th:action="@{/comments/delete}">
+                                    <button class="btn btn-primary" type="submit"
+                                            th:if="${comment.user.userId==session.user.userId}">Xóa comment
+                                    </button>
+                                    <input type="hidden" name="commentId" th:value="${comment.idComment}">
+                                </form>
                             </div>
                         </div>
 
@@ -360,31 +369,36 @@
                 <section>
                     <p class="text-center"><strong>Leave a reply</strong></p>
 
-                    <form>
+                    <form th:action="@{/comments/create_comments}" method="post">
+                        <input type="hidden" name="postId" th:value="${post.postId}">
                         <!-- Name input -->
                         <div class="form-outline mb-4">
-                            <input type="text" id="form4Example1" class="form-control"/>
-                            <label class="form-label" for="form4Example1">Name</label>
+                            <input type="text" id="name" name="name" class="form-control"/>
+                            <label class="form-label" for="name">Name</label>
                         </div>
 
                         <!-- Email input -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="form4Example2" class="form-control"/>
-                            <label class="form-label" for="form4Example2">Email address</label>
+                            <input type="email" id="email" class="form-control" name="email"/>
+                            <label class="form-label" for="email">Email address</label>
                         </div>
 
                         <!-- Message input -->
                         <div class="form-outline mb-4">
-                            <textarea class="form-control" id="form4Example3" rows="4"></textarea>
-                            <label class="form-label" for="form4Example3">Text</label>
+                            <!--                            th:field="*{commentContent}"-->
+                            <textarea class="form-control" id="form4Example3" rows="4" name="commentContent"
+                                      required></textarea>
+                            <label class="form-label" for="form4Example3">Comment</label>
+                            <!--                            <div class="alert alert-warning" th:if="${#fields.hasErrors('commentContent')}" th:errors="*{commentContent}"></div>-->
+                            <!--                            <div class="alert alert-warning" th:if="${messageContent}" th:text="${messageContent}"></div>-->
                         </div>
 
                         <!-- Checkbox -->
                         <div class="form-check d-flex justify-content-center mb-4">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="form4Example4"
-                                   checked/>
-                            <label class="form-check-label" for="form4Example4">
-                                Send me a copy of this comment
+                            <input class="form-check-input me-2" type="checkbox" value="" id="confirmBox"
+                                   name="confirm" required/>
+                            <label class="form-check-label" for="confirmBox">
+                                Send me this comment
                             </label>
                         </div>
 
@@ -488,8 +502,7 @@
            href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow" target="_blank">
             Contact Us
         </a>
-        <a role="button" class="btn btn-primary btn-lg m-2" th:href="@{'/posts/donation?postId='+${post.getPostId()}}"
-           target="_blank">
+        <a role="button" class="btn btn-primary btn-lg m-2" th:href="@{'/posts/donation?postId='+${post.getPostId()}}">
             Donate to Volunteer
         </a>
 
@@ -535,8 +548,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script type="text/javascript" src="/js/mdb.min.js"></script>
+<script type="text/javascript" th:src="@{/js/mdb.min.js}"></script>
 <!-- Custom scripts -->
-<script type="text/javascript" src="/js/script.js"></script>
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

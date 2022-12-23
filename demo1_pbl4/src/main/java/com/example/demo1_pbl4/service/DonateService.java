@@ -9,9 +9,12 @@ public interface DonateService {
      List<Donate> getAllDonates();
      public List<Donate> findAllDonatebyUser(Long user_id);
 
-     void updateDonate(Donate donate);
 
-     List<TotalDonationOfUser> SumofDonatUser();
+     boolean createDonate(Donate donate);
+
+     List<TotalDonationOfUser> sumOfDonateUser();
+
+     List<TotalDonationOfUser> sortByTotalDonate();
 
      public double SumDonateByUser(Long user_id);
 

@@ -14,6 +14,7 @@ public class Event {
 
     @Column(name = "event_name")
     private String eventName;
+
     private String location;
 
     private int age;
