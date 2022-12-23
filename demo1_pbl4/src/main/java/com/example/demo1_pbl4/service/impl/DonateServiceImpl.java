@@ -34,8 +34,12 @@ public class DonateServiceImpl implements DonateService {
     }
 
     @Override
-    public void updateDonate(Donate donate) {
-        donateRepository.save(donate);
+    public boolean createDonate(Donate donate) {
+        if (donate != null) {
+            donateRepository.save(donate);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -53,14 +57,10 @@ public class DonateServiceImpl implements DonateService {
     @Override
     public List<TotalDonationOfUser> sortByTotalDonate() {
         List<TotalDonationOfUser> listUser = sumOfDonateUser();
-        System.out.println(listUser.get(2).getTotal());
         listUser.sort((o1, o2) ->
         {
             return Double.compare(o2.getTotal(), o1.getTotal());
         });
-        System.out.println(listUser.get(0).getFirstName());
-        System.out.println(listUser.get(1).getFirstName());
-        System.out.println(listUser.get(2).getFirstName());
         return listUser;
     }
 

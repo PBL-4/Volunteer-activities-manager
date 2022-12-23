@@ -4,7 +4,8 @@
 <head>
     <div th:fragment="head_bootstrap">
         <!-- Icon setup -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
         <!-- Google Web Fonts -->
@@ -72,10 +73,11 @@
                        class="btn btn-primary py-2 px-4 d-none d-lg-block nav-link dropdown-toggle">Hello <span
                             th:text="' '+${session.user.username}"></span></a>
                     <div class="dropdown-menu m-0">
-                        <a th:href="@{#}" class="dropdown-item">Application Tutorial</a>
-                        <a th:href="@{'/donate/list?userId='+ ${session.user.userId}}" class="dropdown-item">Donation
-                            History</a>
-                        <a th:href="@{/logout}" class="dropdown-item">Logout</a>
+                        <a class="dropdown-item" th:href="@{#}">Application Tutorial</a>
+                        <a class="dropdown-item" th:href="@{'/donate/list?userId='+ ${session.user.userId}}">
+                            Donation History</a>
+                        <a class="dropdown-item" th:href="@{/users/change_password}">Change password</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Logout</a>
 
                     </div>
                 </div>

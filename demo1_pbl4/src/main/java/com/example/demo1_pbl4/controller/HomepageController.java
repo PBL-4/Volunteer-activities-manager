@@ -53,7 +53,7 @@ public class HomepageController {
     }
 
     @GetMapping("/login")
-    public String goLogin(Model model, @CookieValue("username") String username, @CookieValue("password") String password) {
+    public String goLogin(Model model, @CookieValue(value = "username", required = false) String username, @CookieValue(value = "password", required = false) String password) {
         //Dungf HttpServletRequest khong lay name dc
         //   Cookie[] cookies = request.getCookies();
         //   username=cookies[0].getValue();
@@ -121,18 +121,6 @@ public class HomepageController {
         return "redirect:/users";
     }
 
-    @RequestMapping(value = "/403", method = RequestMethod.GET)
-    public String accessDenied(Model model, Principal principal) {
-
-        if (principal != null) {
-            String message = "Hi " + principal.getName() //
-                    + "<br> You do not have permission to access this page!";
-            model.addAttribute("message", message);
-
-        }
-        return "/403Page";
-    }
-
 
     @GetMapping("/history_donation")
     public String showHistoryDonation(HttpSession session) {
@@ -150,29 +138,39 @@ public class HomepageController {
 
     @GetMapping("/admin_home")
     public String showMyAdminHome(Model model, HttpSession session) {
-        if (session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
-            if (user.getRole().getRoleName().equals("ADMIN")) {
-                model.addAttribute("myUser", user);
-                int y = Calendar.getInstance().get(Calendar.YEAR);
-                List<TotalDonationOfUser> topUsers = donateService.sortByTotalDonate();
-                List<Event> topEvents = eventService.sortEventByRating();
-                topUsers = topUsers.subList(0, 3);
-                topEvents = topEvents.subList(0, 3);
-                model.addAttribute("totalDonates", donateService.sumAllDonate());
-                model.addAttribute("totalUsers", userService.countAllUser());
-                model.addAttribute("totalEvents", eventService.countAllEvents());
-                model.addAttribute("topUsers", topUsers);
-                model.addAttribute("topEvents", topEvents);
-                model.addAttribute("numEvents", reportService.getEventPerMByY(y));
-                model.addAttribute("numUsers", reportService.getUserPerMByY(y));
-                model.addAttribute("numDonation", reportService.getDonatePerMByY(y));
-                return "/admin/admin_home";
+        try {
+            if (session.getAttribute("user") != null) {
+                User user = (User) session.getAttribute("user");
+                if (user.getRole().getRoleName().equals("ADMIN")) {
+                    model.addAttribute("myUser", user);
+                    int y = Calendar.getInstance().get(Calendar.YEAR);
+                    List<TotalDonationOfUser> topUsers = donateService.sortByTotalDonate();
+                    List<Event> topEvents = eventService.sortEventByRating();
+                    if (topEvents.size() >= 3) {
+//                        model.addAttribute("topNotFound", "No data");
+                        topEvents = topEvents.subList(0, 3);
+                    }
+                    if (topUsers.size() >= 3) {
+                        topUsers = topUsers.subList(0, 3);
+                    }
+                    model.addAttribute("totalDonates", donateService.sumAllDonate());
+                    model.addAttribute("totalUsers", userService.countAllUser());
+                    model.addAttribute("totalEvents", eventService.countAllEvents());
+                    model.addAttribute("topUsers", topUsers);
+                    model.addAttribute("topEvents", topEvents);
+                    model.addAttribute("numEvents", reportService.getEventPerMByY(y));
+                    model.addAttribute("numUsers", reportService.getUserPerMByY(y));
+                    model.addAttribute("numDonation", reportService.getDonatePerMByY(y));
+                    return "/admin/admin_home";
+                } else {
+                    return "403Page";
+                }
             } else {
-                return "403Pages";
+                return "redirect:/login";
             }
-        } else {
-            return "redirect:/login";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "500Page";
         }
     }
 }

@@ -7,11 +7,10 @@ import java.util.List;
 @Entity
 @Table(name= "donation")
 public class Donate {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id_donation")
-    private long idDonation;
+    private Long idDonation;
 
     @ManyToOne
     @JoinColumn(name="user_Id")
@@ -24,6 +23,8 @@ public class Donate {
     private Date donateDate;
 
     private double Money;
+    @Column(name="donate_comment", columnDefinition = "TEXT")
+    private String comment;
 
     public double getMoney() {
         return Money;
@@ -58,7 +59,7 @@ public class Donate {
         this.event = event;
     }
 
-    public long getIdDonation() {
+    public Long getIdDonation() {
         return idDonation;
     }
 

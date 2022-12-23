@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,18 +27,20 @@ public class PostController {
 
     @Autowired
     private EventService eventService;
+
     @Autowired
     private CommentService commentService;
 
     @Autowired
     private RatingEventService ratingService;
+
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserEventService userEventService;
 
-
+    @Autowired
     private DonateService donateService;
 
     public PostController(CommentService commentService) {
@@ -64,8 +65,9 @@ public class PostController {
             }
             Post post = postService.getPostById(id);
             model.addAttribute("post", post);
-            model.addAttribute("comments", commentService.getAllComments());
-            model.addAttribute("total", commentService.countComment());
+            model.addAttribute("myComment",new Comment());
+            model.addAttribute("comments", commentService.getAllCommentsByPost(id));
+            model.addAttribute("total", commentService.countCommentByPost(id));
             model.addAttribute("Rating_Event", new Rating());
             //BachLT
             model.addAttribute("user", user);
@@ -131,7 +133,8 @@ public class PostController {
     public String showDonationForm(Model model, HttpSession session, @RequestParam("postId") Long id) {
         if (session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
-            model.addAttribute("postId", id);
+            Post post=postService.getPostById(id);
+            model.addAttribute("post", post);
             model.addAttribute("userId", user.getUserId());
             return "post/donation_volunteer";
         } else {
@@ -146,16 +149,17 @@ public class PostController {
         double quy = event.getDonation() + donation;
         event.setDonation(quy);
         eventService.updateEvent(event);
-
+        System.out.println(id);
         //donate
         Donate donate = new Donate();
+        System.out.println(donation);
         donate.setUser((User) session.getAttribute("user"));
         donate.setEvent(event);
         donate.setMoney(donation);
         donate.setDonateDate(new Date(System.currentTimeMillis()));
-        donateService.updateDonate(donate);
-
-
+        if(donateService.createDonate(donate)){
+            System.out.println(donateService.createDonate(donate));
+        }
         return "redirect:/posts/get?id=" + id;
     }
 

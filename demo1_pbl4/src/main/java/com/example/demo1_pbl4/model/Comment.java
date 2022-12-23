@@ -1,33 +1,38 @@
 package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 
 @Entity
-@Table(name="comments")
+@Table(name = "comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id_comment")
+    @Column(name = "id_comment")
     private Long idComment;
     @ManyToOne(optional = true)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name="comment_content")
+    @Column(name = "comment_content", columnDefinition = "TEXT")
+//    @NotEmpty(message = "phần nội dung đang để trống")
     private String commentContent;
 
-    @Column(name="comment_date")
+    @Column(name = "comment_date")
     private Date commentDate;
 
 
     public Comment() {
     }
 
+//    public Comment(@NotEmpty(message = "phần nội dung đang để trống") String commentContent) {
+//        this.commentContent = commentContent;
+//    }
 
     public Comment(Long idComment, Post post, User user, String commentContent, Date commentDate) {
         this.idComment = idComment;

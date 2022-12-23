@@ -117,24 +117,18 @@ public class EventServiceImpl implements EventService {
                 Date now = new Date();//
                 String beginDateStr = sdf.format(event.getBeginTime());
                 String finishDateStr = sdf.format(event.getEndTime());
-                System.out.println("Date hien tai: " + sdf.format(now));
-                System.out.println("Date bat dau: " + sdf.parse(beginDateStr).toString());
-
                 Date beginDate = sdf.parse(beginDateStr);
                 Date finishDate = sdf.parse(finishDateStr);
                 now = sdf.parse(sdf.format(now));   // không cùng định dạng sẽ ko ss
                 if (beginDate.after(now)) {
                     Status status = statusRepository.findById(1L).get();
                     event.setStatus(status);
-                    System.out.println("Here 1");
                 } else if (beginDate.before(now) && finishDate.after(now)) {
                     Status status = statusRepository.findById(2L).get();
                     event.setStatus(status);
-                    System.out.println("Here 2");
                 } else if (finishDate.before(now)) { // Thời gian kết thúc muộn hơn thời gian thực
                     Status status = statusRepository.findById(3L).get();
                     event.setStatus(status);
-                    System.out.println("Here 3");
                 } else {
                     System.out.println("Loi thoi gian");
                 }

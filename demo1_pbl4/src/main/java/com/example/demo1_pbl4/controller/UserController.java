@@ -3,12 +3,14 @@ package com.example.demo1_pbl4.controller;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import com.example.demo1_pbl4.service.UserService;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -47,9 +49,20 @@ public class UserController {
     }
 
     @GetMapping("/admin")
-    public String showUserOnAdmin(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "admin/UserManager";
+    public String showUserOnAdmin(Model model, HttpSession session) {
+        try {
+            if (session.getAttribute("user") != null) {
+                User user = (User) session.getAttribute("user");
+                if (user.getRole().getRoleName().equals("ADMIN")) {
+                    model.addAttribute("users", userService.getAllUsers());
+                    return "admin/UserManager";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "500Page";
+        }
+        return "403Page";
     }
 
     @PostMapping("/admin")
@@ -67,14 +80,30 @@ public class UserController {
         return "redirect:/users/admin";
     }
 
-//    @GetMapping("/mem_of_event/{eventId}")
-//    public String showAllMemOfEvent(Model model,@PathVariable ("eventId")Long eventId)
-//    {
-//        List<MemberInRating> members=userService.findMemberInEvent(eventId,"Member");
-//       // System.out.println("member="+members);
-//        model.addAttribute("members",members);
-//        return "rating/rate_all_member";
-//    }
+
+    @GetMapping("/change_password")
+    public String showFormChangePassword(Model model, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            return "user/change_password";
+        } else {
+            return "403Page";
+        }
+    }
+
+    @PostMapping("/change_password")
+    public String changePassword(Model model, @RequestParam("currentPass") String oldPass, @RequestParam("newPass") String newPass,
+                                 HttpSession session) {
+        User u = (User) session.getAttribute("user");
+        if (u.getPassword().equals(oldPass)) { // Không dùng == mà dùng equals
+            u.setPassword(newPass);
+            userService.updateUser(u);// Lưu
+            model.addAttribute("successMessage", "Thay đổi mật khẩu thành công. Hãy đăng nhập lại");
+            return "homepage/login_form";
+        } else {
+            model.addAttribute("message", "Mật khẩu cũ không chính xác");
+            return "user/change_password";
+        }
+    }
 }
 
 

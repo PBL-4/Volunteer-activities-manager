@@ -4,30 +4,60 @@
     <meta charset="UTF-8">
     <title>Login please!</title>
     <link th:href="@{/css/login_form/style.css}" rel="stylesheet">
-    <link th:href="@{/css/login_form/alert.scss}" rel="stylesheet">
+    <!--    <link th:href="@{/css/login_form/alert.scss}" rel="stylesheet">-->
+    <style>
+        .alert {
+            text-align: center;
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+        .success {
+            text-align: center;
+            padding: 20px;
+            background-color: #5cb85c;
+            color: white;
+        }
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    <!--    <th:blockquote th:include="/header"></th:blockquote>-->
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
 </head>
-
 <body>
-<div class="alert danger-alert">
-    <h3>  <span th:if="${failMessage!=null}" th:text="${failMessage}"></span></h3>
-    <a class="close">&times;</a>
+<div class="container">
+    <div class="alert" th:if="${failMessage}!=null">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Danger!</strong> <span th:text="${failMessage}"></span>
+    </div>
+    <div class="success" th:if="${successMessage}!=null">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Success!</strong> <span th:text="${successMessage}"></span>
+    </div>
+    <form id="login" th:action="@{/process_login}" method="post">
+        <h1>Log In</h1>
+        <fieldset id="inputs">
+            <input id="username" type="text" placeholder="Username" name="username" th:value="${username}">
+            <input id="password" type="password" placeholder="Password" name="password" th:value="${password}">
+        </fieldset>
+        <br>
+        <input type="checkbox" name="rememberMe"> <label>Remember Me</label>
+        <fieldset id="actions">
+            <input type="submit" id="submit" value="Log in">
+            <a href="#">Forgot your password?</a><a th:href="@{/register}">Register</a>
+        </fieldset>
+        <a th:href="@{/home}" id="back">Back to home ...</a>
+    </form>
 </div>
-<form id="login" th:action="@{/process_login}" method="post">
-    <h1>Log In</h1>
-    <fieldset id="inputs">
-        <input id="username" type="text" placeholder="Username" name="username" th:value="${username}">
-        <input id="password" type="password" placeholder="Password" name="password" th:value="${password}">
-    </fieldset>
-    <br>
-    <input type="checkbox" name="rememberMe"> <label>Remember Me</label>
-    <fieldset id="actions">
-        <input type="submit" id="submit" value="Log in">
-        <a href="#">Forgot your password?</a><a th:href="@{/register}">Register</a>
-    </fieldset>
-    <a th:href="@{/home}" id="back">Back to home ...</a>
-</form>
-
 </body>
 </html>

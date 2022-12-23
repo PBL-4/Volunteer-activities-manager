@@ -168,39 +168,42 @@
 <body>
 <div class="container" style="border: 2px solid saddlebrown">
     <h1>Donate Form</h1>
-    <h2>Events: </h2>
+    <h2>Events: [[${post.event.eventName}]] </h2>
     <hr>
     <form th:action="@{/posts/donation}" method="post">
         <!-- 2 column grid layout with text inputs for the first and last names -->
         <!-- Text input -->
+        <input type="hidden" name="postId" th:value="${post.postId}">
+        <input type="hidden" name="userId" th:value="${userId}">
         <div class="row mb-4">
+
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="firstName">First name</label>
-                    <input type="text" id="firstName" class="form-control" name="firstName"/>
+                    <input type="text" id="firstName" class="form-control" name="firstName" required/>
                 </div>
             </div>
             <!-- Text input -->
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="lastName">Last name</label>
-                    <input type="text" id="lastName" class="form-control" name="lastName"/>
+                    <input type="text" id="lastName" class="form-control" name="lastName" required/>
                 </div>
             </div>
         </div>
         <!-- Email input -->
             <div class="form-outline mb-4">
                 <label class="form-label" for="email">Email</label>
-                <input type="email" id="email" class="form-control" name="email"/>
+                <input type="email" id="email" class="form-control" name="email" required/>
             </div>
             <div class="form-outline mb-4">
                 <label class="form-label" for="address">Address</label>
-                <input type="text" id="address" class="form-control" name="address"/>
+                <input type="text" id="address" class="form-control" name="address" required/>
             </div>
         <!-- Phone Number input -->
             <div class="form-outline mb-4">
                 <label class="form-label" for="phoneNum">Phone number</label>
-                <input type="number" id="phoneNum" class="form-control" name="phoneNum"/>
+                <input type="number" id="phoneNum" class="form-control" name="phoneNum" required/>
             </div>
 
         <!-- Message input -->
@@ -211,15 +214,15 @@
         <!-- Donation input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="donation">Donation Amount</label>
-            <input type="number" id="donation" class="form-control" name="donation"/>VND
+            <input type="number" id="donation" class="form-control" name="donation"/>USD
         </div>
 
         <div class="form-outline mb-4">
             <label class="form-label" for="donationMethod"><strong>Payment method</strong></label>
             <div class="form-group mb-4" id="donationMethod">
-                <input type="radio" id="paymentMethod1" name="paymentMethod"/>
+                <input type="radio" id="paymentMethod1" name="paymentMethod" required/>
                 <label for="paymentMethod1">Debit or credit card</label>
-                <input type="radio" id="paymentMethod2"  name="paymentMethod"/>
+                <input type="radio" id="paymentMethod2"  name="paymentMethod" required/>
                 <label for="paymentMethod2">Paypal</label>
             </div>
         </div>
