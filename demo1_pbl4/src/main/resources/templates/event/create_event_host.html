@@ -7,20 +7,20 @@
     <hr>
 </head>
 <body>
-<div class="container-fluid m-0">
-    <h1>Describe your event here</h1>
-    <h2>Let them know more about your event mission and primary cause to help them connect to you</h2>
+<div class="container">
+    <h1 class="text-center">Describe your event here</h1>
+    <h2 class="text-center">Let them know more about your event mission and primary cause to help them connect to you</h2>
     <form th:action="@{/events/create_event}" method="post">
         <!-- 2 column grid layout with text inputs for the first and last names -->
 
         <div class="form-outline mb-4">
             <label class="form-label" for="eventName">Tên sự kiện</label>
-            <input type="text" id="eventName" class="form-control" name="eventName"/>
+            <input type="text" id="eventName" class="form-control" name="eventName" required/>
         </div>
 
         <div class="form-outline mb-4">
             <label class="form-label" for="location">Vị trí</label>
-            <input type="text" id="location" class="form-control" name="location"/>
+            <input type="text" id="location" class="form-control" name="location" required/>
         </div>
 
         <!-- Text input -->
@@ -28,14 +28,14 @@
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="beginDate">Ngày bắt đầu</label>
-                    <input type="date" id="beginDate" class="form-control" name="beginDate"/>
+                    <input type="date" id="beginDate" class="form-control" name="beginDate" required/>
                 </div>
             </div>
             <!-- Text input -->
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="form6Example4">Ngày kết thúc</label>
-                    <input type="date" id="form6Example4" class="form-control" name="endDate"/>
+                    <input type="date" id="form6Example4" class="form-control" name="endDate" required/>
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@
         <!-- Email input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="numOfMem">Số lượng thành viên</label>
-            <input type="number" id="numOfMem" class="form-control" name="numOfMem"/>
+            <input type="number" id="numOfMem" class="form-control" name="numOfMem" required/>
         </div>
 
         <!-- Number input -->
@@ -55,26 +55,17 @@
         <!-- Message input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="content">Nội dung mô tả sự kiện</label>
-            <textarea class="form-control" id="content" rows="4" name="content"></textarea>
+            <textarea class="form-control" id="content" rows="4" name="content" required></textarea>
         </div>
         <!-- Donation input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="donation">Quỹ hiện có</label>
-            <input type="number" id="donation" class="form-control" name="donation"/>
+            <input type="number" id="donation" class="form-control" name="donation" required/>
         </div>
-<!--        <div class="form-outline mb-4">-->
-<!--            <label class="form-label" for="hostname">Tên người tổ chức cần hiển thị</label>-->
-<!--            <input type="text" id="hostname" class="form-control" name="hostname"/>-->
-<!--        </div>-->
-
-        <!--    &lt;!&ndash; Checkbox &ndash;&gt;-->
-        <!--    <div class="form-check d-flex justify-content-center mb-4">-->
-        <!--        <input class="form-check-input me-2" type="checkbox" value="" id="form6Example8" checked />-->
-        <!--        <label class="form-check-label" for="form6Example8"> Create an event? </label>-->
-        <!--    </div>-->
-        <!-- Submit button -->
         <div class="row mb-4 btn-group">
-            <button type="button" style="margin-right:10px" class="btn btn-secondary" formaction="/homepage/home">Back to home</button>
+            <button type="button" style="margin-right:10px" class="btn btn-secondary" formaction="/homepage/home">Back
+                to home
+            </button>
             <button type="submit" class="btn btn-primary ">Create an event?</button>
         </div>
     </form>
