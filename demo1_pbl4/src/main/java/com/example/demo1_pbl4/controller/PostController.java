@@ -53,7 +53,7 @@ public class PostController {
         return new ModelAndView("/post/post_list", "posts", postService.getAllPosts());
     }
 
-    @GetMapping("/get{id}")         // ko co dau .  , dau ? thanh %20
+    @GetMapping("/get{id}")         // ko co dau .  , dau space thanh %20
     public String showPostById(Model model, @RequestParam("id") Long id, HttpSession session) // Tai sao lai dung @requestParam
     {
         try {

@@ -1,5 +1,6 @@
 package com.example.demo1_pbl4.service.impl;
 
+import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.UserEvent;
 
 import com.example.demo1_pbl4.model.UserEventId;
@@ -91,5 +92,18 @@ public class UserEventServiceImpl implements UserEventService {
         } else {
             return false;
         }
+    }
+
+    // Hàm tìm người tổ chức trong 1 sự kiện
+    @Override
+    public User findHostInAEvent(List<UserEvent> members) {
+        for(UserEvent member: members)
+        {
+            if(member.getEventRole().equals("Host"))
+            {
+                return member.getUser();
+            }
+        }
+        return null;
     }
 }

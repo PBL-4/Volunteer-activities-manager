@@ -2,6 +2,7 @@ package com.example.demo1_pbl4.service;
 
 import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.User;
+import com.example.demo1_pbl4.model.UserEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -33,4 +34,5 @@ public interface EventService {
     Boolean isFinishEvent(Long eventId);
 
     List<Event> sortEventByRating();
+
 }

@@ -2,6 +2,8 @@ package com.example.demo1_pbl4.service.impl;
 
 import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Status;
+import com.example.demo1_pbl4.model.User;
+import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.repository.EventRepository;
 import com.example.demo1_pbl4.repository.StatusRepository;
 import com.example.demo1_pbl4.service.EventService;
@@ -177,4 +179,6 @@ public class EventServiceImpl implements EventService {
         });// Thay cho new Comparator
         return eventList;
     }
+
+
 }

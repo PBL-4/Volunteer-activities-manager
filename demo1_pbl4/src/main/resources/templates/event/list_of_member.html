@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Danh sách tất cả thành viên trong sự kiện</title>
     <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css”/>
-    <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css” />
+    <link rel=”stylesheet” href=”https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css”/>
     <link rel="stylesheet" th:href="@{/admin_home/assets/vendors/mdi/css/materialdesignicons.min.css}">
     <div th:replace="~{/header::head_bootstrap}"></div>
 </head>
@@ -54,12 +54,52 @@
                 <td th:text="${member.getUser().getEmail()}"></td>
                 <td th:text="${member.getUser().getAddress()}"></td>
                 <td th:text="${member.getEventRole()}"></td>
-                <td><a th:href="@{/events/member/delete(id=${member.getUser().getUserId()})}"><i class="bi bi-trash"></i>Xóa</a>
+                <td th:if="${member.user.userId!=host.userId}">
+                    <a data-toggle="modal"
+                       th:attr="data-target=${'#confirmDeleteModal'+member.getUser().getUserId()}"><i
+                            class="bi bi-trash"></i>Xóa</a>
                 </td>
             </tr>
         </th:block>
         </tbody>
     </table>
 </div>
+
+<!-- Modal confirm delete-->
+<div class="modal fade" th:each="member: ${members}" th:attr="id=${'confirmDeleteModal'+member.getUser().getUserId()}"
+     tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form th:action="@{'/events/member/delete?eId='+${member.event.eventId}+'&uId='+${member.getUser().getUserId()}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Xóa thành viên</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn thật sự muốn mời bạn [[${member.user.firstName + ' '+ member.user.lastName}]] ra khỏi nhóm?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Không, tôi ấn nhầm</button>
+                    <button type="submit" class="btn btn-primary">
+                        Cho bạn ấy rời
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:inline="javascript">
+    window.onload = function () {
+        if ([[${successMes}]] != null) Swal.fire([[${successMes}]]);
+        if ([[${failMes}]] != null) Swal.fire([[${failMes}]]);
+    }
+
+    function deleteData(type, id) {
+
+    }
+
+</script>
 </body>
 </html>

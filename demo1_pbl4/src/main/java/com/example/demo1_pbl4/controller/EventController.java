@@ -287,17 +287,19 @@ public class EventController {
     }
 
     //--------------------------------------- Kết thúc phần My_Event-----------------------------
+
+    //1 . Hiển thị danh sách thành viên trong quản lý thành viên của host
     @GetMapping("/list_of_member/{eventId}")
     public String showAllMemberOfEvent(Model model, @PathVariable("eventId") Long eventId) {
         List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
         Event myEvent = eventService.getEventById(eventId);
         model.addAttribute("event", myEvent);
+        model.addAttribute("host",userEventService.findHostInAEvent(memberList));
         if (memberList != null) {
             model.addAttribute("members", memberList);
         } else {
             model.addAttribute("message", "Không có dữ liệu");
         }
-
         return "event/list_of_member";
     }
 
@@ -323,6 +325,7 @@ public class EventController {
         return "redirect:/waiting_list/" + eventId;
     }
 
+
     @GetMapping("/cancelRequest")
     public String cancelRequestJoin(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
         boolean check = userEventService.deleteUserEvent(userId, eventId);
@@ -331,5 +334,24 @@ public class EventController {
             System.out.println("Hủy thành công");
         }
         return "redirect:/";
+    }
+
+    // Xóa đi một thành viên trong tại danh sách thành viên trong 1 sự kiện
+    @GetMapping("/member/delete")
+    public String removeAnMember(Model model,@RequestParam("eId")Long eId,@RequestParam("uId")Long uId, HttpSession session){
+        if(session.getAttribute("user")!=null)
+        {
+            User u= (User)session.getAttribute("user");
+            UserEvent memberDel= userEventService.findUserEventByUserAndEventId(eId, uId);
+            boolean delete=userEventService.deleteUserEvent(memberDel.getUser().getUserId(),memberDel.getEvent().getEventId());
+            if(delete)
+            {
+                model.addAttribute("successMes","Xóa thành công");
+            }else{
+                model.addAttribute("failMes","Xóa thất bại");
+            }
+            return "redirect:/events/list_of_member/"+eId;
+        }
+        return "redirect:/login";
     }
 }
