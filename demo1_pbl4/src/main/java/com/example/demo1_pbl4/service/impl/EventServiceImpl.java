@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class EventServiceImpl implements EventService {
         setStatusByDateTime(eventRepository.findAll());
         return eventRepository.findEventByLocation(location);
     }
-
+// Find event :
     @Override
     public List<Event> findEventByEventName(String eventName) {
         setStatusByDateTime(eventRepository.findAll());
@@ -112,6 +113,22 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findEventOfHost(userId, role, pageable);
     }
 
+    @Override
+    public Page<Event> findEventByLocation(String location, Pageable pageable) {
+        return eventRepository.findEventByLocation(location, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostname(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostname(hostname, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventName(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventName(eventName, pageable);
+    }
+
+    // ---- End find event
     public void setStatusByDateTime(List<Event> eventList) {
         try {
             for (Event event : eventList) {

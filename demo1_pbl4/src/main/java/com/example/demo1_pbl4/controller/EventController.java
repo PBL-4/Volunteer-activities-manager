@@ -62,42 +62,64 @@ public class EventController {
         return "/event/find_event_list";
     }
 
-    @GetMapping("/page")
-    public String pagingEvent(Model model) {
-        int currentPage = 0, pageSize = 10;
-        Page<Event> eventPages = eventService.findEventWithPagination(currentPage, pageSize);
-        long totalItems = eventPages.getTotalElements();
-        int totalPages = eventPages.getTotalPages();
-        List<Event> eventLists = eventPages.getContent();
-        if (eventLists.isEmpty()) {
-            model.addAttribute("message", "Không có dữ liệu có sẵn");
-        } else {
-            model.addAttribute("totalItems", totalItems);
-            model.addAttribute("totalPages", totalPages);
-            model.addAttribute("eventList", eventLists);
-            model.addAttribute("currentPage", currentPage);
-            model.addAttribute("myTotalPages", totalPages - 1);
+    // Hàm hiển thị find_event chính
+    @GetMapping("/page{pageNumber}")
+    public String pagingEventWithSort(Model model, @RequestParam(value = "sort", required = false) Integer sort,
+                              @PathVariable(value="pageNumber",required = false)Integer pageNumber) {
+        try {
+            int pageSize = 10;
+            if(pageNumber==null) pageNumber=0;// check nếu như trang mặc định thì mình sẽ gán page hiện tại là 0
+
+            Pageable pageable=PageRequest.of(pageNumber,10);// Tạo một loại phân trang với pageNumber là vị trí trang và size là số phần tử.
+            Page<Event> eventPages;
+            if (sort != null) {
+                switch (sort) {
+                    case 1:
+                    default:
+                        eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
+                }
+            } else {
+                eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
+            }
+
+            long totalItems = eventPages.getTotalElements();
+            int totalPages = eventPages.getTotalPages();
+            List<Event> eventLists = eventPages.getContent();
+            if (eventLists.isEmpty()) {
+                model.addAttribute("message", "Không có dữ liệu có sẵn");
+            } else {
+                model.addAttribute("totalItems", totalItems);
+                model.addAttribute("totalPages", totalPages);
+                model.addAttribute("eventList", eventLists);
+                model.addAttribute("currentPage", pageNumber);
+                model.addAttribute("myTotalPages", totalPages - 1);
+            }
+            return "/event/find_event_list";
+        } catch (NullPointerException e) {
+            System.err.println("Lỗi không có dữ liệu khi load trang");
+            e.printStackTrace();
+            return "500Page";
         }
-        return "/event/find_event_list";
     }
 
-    @GetMapping("/page/{pageNumber}")
-    public String pagingEventPage(Model model, @PathVariable("pageNumber") int currentPage) {
-        int pageSize = 10;
-        Page<Event> eventPages = eventService.findEventWithPagination(currentPage, pageSize);
-        long totalItems = eventPages.getTotalElements();
-        int totalPages = eventPages.getTotalPages();
-        List<Event> eventLists = eventPages.getContent();
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("myTotalPages", totalPages - 1);
-        model.addAttribute("eventList", eventLists);
-        model.addAttribute("currentPage", currentPage);
-        return "/event/find_event_list";
-    }
+//    @GetMapping("/page{pageNumber}")
+//    public String pagingEventPage(Model model, @PathVariable("pageNumber") int currentPage) {
+//        int pageSize = 10;
+//        Page<Event> eventPages = eventService.findEventWithPagination(currentPage, pageSize);
+//        long totalItems = eventPages.getTotalElements();
+//        int totalPages = eventPages.getTotalPages();
+//        List<Event> eventLists = eventPages.getContent();
+//        model.addAttribute("totalItems", totalItems);
+//        model.addAttribute("myTotalPages", totalPages - 1);
+//        model.addAttribute("eventList", eventLists);
+//        model.addAttribute("currentPage", currentPage);
+//        return "/event/find_event_list";
+//    }
 
-    @GetMapping("/find?l={location}&k={keyword}")
+    @GetMapping("/find?l={location}&k={keyword}/{pageNumber}")
     public String showAllEventsByFind(Model model, @RequestParam("location") String location,
-                                      @RequestParam("keyword") String keyword) {
+                                      @RequestParam("keyword") String keyword, @PathVariable("pageNumber") int currentPage) {
+        Page<Event> eventPages;
         List<Event> eventLists;
         if (location != null || keyword != null) {
             eventLists = eventService.findEventByLocationAndKeyword(location, keyword);
@@ -111,23 +133,28 @@ public class EventController {
         return "/event/find_event_list";
     }
 
-    @PostMapping("/find")
-    public String showEventsByFind(Model model, @RequestParam(value = "choice", required = false) String choice, @RequestParam("keyword") String keyword) {
+    @PostMapping("/find{pageNumber}")
+    public String showEventsByFind(Model model, @RequestParam(value = "choice", required = false) String choice, @RequestParam("keyword") String keyword
+            , @PathVariable("pageNumber") Integer currentPage) {
+        if (currentPage == null) currentPage = 0;
+        Pageable pageable = PageRequest.of(currentPage, 0);
+        Page<Event> pageEvents;
         List<Event> eventLists;
         if (choice != null) {
             if (choice.equals("eventName")) {
-                eventLists = eventService.findEventByEventName(keyword);
+                pageEvents = eventService.findEventByEventName(keyword, pageable);
             } else if (choice.equals("location")) {
-                eventLists = eventService.findEventByLocation(keyword);
+                pageEvents = eventService.findEventByLocation(keyword, pageable);
                 model.addAttribute("location", keyword);
             } else if (choice.equals("hostname")) {
-                eventLists = eventService.findEventByHostname(keyword);
+                pageEvents = eventService.findEventByHostname(keyword, pageable);
             } else {
-                eventLists = eventService.getAllEvents();
+                pageEvents = eventService.findEventWithPagination(currentPage, 10);
             }
         } else {
-            eventLists = eventService.getAllEvents();
+            pageEvents = eventService.findEventWithPagination(currentPage, 10);
         }
+        eventLists = pageEvents.getContent();
         model.addAttribute("eventList", eventLists);
 
         //     model.addAttribute("keyword", keyword);

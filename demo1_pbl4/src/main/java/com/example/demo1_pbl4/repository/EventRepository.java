@@ -17,11 +17,23 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT * from Events e where location LIKE %?1%", nativeQuery = true)
     public List<Event> findEventByLocation(String location);
 
+    @Query(value = "SELECT * from Events e where location LIKE %?1%", nativeQuery = true)
+    public Page<Event> findEventByLocation(String location,Pageable pageable);
+
     @Query(value = "SELECT * from Events e where hostname LIKE %?1%", nativeQuery = true)
     public List<Event> findEventByHostname(String hostname);
 
+    @Query(value = "SELECT * from Events e where hostname LIKE %?1%", nativeQuery = true)
+    public Page<Event> findEventByHostname(String hostname,Pageable pageable);
+
+
     @Query(value = "SELECT * from Events  where event_name LIKE %?1%", nativeQuery = true)
     public List<Event> findEventByEventName(String eventName);
+
+
+    @Query(value = "SELECT * from Events  where event_name LIKE %?1%", nativeQuery = true)
+    public Page<Event> findEventByEventName(String eventName,Pageable pageable);
+
 
     // Lấy sự kiện dựa vào host của event: BachLT
 
