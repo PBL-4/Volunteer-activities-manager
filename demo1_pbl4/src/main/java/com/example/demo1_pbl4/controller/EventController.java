@@ -64,7 +64,7 @@ public class EventController {
 
     @GetMapping("/page")
     public String pagingEvent(Model model) {
-        int currentPage = 0, pageSize = 2;
+        int currentPage = 0, pageSize = 10;
         Page<Event> eventPages = eventService.findEventWithPagination(currentPage, pageSize);
         long totalItems = eventPages.getTotalElements();
         int totalPages = eventPages.getTotalPages();
@@ -83,7 +83,7 @@ public class EventController {
 
     @GetMapping("/page/{pageNumber}")
     public String pagingEventPage(Model model, @PathVariable("pageNumber") int currentPage) {
-        int pageSize = 2;
+        int pageSize = 10;
         Page<Event> eventPages = eventService.findEventWithPagination(currentPage, pageSize);
         long totalItems = eventPages.getTotalElements();
         int totalPages = eventPages.getTotalPages();
@@ -148,8 +148,8 @@ public class EventController {
     @GetMapping("/update_host_event{id}")
     public String showUpdateEventForm(Model model, HttpSession session, @RequestParam("id") Long id) {
         if (session.getAttribute("user") != null) {
-            Event e=eventService.getEventById(id);
-            model.addAttribute("event",e);
+            Event e = eventService.getEventById(id);
+            model.addAttribute("event", e);
             return "/event/update_event_host";
         } else {
             return "redirect:/login";
@@ -196,19 +196,15 @@ public class EventController {
         }
     }
 
-//    @GetMapping("/test")
-//    public String test(Model model, HttpSession session) {
-//        if (session.getAttribute("user") != null) {
-//            User u = (User) session.getAttribute("user");
-//            model.addAttribute("myUser", u);
-//            List<Event> eventLists = eventService.getAllEvents();
-//            model.addAttribute("Events", eventLists);
-//            return "admin/EventsManager";
-//        }
-//        else {
-//            return "403Page";
-//        }
-//    }
+    @GetMapping("/demo")
+    public String EventOnAdmin(Model model) {
+        model.addAttribute("myUser", new User());
+        List<Event> eventLists = eventService.getAllEvents();
+        model.addAttribute("Events", eventLists);
+        return "admin/EventsManager";
+
+    }
+
 
     @GetMapping("/admin")
     public String showEventOnAdmin(Model model, HttpSession session) {
@@ -228,15 +224,27 @@ public class EventController {
         if (session.getAttribute("user") != null) {
             User u = (User) session.getAttribute("user");
             model.addAttribute("myUser", u);
-            List<Event> listevent = eventService.findEventByEventName(keyword);
-            model.addAttribute("Events", listevent);
+            List<Event> listOfEvent = eventService.findEventByEventName(keyword);
+            model.addAttribute("Events", listOfEvent);
             model.addAttribute("eventName", keyword);
             return "admin/EventsManager";
         } else {
             return "403Page";
         }
-
     }
+
+    // 3.Chức năng xóa sự kiện:
+    @GetMapping("/admin/delete/{id}")
+    public String showEventOnAdmin(Model model, HttpSession session, @PathVariable("id") Long eventId) {
+        if (session.getAttribute("user") != null) {
+            System.out.println("xóa sự kiện " + eventId);
+            eventService.deleteEvent(eventId);
+            return "redirect:/events/admin";
+        } else {
+            return "403Page";
+        }
+    }
+
 
     //BachLT: Quản lý danh sách hoạt động đang tham gia: trang đầu tiên của recruite volunteer=> my activity
     // Hiển thị trang host event với những sự kiện do bản thân user tổ chức
@@ -294,7 +302,7 @@ public class EventController {
         List<UserEvent> memberList = userEventService.findAllMemberInEvent(eventId);
         Event myEvent = eventService.getEventById(eventId);
         model.addAttribute("event", myEvent);
-        model.addAttribute("host",userEventService.findHostInAEvent(memberList));
+        model.addAttribute("host", userEventService.findHostInAEvent(memberList));
         if (memberList != null) {
             model.addAttribute("members", memberList);
         } else {
@@ -316,13 +324,24 @@ public class EventController {
         return "event/waiting_approval";
     }
 
-
+    //Chức năng: Phê duyệt thành viên.
+    //1. Chấp nhận
     @PostMapping("/approval")
     public String approvalMember(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
         UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
         userEvent.setApproval(true);
         userEventService.updateUserEvent(userEvent);
-        return "redirect:/waiting_list/" + eventId;
+        return "redirect:/events/waiting_list/" + eventId;
+    }
+
+    //2. Từ chối
+    @PostMapping("/disapproval")
+    public String disapprovalMember(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
+        //  UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
+        userEventService.deleteUserEvent(eventId, userId);
+        // model.addAttribute()
+        System.out.println("Xóa khỏi danh sách đợi");
+        return "redirect:/events/waiting_list/" + eventId;
     }
 
 
@@ -338,19 +357,17 @@ public class EventController {
 
     // Xóa đi một thành viên trong tại danh sách thành viên trong 1 sự kiện
     @GetMapping("/member/delete")
-    public String removeAnMember(Model model,@RequestParam("eId")Long eId,@RequestParam("uId")Long uId, HttpSession session){
-        if(session.getAttribute("user")!=null)
-        {
-            User u= (User)session.getAttribute("user");
-            UserEvent memberDel= userEventService.findUserEventByUserAndEventId(eId, uId);
-            boolean delete=userEventService.deleteUserEvent(memberDel.getUser().getUserId(),memberDel.getEvent().getEventId());
-            if(delete)
-            {
-                model.addAttribute("successMes","Xóa thành công");
-            }else{
-                model.addAttribute("failMes","Xóa thất bại");
+    public String removeAnMember(Model model, @RequestParam("eId") Long eId, @RequestParam("uId") Long uId, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            UserEvent memberDel = userEventService.findUserEventByUserAndEventId(eId, uId);
+            boolean delete = userEventService.deleteUserEvent(memberDel.getUser().getUserId(), memberDel.getEvent().getEventId());
+            if (delete) {
+                model.addAttribute("successMes", "Xóa thành công");
+            } else {
+                model.addAttribute("failMes", "Xóa thất bại");
             }
-            return "redirect:/events/list_of_member/"+eId;
+            return "redirect:/events/list_of_member/" + eId;
         }
         return "redirect:/login";
     }

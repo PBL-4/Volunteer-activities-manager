@@ -27,7 +27,7 @@ public class Post {
     private User user;
 
 
-    @OneToOne(mappedBy="post")
+    @OneToOne(mappedBy="post",cascade=CascadeType.ALL)
     private Event event;
 
 

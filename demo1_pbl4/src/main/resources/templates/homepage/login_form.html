@@ -44,6 +44,10 @@
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
         <strong>Success!</strong> <span th:text="${successMessage}"></span>
     </div>
+    <div class="alert" th:if="${unLogin}!=null">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>Alert!</strong> <span th:text="${unLogin}"></span>
+    </div>
     <form id="login" th:action="@{/process_login}" method="post">
         <h1>Log In</h1>
         <fieldset id="inputs">

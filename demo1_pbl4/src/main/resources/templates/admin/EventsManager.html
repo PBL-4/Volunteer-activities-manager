@@ -11,6 +11,15 @@
         window.location = "[[@{/events/admin}]]";
     }
 </script>
+<style>
+    .truncate {
+        width: 100px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+</style>
 <body>
 <!--<div th:replace="~{/admin/admin_home::head_nav}">-->
 <!--</div>-->
@@ -260,40 +269,42 @@
                 </div>
                 <div>
                     <table class="table table-bordered table-responsive">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th>Event_ID</th>
-                            <th>Event_Name</th>
-                            <th>Age</th>
-                            <th>Location</th>
-                            <th>Donation</th>
-                            <th>BeginTime</th>
-                            <th>Endtime</th>
-                            <th>NumberOfMember</th>
-                            <th>HostName</th>
-                            <th>Decription</th>
-                            <th>Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <th:block th:each="e : ${Events}">
+                        <form>
+                            <thead class="thead-dark">
                             <tr>
-                                <td th:text="${e.getEventId()}"></td>
-                                <td th:text="${e.getEventName()}"></td>
-                                <td th:text="${e.getAge()}"></td>
-                                <td th:text="${e.getLocation()}"></td>
-                                <td th:text="${#numbers.formatCurrency(e.getDonation())}"></td>
-                                <td th:text="${e.getBeginTime()}"></td>
-                                <td th:text="${e.getEndTime()}"></td>
-                                <td th:text="${e.getNumOfMem()}"></td>
-                                <td th:text="${e.getHostname()}"></td>
-                                <td th:text="${e.getPost().getContent()}"></td>
-                                <td>
-                                    <button formaction="/events/admin/delete">Xóa</button>
-                                </td>
+                                <th>Event_ID</th>
+                                <th>Event_Name</th>
+                                <th>Age</th>
+                                <th>Location</th>
+                                <th>Donation</th>
+                                <th>BeginTime</th>
+                                <th>Endtime</th>
+                                <th>NumberOfMember</th>
+                                <th>HostName</th>
+                                <th>Description</th>
+                                <th>Delete</th>
                             </tr>
-                        </th:block>
-                        </tbody>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="e : ${Events}">
+                                <tr>
+                                    <td th:text="${e.getEventId()}"></td>
+                                    <td class="truncate" th:text="${e.getEventName()}"></td>
+                                    <td th:text="${e.getAge()}"></td>
+                                    <td th:text="${#strings.abbreviate(e.getLocation(),20)}"></td>
+                                    <td th:text="${#numbers.formatCurrency(e.getDonation())}"></td>
+                                    <td th:text="${e.getBeginTime()}"></td>
+                                    <td th:text="${e.getEndTime()}"></td>
+                                    <td th:text="${e.getNumOfMem()}"></td>
+                                    <td th:text="${e.getHostname()}"></td>
+                                    <td th:text="${#strings.abbreviate(e.getPost().getContent(),50)}"></td>
+                                    <td>
+                                        <button type="submit" th:formaction="@{'/events/admin/delete/{id}'(id=${e.eventId})}">Xóa</button>
+                                    </td>
+                                </tr>
+                            </th:block>
+                            </tbody>
+                        </form>
                     </table>
                 </div>
             </div>

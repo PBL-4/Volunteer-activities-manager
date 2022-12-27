@@ -17,7 +17,7 @@ public class UserEvent {
     @EmbeddedId
     private UserEventId userEventId;
 
-    @ManyToOne
+    @ManyToOne()
     @MapsId("eventId")
     private Event event;
 

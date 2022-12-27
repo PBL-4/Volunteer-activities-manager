@@ -26,7 +26,7 @@
         </div>
     </nav>
     <h1 class="text-center">Danh sách thành viên đang chờ</h1>
-    <h2 class="text-center" ><a th:href="@{'/posts/get?id='+ ${event.eventId}}" th:text="${event.eventName}"></a></h2>
+    <h2 class="text-center"><a th:href="@{'/posts/get?id='+ ${event.eventId}}" th:text="${event.eventName}"></a></h2>
     <div th:if="${message}">
         [[${message}]]
     </div>
@@ -42,7 +42,7 @@
                     <th>Phone Number</th>
                     <th>Email</th>
                     <th>Address</th>
-                    <th>Approval</th>
+                    <th colspan="2">Approval</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -58,7 +58,11 @@
                         <input type="hidden" name="userId" th:value="${member.getUser().getUserId()}">
                         <input type="hidden" name="eventId" th:value="${member.getEvent().getEventId()}">
                         <td>
-                            <button type="submit" class="btn btn-primary">Phê duyệt</button>
+                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                        </td>
+                        <td>
+                            <input type="submit" th:formaction="/events/disapproval" class="btn btn-alert"
+                                   value="Từ chối"/>
                         </td>
                     </tr>
                 </th:block>
