@@ -38,13 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 GrantedAuthority authority = new SimpleGrantedAuthority(role.getRoleName());
                 grantList.add(authority);
             }
-
             UserDetails userDetails  = new org.springframework.security.core.userdetails.User(username, user.getPassword(), grantList);
-       //     CustomUserDetails customUserDetails=new CustomUserDetails((User)userDetails);
-
-
             return userDetails;
         }
-// return new CustomUserDetails(user);
     }
 }

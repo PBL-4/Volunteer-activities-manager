@@ -3,6 +3,7 @@ package com.example.demo1_pbl4.service;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 

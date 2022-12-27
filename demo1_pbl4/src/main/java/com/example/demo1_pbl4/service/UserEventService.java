@@ -1,6 +1,7 @@
 package com.example.demo1_pbl4.service;
 
 
+import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.UserEvent;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface UserEventService {
 
     boolean deleteUserEvent(Long userId, Long eventId);
 
+    //Tìm host trong 1 sự kiện
+    User findHostInAEvent(List<UserEvent> members);
 
 }

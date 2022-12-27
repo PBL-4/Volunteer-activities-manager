@@ -152,8 +152,8 @@
                                     </button>
                                 </div>
                             </div>
-                            <!--                                Nếu bạn là thành viên mà thời gian đã kết thúc-->
-                            <div th:if="${IamMember} == 1 && ${Eventend}  <= 0">
+                            <!-- Nếu bạn là thành viên mà thời gian đã kết thúc-->
+                            <div th:if="${IamMember == 1 && Eventend  <= 0}">
                                 <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                     <div style="display: flex;flex-direction: column">
                                         <button type="button" data-toggle="modal"
@@ -166,7 +166,7 @@
                                 </div>
                             </div>
                             <!--  Nếu bạn là thành viên mà thời gian chưa kết thúc-->
-                            <div th:if="${IamMember} == 1 && ${Eventend}  > 0">
+                            <div th:if="${IamMember == 1 && Eventend   > 0}">
                                 <form th:action="@{/events/deleteRequest}" method="post">
                                     <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                         <div style="display: flex;flex-direction: column">

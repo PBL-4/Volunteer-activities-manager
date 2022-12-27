@@ -40,6 +40,11 @@ public class HomepageController {
     @Autowired
     private ReportService reportService;
 
+//    @GetMapping
+//    public Principal retrievePrincipal(Principal principal) {
+//        return principal;
+//    }
+
     //    @Autowired
 //    private CustomUserDetailsService customUserDetailsService; // Dung de phan quyen trong spring boot
     //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -83,15 +88,15 @@ public class HomepageController {
         if (userService.checkLogin(username, password)) {
             //  session.setAttribute("username", username);
             session.setAttribute("user", userService.findUserByUsername(username));
+            System.out.println(remember);
             if (remember) {
                 Cookie cookie1 = new Cookie("username", username);
-                cookie1.setMaxAge(5); // expires in 5mins
+                cookie1.setMaxAge(5 * 60); // expires in 5mins
                 Cookie cookie2 = new Cookie("password", password);
-                cookie2.setMaxAge(5); // expires in 5mins
+                cookie2.setMaxAge(5 * 60); // expires in 5mins
                 response.addCookie(cookie1);
                 response.addCookie(cookie2);
             }
-            String url = request.getRequestURL().toString();
             return "redirect:/home";
 
         } else {

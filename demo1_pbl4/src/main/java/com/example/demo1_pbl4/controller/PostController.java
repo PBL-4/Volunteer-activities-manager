@@ -53,19 +53,19 @@ public class PostController {
         return new ModelAndView("/post/post_list", "posts", postService.getAllPosts());
     }
 
-    @GetMapping("/get{id}")         // ko co dau .  , dau ? thanh %20
+    @GetMapping("/get{id}")         // ko co dau .  , dau space thanh %20
     public String showPostById(Model model, @RequestParam("id") Long id, HttpSession session) // Tai sao lai dung @requestParam
     {
         try {
-            Long userId = Long.valueOf(-1);
+            // Long userId = Long.valueOf(-1);
             User user = null;
             if (session.getAttribute("user") != null) {
                 user = (User) session.getAttribute("user");
-                userId = user.getUserId();
             }
             Post post = postService.getPostById(id);
+            Event event = post.getEvent();
             model.addAttribute("post", post);
-            model.addAttribute("myComment",new Comment());
+            model.addAttribute("myComment", new Comment());
             model.addAttribute("comments", commentService.getAllCommentsByPost(id));
             model.addAttribute("total", commentService.countCommentByPost(id));
             model.addAttribute("Rating_Event", new Rating());
@@ -74,9 +74,14 @@ public class PostController {
             model.addAttribute("event", post.getEvent());
             Date date = new Date(System.currentTimeMillis());
             int timeCompare = post.getEvent().getEndTime().compareTo(date);
+            System.out.println(timeCompare);
             model.addAttribute("Eventend", timeCompare);
             //
-            UserEvent ue = userEventService.findUserEventByUserAndEventId(id, userId);
+            UserEvent ue = null;
+            if (user != null) {
+                ue = userEventService.findUserEventByUserAndEventId(event.getEventId(), user.getUserId());
+            }
+
             if (ue == null) {
                 model.addAttribute("IamMember", 0);
             } else {
@@ -99,7 +104,12 @@ public class PostController {
             model.addAttribute("currentMem", e.getCurrentMem());
             model.addAttribute("numOfMem", e.getNumOfMem());
             return "post/post_of_event";
-        } catch (NoSuchElementException e) {
+
+        }
+//        catch(NullPointerException e){
+//            return "500Page";
+//        }
+        catch (NoSuchElementException e) {
             return "404Page";
         }
     }
@@ -133,7 +143,7 @@ public class PostController {
     public String showDonationForm(Model model, HttpSession session, @RequestParam("postId") Long id) {
         if (session.getAttribute("user") != null) {
             User user = (User) session.getAttribute("user");
-            Post post=postService.getPostById(id);
+            Post post = postService.getPostById(id);
             model.addAttribute("post", post);
             model.addAttribute("userId", user.getUserId());
             return "post/donation_volunteer";
@@ -157,7 +167,7 @@ public class PostController {
         donate.setEvent(event);
         donate.setMoney(donation);
         donate.setDonateDate(new Date(System.currentTimeMillis()));
-        if(donateService.createDonate(donate)){
+        if (donateService.createDonate(donate)) {
             System.out.println(donateService.createDonate(donate));
         }
         return "redirect:/posts/get?id=" + id;
@@ -165,24 +175,31 @@ public class PostController {
 
     // xu ly send request
     @PostMapping("/sendRequest")
-    public String processJoin(@RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId,
+    public String processJoin(Model model,@RequestParam(value = "userId",required =false ) Long userId, @RequestParam("eventId") Long eventId,
                               @RequestParam("personalInfo") String personalInfo, @RequestParam("skill") String skill) {
-        UserEvent userEvent = new UserEvent();
-        User user = userService.getUserById(userId);
-        System.out.println("userId" + user.getUserId());
+        if(userId!=null)
+        {
+            UserEvent userEvent = new UserEvent();
+            User user = userService.getUserById(userId);
+            System.out.println("userId" + user.getUserId());
 
-        userEvent.setUser(user);
-        Event event = eventService.getEventById(eventId);
-        System.out.println("eventId" + event.getEventId());
-        userEvent.setEvent(event);
-        userEvent.setApproval(false);
-        userEvent.setInfoOfMem(personalInfo);
-        userEvent.setSkill(skill);
-        userEvent.setEventRole("Member");
-        userEvent.setUserEventId(new UserEventId(userId, eventId));
-        userEventService.insertUserEvent(userEvent);// Tạo khóa chính
-        Long postId = event.getPost().getPostId();
-        return "redirect:/posts/get?id=" + postId;
+            userEvent.setUser(user);
+            Event event = eventService.getEventById(eventId);
+            System.out.println("eventId" + event.getEventId());
+            userEvent.setEvent(event);
+            userEvent.setApproval(false);
+            userEvent.setInfoOfMem(personalInfo);
+            userEvent.setSkill(skill);
+            userEvent.setEventRole("Member");
+            userEvent.setUserEventId(new UserEventId(userId, eventId));
+            userEventService.insertUserEvent(userEvent);// Tạo khóa chính
+            Long postId = event.getPost().getPostId();
+            return "redirect:/posts/get?id=" + postId;
+        }else{
+            model.addAttribute("unLogin", "Bạn cần đăng nhập thì mới tham gia được");
+            return "homepage/login_form";
+        }
+
     }
 }
 

@@ -2,6 +2,7 @@ package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -39,18 +40,20 @@ public class Event {
 
     private double donation;
 
+    // private boolean isDelete;
+
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
 
-
-//    @ManyToMany(mappedBy = "eventList", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
-//    private Set<User> users= new HashSet<>();
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<UserEvent> userEvent;
 
     //Post
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;
+
 
     public Event() {
         this.currentMem = 0;
@@ -188,5 +191,13 @@ public class Event {
 
     public void setStar(int star) {
         this.star = star;
+    }
+
+    public Set<UserEvent> getUserEvent() {
+        return userEvent;
+    }
+
+    public void setUserEvent(Set<UserEvent> userEvent) {
+        this.userEvent = userEvent;
     }
 }

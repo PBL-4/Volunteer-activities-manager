@@ -31,7 +31,7 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name="gender",nullable=true)
+    @Column(name = "gender", nullable = true)
     private String gender;
 
     @Nullable
@@ -50,6 +50,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Donate> donates;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserEvent> userList;
 
     public User() {
 
@@ -206,9 +209,15 @@ public class User {
     public void setDonates(Set<Donate> donates) {
         this.donates = donates;
     }
+
+    public Set<UserEvent> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(Set<UserEvent> userList) {
+        this.userList = userList;
+    }
 }
-
-
 
 
 

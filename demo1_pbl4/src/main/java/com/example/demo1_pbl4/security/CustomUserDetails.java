@@ -1,13 +1,15 @@
 package com.example.demo1_pbl4.security;
 
+import com.example.demo1_pbl4.model.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
-    private org.springframework.security.core.userdetails.User user;
+
+    private User user;
 
     public CustomUserDetails(User user)
     {
@@ -15,6 +17,7 @@ public class CustomUserDetails implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
         return null;
     }
 

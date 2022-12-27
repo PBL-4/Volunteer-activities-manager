@@ -39,13 +39,21 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value="SELECT COUNT(*) from user_event where event_event_id=?1 and is_approval=1",nativeQuery=true)
     public int countCurrentMember(Long eventId);
 
+    // Đếm số lượng thành viên cần chấp thuận
     @Query(value="SELECT COUNT(*) from user_event where event_event_id=?1 and is_approval=0",nativeQuery=true)
     public int countWaitingApproval(Long eventId);
 
-
+    // Đếm số lượng sự kiện trong năm
     @Query(value= "SELECT * FROM events where YEAR(begin_time) =?1",nativeQuery = true)
     public List<Event> donationEventinYear(int year);
-
+    // Đếm số lượng tình nguyện viên trong tháng
     @Query(value= "SELECT count(current_member) FROM events where MONTH(begin_time) =?1 AND YEAR(begin_time) =?2",nativeQuery = true)
     public int countVolunteerInMonthAndYear(int month,int year);
+
+    //Lọc sự kiện theo sự giảm dần của tg
+    @Query(value="SELECT * FROM Events ORDER BY begin_time DESC",nativeQuery=true)
+    public List<Event> findEventOrderByBeginTime();
+
+    @Query(value="SELECT * FROM Events where begin_time > CURDATE() ORDER BY begin_time DESC ",nativeQuery=true)
+    public List<Event> findUpcomingEvent();
 }
