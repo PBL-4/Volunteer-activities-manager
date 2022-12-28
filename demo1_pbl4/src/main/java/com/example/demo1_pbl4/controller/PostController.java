@@ -43,8 +43,7 @@ public class PostController {
 
     @Autowired
     private UserEventService userEventService;
-
-
+    @Autowired
     private DonateService donateService;
     public PostController(CommentService commentService) {
         this.commentService = commentService;

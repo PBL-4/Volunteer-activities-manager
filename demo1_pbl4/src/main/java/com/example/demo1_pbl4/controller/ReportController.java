@@ -27,7 +27,8 @@ public class ReportController {
     public String thongke(Model model, @RequestParam(value = "year",required = false)Integer myYear) {
         Integer[] numEvents = new Integer[100];
         Integer[] years = new Integer[100];
-        String[] nameEvents =new String[100];
+        List<String> nameEvents = new ArrayList<>();
+        String[] nameevents = {"chuong trinh thien nguyen1","chuong trinh thien nguyen thang 7 : noi chao yeu thuong","chuong trinh thien nguyen3","chuong trinh thien nguyen4","chuong trinh thien nguyen5","chuong trinh thien nguyen6"};
         Double[] numDonate = new Double[100];
         String[] months = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
         int count = 0;
@@ -51,9 +52,7 @@ public class ReportController {
 
         for (Report l : listReport) {
            numDonate[num] = l.getDonationEvents();
-           nameEvents[num] = l.getNameEvents();
-            System.out.println(numDonate[num]);
-            System.out.println(nameEvents[num]);
+           nameEvents.add(l.getNameEvents());
            num++;
         }
 
@@ -64,7 +63,7 @@ public class ReportController {
         model.addAttribute("months", months);
         model.addAttribute("numEvents", numEvents);
         model.addAttribute("numDonates",numDonate);
-        model.addAttribute("nameEvents",nameEvents);
+        model.addAttribute("nameEvents",nameEvents.toArray());
 
         //  model.addAttribute("report", reports);
         return "admin/Report";
