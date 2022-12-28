@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -66,7 +67,7 @@ public class EventServiceImpl implements EventService {
         setStatusByDateTime(eventRepository.findAll());
         return eventRepository.findEventByLocation(location);
     }
-
+// Find event :
     @Override
     public List<Event> findEventByEventName(String eventName) {
         setStatusByDateTime(eventRepository.findAll());
@@ -112,6 +113,37 @@ public class EventServiceImpl implements EventService {
         return eventRepository.findEventOfHost(userId, role, pageable);
     }
 
+    @Override
+    public Page<Event> findEventByLocation(String location, Pageable pageable) {
+        return eventRepository.findEventByLocation(location, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostname(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostname(hostname, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventName(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventName(eventName, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByEventName(Pageable pageable) {
+        return eventRepository.findEventOrderByEventName(pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByBeginTime(Pageable pageable) {
+        return eventRepository.findEventOrderByBeginTime(pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByPopular(Pageable pageable) {
+        return eventRepository.findEventOrderByPopular(pageable);
+    }
+
+    // ---- End find event
     public void setStatusByDateTime(List<Event> eventList) {
         try {
             for (Event event : eventList) {
@@ -181,4 +213,48 @@ public class EventServiceImpl implements EventService {
     }
 
 
+    @Override
+    public Page<Event> findEventByLocationOrderByEventName(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByEventName(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByLocationOrderByBeginTime(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByBeginTime(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByLocationOrderByPopular(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByPopular(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByEventName(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByEventName(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByBeginTime(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByBeginTime(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByPopular(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByPopular(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByEventName(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventNameOrderByEventName(eventName,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByBeginTime(String eventName, Pageable pageable) {
+        return  eventRepository.findEventByEventNameOrderByBeginTime(eventName,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByPopular(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventNameOrderByPopular(eventName,pageable);
+    }
 }

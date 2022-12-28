@@ -289,7 +289,7 @@
                             <th:block th:each="e : ${Events}">
                                 <tr>
                                     <td th:text="${e.getEventId()}"></td>
-                                    <td class="truncate" th:text="${e.getEventName()}"></td>
+                                    <td th:text="${#strings.abbreviate(e.getEventName(),50)}"></td>
                                     <td th:text="${e.getAge()}"></td>
                                     <td th:text="${#strings.abbreviate(e.getLocation(),20)}"></td>
                                     <td th:text="${#numbers.formatCurrency(e.getDonation())}"></td>
@@ -299,7 +299,9 @@
                                     <td th:text="${e.getHostname()}"></td>
                                     <td th:text="${#strings.abbreviate(e.getPost().getContent(),50)}"></td>
                                     <td>
-                                        <button type="submit" th:formaction="@{'/events/admin/delete/{id}'(id=${e.eventId})}">Xóa</button>
+                                        <button type="submit"
+                                                th:formaction="@{'/events/admin/delete/{id}'(id=${e.eventId})}">Xóa
+                                        </button>
                                     </td>
                                 </tr>
                             </th:block>
@@ -307,10 +309,18 @@
                         </form>
                     </table>
                 </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
-
 </div>
 <div th:replace="~{/admin/admin_home::css}">
 </div>

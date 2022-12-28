@@ -156,8 +156,8 @@ public class PostController {
     public String processDonation(Model model, HttpSession session, @RequestParam("donation") double donation, @RequestParam("postId") Long id, @RequestParam("userId") Long userId) {
         Post post = postService.getPostById(id);
         Event event = post.getEvent();
-        double quy = event.getDonation() + donation;
-        event.setDonation(quy);
+        double quy = event.getFund() + donation;
+        event.setFund(quy);
         eventService.updateEvent(event);
         System.out.println(id);
         //donate
