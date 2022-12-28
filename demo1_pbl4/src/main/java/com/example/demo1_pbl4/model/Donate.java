@@ -16,13 +16,14 @@ public class Donate {
     @JoinColumn(name="user_Id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "event_Id")
     private Event event;
 
     private Date donateDate;
 
     private double Money;
+
     @Column(name="donate_comment", columnDefinition = "TEXT")
     private String comment;
 

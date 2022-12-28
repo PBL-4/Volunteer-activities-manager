@@ -34,6 +34,30 @@ public interface EventService {
     Page<Event> findEventByHostname(String hostname, Pageable pageable);
 
     Page<Event> findEventByEventName(String eventName, Pageable pageable);
+    //Sắp xếp:
+     Page<Event> findEventOrderByEventName(Pageable pageable);
+     Page<Event> findEventOrderByBeginTime(Pageable pageable);
+     Page<Event> findEventOrderByPopular(Pageable pageable);
+
+
+    // Vừa tìm kiếm vừa sort vừa phân trang
+    Page<Event> findEventByLocationOrderByEventName(String location, Pageable pageable);
+
+    Page<Event> findEventByLocationOrderByBeginTime(String location, Pageable pageable);
+
+    Page<Event> findEventByLocationOrderByPopular(String location, Pageable pageable);
+
+    Page<Event> findEventByHostnameOrderByEventName(String hostname, Pageable pageable);
+
+    Page<Event> findEventByHostnameOrderByBeginTime(String hostname, Pageable pageable);
+
+    Page<Event> findEventByHostnameOrderByPopular(String hostname, Pageable pageable);
+
+    Page<Event> findEventByEventNameOrderByEventName(String eventName, Pageable pageable);
+
+    Page<Event> findEventByEventNameOrderByBeginTime(String eventName, Pageable pageable);
+
+    Page<Event> findEventByEventNameOrderByPopular(String eventName, Pageable pageable);
 
     //-- Kết thúc tìm kiếm
 

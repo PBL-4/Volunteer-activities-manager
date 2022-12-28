@@ -38,7 +38,7 @@ public class Event {
 
     private int star;
 
-    private double donation;
+    private double fund;
 
     // private boolean isDelete;
 
@@ -54,13 +54,15 @@ public class Event {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<Donate> donation;
 
     public Event() {
         this.currentMem = 0;
         this.waitingApproval = 0;
     }
 
-    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double donation, Post post) {
+    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double fund, Post post) {
         this.eventName = eventName;
         this.location = location;
         this.age = age;
@@ -68,7 +70,7 @@ public class Event {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.hostname = hostname;
-        this.donation = donation;
+        this.fund = fund;
         this.post = post;
     }
 
@@ -137,12 +139,12 @@ public class Event {
         this.hostname = hostname;
     }
 
-    public double getDonation() {
-        return donation;
+    public double getFund() {
+        return fund;
     }
 
-    public void setDonation(double donation) {
-        this.donation = donation;
+    public void setFund(double donation) {
+        this.fund = donation;
     }
 
     public Status getStatus() {
@@ -199,5 +201,13 @@ public class Event {
 
     public void setUserEvent(Set<UserEvent> userEvent) {
         this.userEvent = userEvent;
+    }
+
+    public Set<Donate> getDonation() {
+        return donation;
+    }
+
+    public void setDonation(Set<Donate> donation) {
+        this.donation = donation;
     }
 }

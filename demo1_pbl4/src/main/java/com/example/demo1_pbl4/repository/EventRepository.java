@@ -34,6 +34,51 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT * from Events  where event_name LIKE %?1%", nativeQuery = true)
     public Page<Event> findEventByEventName(String eventName,Pageable pageable);
 
+    // Chức nănq sort:
+    //Lọc sự kiện theo tên sự kiện:
+    @Query(value="SELECT * FROM Events ORDER BY event_name ASC",nativeQuery=true)
+    public Page<Event> findEventOrderByEventName(Pageable pageable);
+
+    //Lọc sự kiện theo sự kiện mới nhất:
+    @Query(value="SELECT * FROM Events ORDER BY begin_time DESC",nativeQuery=true)
+    public Page<Event> findEventOrderByBeginTime(Pageable pageable);
+
+    //Lọc sự kiện theo sự kiện mới nhất:
+    @Query(value="SELECT * FROM Events ORDER BY rating DESC",nativeQuery=true)
+    public Page<Event> findEventOrderByPopular(Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where begin_time > CURDATE() ORDER BY begin_time DESC ",nativeQuery=true)
+    public Page<Event> findUpcomingEvent(Pageable pageable);
+
+    //Vừa sort vừa search
+    @Query(value="SELECT * FROM Events where location LIKE %?1% ORDER BY event_name ASC",nativeQuery=true)
+    public Page<Event> findEventByLocationOrderByEventName(String location,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where location LIKE %?1% ORDER BY begin_time DESC",nativeQuery=true)
+    public Page<Event> findEventByLocationOrderByBeginTime(String location,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where location LIKE %?1% ORDER BY rating DESC",nativeQuery=true)
+    public Page<Event> findEventByLocationOrderByPopular(String location,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where hostname LIKE %?1% ORDER BY event_name ASC",nativeQuery=true)
+    public Page<Event> findEventByHostnameOrderByEventName(String hostname,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where hostname LIKE %?1% ORDER BY begin_time DESC",nativeQuery=true)
+    public Page<Event> findEventByHostnameOrderByBeginTime(String hostname,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where hostname LIKE %?1% ORDER BY rating DESC",nativeQuery=true)
+    public Page<Event> findEventByHostnameOrderByPopular(String hostname,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where event_name LIKE %?1% ORDER BY event_name ASC",nativeQuery=true)
+    public Page<Event> findEventByEventNameOrderByEventName(String eventName,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where event_name LIKE %?1% ORDER BY begin_time DESC",nativeQuery=true)
+    public Page<Event> findEventByEventNameOrderByBeginTime(String eventName,Pageable pageable);
+
+    @Query(value="SELECT * FROM Events where event_name LIKE %?1% ORDER BY rating DESC",nativeQuery=true)
+    public Page<Event> findEventByEventNameOrderByPopular(String eventName,Pageable pageable);
+
+
 
     // Lấy sự kiện dựa vào host của event: BachLT
 
@@ -62,10 +107,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value= "SELECT count(current_member) FROM events where MONTH(begin_time) =?1 AND YEAR(begin_time) =?2",nativeQuery = true)
     public int countVolunteerInMonthAndYear(int month,int year);
 
-    //Lọc sự kiện theo sự giảm dần của tg
-    @Query(value="SELECT * FROM Events ORDER BY begin_time DESC",nativeQuery=true)
-    public List<Event> findEventOrderByBeginTime();
 
-    @Query(value="SELECT * FROM Events where begin_time > CURDATE() ORDER BY begin_time DESC ",nativeQuery=true)
-    public List<Event> findUpcomingEvent();
 }

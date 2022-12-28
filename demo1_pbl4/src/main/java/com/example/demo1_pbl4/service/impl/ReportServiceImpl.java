@@ -7,11 +7,8 @@ import com.example.demo1_pbl4.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Service("ReportServiceImpl")
@@ -56,7 +53,7 @@ public class ReportServiceImpl implements ReportService {
         List<Report> listReport = new ArrayList<>();
         for (Event e : reports) {
             Report report = new Report();
-            report.setDonationEvents(e.getDonation());
+            report.setDonationEvents(e.getFund());
             report.setNameEvents(e.getEventName());
             listReport.add(report);
 
@@ -70,7 +67,7 @@ public class ReportServiceImpl implements ReportService {
         List<Report> listReport = new ArrayList<>();
         for (Event e : reports) {
             Report report = new Report();
-            report.setDonationEvents(e.getDonation());
+            report.setDonationEvents(e.getFund());
             report.setNameEvents(e.getEventName());
             listReport.add(report);
         }
