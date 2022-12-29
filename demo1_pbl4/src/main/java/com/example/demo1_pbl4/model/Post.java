@@ -11,7 +11,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId;
+    @Column(name="title",columnDefinition = "TEXT")
     private String title;
+    @Column(name="content",columnDefinition = "TEXT")
     private String content;
 
     //Dư
@@ -25,7 +27,7 @@ public class Post {
     private User user;
 
 
-    @OneToOne(mappedBy="post")
+    @OneToOne(mappedBy="post",cascade=CascadeType.ALL)
     private Event event;
 
 

@@ -2,6 +2,8 @@ package com.example.demo1_pbl4.service.impl;
 
 import com.example.demo1_pbl4.model.Event;
 import com.example.demo1_pbl4.model.Status;
+import com.example.demo1_pbl4.model.User;
+import com.example.demo1_pbl4.model.UserEvent;
 import com.example.demo1_pbl4.repository.EventRepository;
 import com.example.demo1_pbl4.repository.StatusRepository;
 import com.example.demo1_pbl4.service.EventService;
@@ -11,11 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -65,7 +67,7 @@ public class EventServiceImpl implements EventService {
         setStatusByDateTime(eventRepository.findAll());
         return eventRepository.findEventByLocation(location);
     }
-
+// Find event :
     @Override
     public List<Event> findEventByEventName(String eventName) {
         setStatusByDateTime(eventRepository.findAll());
@@ -94,32 +96,73 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Page<Event> findHostOfEvent(Long userId, String role, Pageable pageable) {
+    public Page<Event> findEventOfHost(Long userId, String role, Pageable pageable) {
         setStatusByDateTime(eventRepository.findAll());
-        return eventRepository.findHostOfEvent(userId, role, pageable);
+        Page<Event> eventPages = eventRepository.findEventOfHost(userId, role, pageable);
+        //     List<Event> events=new ArrayList<>();
+        for (Event e : eventPages.getContent()) {
+            e.setCurrentMem(eventRepository.countCurrentMember(e.getEventId()));
+            e.setWaitingApproval(eventRepository.countWaitingApproval(e.getEventId()));
+            //      System.out.println("idEvent: "+e.getEventId());
+            System.out.println("current mem: " + eventRepository.countCurrentMember(e.getEventId()));
+            //    events.add(e);
+            e = eventRepository.save(e);
+            System.out.println("current mem after save: " + (e.getCurrentMem()));
+        }
+
+        return eventRepository.findEventOfHost(userId, role, pageable);
     }
 
+    @Override
+    public Page<Event> findEventByLocation(String location, Pageable pageable) {
+        return eventRepository.findEventByLocation(location, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostname(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostname(hostname, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventName(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventName(eventName, pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByEventName(Pageable pageable) {
+        return eventRepository.findEventOrderByEventName(pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByBeginTime(Pageable pageable) {
+        return eventRepository.findEventOrderByBeginTime(pageable);
+    }
+
+    @Override
+    public Page<Event> findEventOrderByPopular(Pageable pageable) {
+        return eventRepository.findEventOrderByPopular(pageable);
+    }
+
+    // ---- End find event
     public void setStatusByDateTime(List<Event> eventList) {
         try {
             for (Event event : eventList) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 Date now = new Date();//
-                Date beginDate = sdf.parse(event.getBeginTime().toString());
-                Date finishDate = sdf.parse(event.getEndTime().toString());
-                System.out.println("Date hien tai: " + sdf.format(now));
-                now=sdf.parse(now.toString()); // không cùng định dạng sẽ ko ss
+                String beginDateStr = sdf.format(event.getBeginTime());
+                String finishDateStr = sdf.format(event.getEndTime());
+                Date beginDate = sdf.parse(beginDateStr);
+                Date finishDate = sdf.parse(finishDateStr);
+                now = sdf.parse(sdf.format(now));   // không cùng định dạng sẽ ko ss
                 if (beginDate.after(now)) {
-                    Status status=statusRepository.findById(1L).get();
+                    Status status = statusRepository.findById(1L).get();
                     event.setStatus(status);
-                    System.out.println("Here 1");
                 } else if (beginDate.before(now) && finishDate.after(now)) {
-                    Status status=statusRepository.findById(2L).get();
+                    Status status = statusRepository.findById(2L).get();
                     event.setStatus(status);
-                    System.out.println("Here 2");
                 } else if (finishDate.before(now)) { // Thời gian kết thúc muộn hơn thời gian thực
-                    Status status=statusRepository.findById(3L).get();
+                    Status status = statusRepository.findById(3L).get();
                     event.setStatus(status);
-                    System.out.println("Here 3");
                 } else {
                     System.out.println("Loi thoi gian");
                 }
@@ -129,8 +172,89 @@ public class EventServiceImpl implements EventService {
         }
 
     }
-//    @Override
-//    public void createEventByHost(Long userId, Long eventId, String role, Boolean isApproval) {
-//        eventRepository.createEventByHost(userId, eventId, role, isApproval);
-//    }
+
+    @Override
+    public Integer countAllEvents() {
+        int count = 0;
+        for (Event e : eventRepository.findAll()) {
+            count++;
+        }
+        return count;
+    }
+
+    @Override
+    public List<Event> findAllFinishEvent() {
+        List<Event> events = new ArrayList<>();
+        Date now = new Date();
+        for (Event e : eventRepository.findAll()) {
+            if (e.getBeginTime().before(now)) {
+                events.add(e);
+            }
+        }
+        return events;
+    }
+
+    @Override
+    public Boolean isFinishEvent(Long eventId) {
+        Event e = eventRepository.findById(eventId).get();
+        Date now = new Date();
+        if (e.getEndTime().before(now))
+            return true;
+        return false;
+    }
+
+    @Override
+    public List<Event> sortEventByRating() {
+        List<Event> eventList = eventRepository.findAll();
+        Collections.sort(eventList, (o1, o2) -> {
+            return Double.compare(o2.getRating(), o1.getRating());
+        });// Thay cho new Comparator
+        return eventList;
+    }
+
+
+    @Override
+    public Page<Event> findEventByLocationOrderByEventName(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByEventName(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByLocationOrderByBeginTime(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByBeginTime(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByLocationOrderByPopular(String location, Pageable pageable) {
+        return eventRepository.findEventByLocationOrderByPopular(location,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByEventName(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByEventName(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByBeginTime(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByBeginTime(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByHostnameOrderByPopular(String hostname, Pageable pageable) {
+        return eventRepository.findEventByHostnameOrderByPopular(hostname,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByEventName(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventNameOrderByEventName(eventName,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByBeginTime(String eventName, Pageable pageable) {
+        return  eventRepository.findEventByEventNameOrderByBeginTime(eventName,pageable);
+    }
+
+    @Override
+    public Page<Event> findEventByEventNameOrderByPopular(String eventName, Pageable pageable) {
+        return eventRepository.findEventByEventNameOrderByPopular(eventName,pageable);
+    }
 }

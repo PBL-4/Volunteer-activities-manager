@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách thành viên chờ duyệt </title>
+    <div th:replace="~{/header::head_bootstrap}">
+    </div>
+</head>
+<body>
+<div th:replace="~{/header::headMenu}">
+</div>
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" th:href="@{'/events/list_of_member/'+${eventId}}">Danh sách thành viên trong sự
+                    kiện </a>
+                <a class="nav-link active" href="#">Danh sách thành viên đang chờ duyệt </a>
+                <a class="nav-link" th:href="@{'/events/my_event/'}">Quay về danh sách sự kiện</a>
+            </div>
+        </div>
+    </nav>
+    <h1 class="text-center">Danh sách thành viên đang chờ</h1>
+    <h2 class="text-center"><a th:href="@{'/posts/get?id='+ ${event.eventId}}" th:text="${event.eventName}"></a></h2>
+    <div th:if="${message}">
+        [[${message}]]
+    </div>
+    <div th:if="${members!=null}">
+        <form th:action="@{'/events/approval'}" method="post">
+            <table class="table">
+                <thead>
+                <tr scope="row">
+                    <th>Member id</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Gender</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th colspan="2">Approval</th>
+                </tr>
+                </thead>
+                <tbody>
+                <th:block th:each="member: ${members}">
+                    <tr scope="row">
+                        <td th:text="${member.getUser().getUserId()}"></td>
+                        <td th:text="${member.getUser().getFirstName()}"></td>
+                        <td th:text="${member.getUser().getLastName()}"></td>
+                        <td th:text="${member.getUser().getGender()}? Male :Female"></td>
+                        <td th:text="${member.getUser().getPhoneNum()}"></td>
+                        <td th:text="${member.getUser().getEmail()}"></td>
+                        <td th:text="${member.getUser().getAddress()}"></td>
+                        <input type="hidden" name="userId" th:value="${member.getUser().getUserId()}">
+                        <input type="hidden" name="eventId" th:value="${member.getEvent().getEventId()}">
+                        <td>
+                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                        </td>
+                        <td>
+                            <input type="submit" th:formaction="/events/disapproval" class="btn btn-alert"
+                                   value="Từ chối"/>
+                        </td>
+                    </tr>
+                </th:block>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+</html>

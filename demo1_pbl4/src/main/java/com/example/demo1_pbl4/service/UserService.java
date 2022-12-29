@@ -3,6 +3,7 @@ package com.example.demo1_pbl4.service;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.dto.MemberInRating;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface UserService {
 
     User insertUser(User user);
 
-    void updateUser(User user);
+    User updateUser(User user);
 
     boolean deleteUser(Long userId);
 
@@ -21,7 +22,8 @@ public interface UserService {
 
     boolean checkLogin(String username, String password);
 
-    User findUserByUsername(String usernane);
+    User findUserByUsername(String username);
+
 
 
     List<User> findUserWithSorting(String field);
@@ -29,8 +31,6 @@ public interface UserService {
     Page<User> findUsersWithPagination(int offset, int pageSize);
 
   //  List<MemberInRating> findMemberInEvent(Long eventId, String role);
-
-
-
+    Integer countAllUser();
 
 }

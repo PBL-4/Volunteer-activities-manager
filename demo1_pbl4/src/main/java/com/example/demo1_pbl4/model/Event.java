@@ -2,6 +2,7 @@ package com.example.demo1_pbl4.model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "events")
@@ -14,34 +15,54 @@ public class Event {
 
     @Column(name = "event_name")
     private String eventName;
+
     private String location;
 
     private int age;
     @Column(name = "num_of_member")
     private int numOfMem;
+
+    @Column(name = "current_member")
+    private int currentMem;
+
+    @Column(name = "waiting_approval")
+    private int waitingApproval;
+
+
     private Date beginTime;
     private Date endTime;
 
     private String hostname;
-    private float rating;
 
-    private double donation;
+    private double rating;
+
+    private int star;
+
+    private double fund;
+
+    // private boolean isDelete;
 
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
-//    @ManyToMany(mappedBy = "eventList", cascade = { CascadeType.ALL },fetch=FetchType.LAZY)
-//    private Set<User> users= new HashSet<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<UserEvent> userEvent;
 
     //Post
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<Donate> donation;
+
     public Event() {
+        this.currentMem = 0;
+        this.waitingApproval = 0;
     }
 
-    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double donation, Post post) {
+    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double fund, Post post) {
         this.eventName = eventName;
         this.location = location;
         this.age = age;
@@ -49,7 +70,7 @@ public class Event {
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.hostname = hostname;
-        this.donation = donation;
+        this.fund = fund;
         this.post = post;
     }
 
@@ -69,13 +90,6 @@ public class Event {
         this.eventName = eventName;
     }
 
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
 
     public String getLocation() {
         return location;
@@ -125,12 +139,12 @@ public class Event {
         this.hostname = hostname;
     }
 
-    public double getDonation() {
-        return donation;
+    public double getFund() {
+        return fund;
     }
 
-    public void setDonation(double donation) {
-        this.donation = donation;
+    public void setFund(double donation) {
+        this.fund = donation;
     }
 
     public Status getStatus() {
@@ -149,4 +163,51 @@ public class Event {
         this.post = post;
     }
 
+    public int getCurrentMem() {
+        return currentMem;
+    }
+
+    public void setCurrentMem(int currentMem) {
+        this.currentMem = currentMem;
+    }
+
+    public int getWaitingApproval() {
+        return waitingApproval;
+    }
+
+    public void setWaitingApproval(int waitingApproval) {
+        this.waitingApproval = waitingApproval;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getStar() {
+        return star;
+    }
+
+    public void setStar(int star) {
+        this.star = star;
+    }
+
+    public Set<UserEvent> getUserEvent() {
+        return userEvent;
+    }
+
+    public void setUserEvent(Set<UserEvent> userEvent) {
+        this.userEvent = userEvent;
+    }
+
+    public Set<Donate> getDonation() {
+        return donation;
+    }
+
+    public void setDonation(Set<Donate> donation) {
+        this.donation = donation;
+    }
 }

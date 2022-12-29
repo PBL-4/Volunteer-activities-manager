@@ -12,4 +12,7 @@ public interface CommentService {
     void updateComment(Comment comment);
     boolean deleteComment(Long commentId);
     Long countComment();
+
+    Long countCommentByPost(Long postId);
+    List<Comment> getAllCommentsByPost(Long postId);
 }

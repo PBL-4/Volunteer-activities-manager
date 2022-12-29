@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoạt động của bạn được tổ chức</title>
+    <div th:replace="~{/header::head_bootstrap}"></div>
+    <link th:href="@{/css/my_activity/style.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{/header::headMenu}">
+    <div class="stripe">
+
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row d-flex d-md-block flex-nowrap wrapper">
+        <div class="col-md-3 float-left col-1 pl-0 pr-0 collapse width show" id="sidebar">
+            <div class="list-group border-0 text-center text-md-left">
+                <a href="#" class="list-group-item d-inline-block collapsed"><i class="fa fa-dashboard"></i> <span
+                        class="d-none d-md-inline">Chào &nbsp; [[${user.username}]]</span> </a>
+                <a th:href="@{/events/host_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed"><i
+                        class="fa fa-clock-o"></i> <span class="d-none d-md-inline">Hoạt động đang tổ chức</span></a>
+                <a th:href="@{/events/member_event}" target="#main_content"
+                   class="list-group-item d-inline-block collapsed active"><i
+                        class="fa fa-list"></i><span
+                        class="d-none d-md-inline">Hoạt động bạn đã đăng ký tham gia</span></a>
+            </div>
+        </div>
+        <main id="main_content" class="col-md-9 float-left col px-5 pl-md-2 pt-2 main" style="width:100%;height: 720px">
+            <a href="#" data-target="#sidebar" data-toggle="collapse"><i
+                    class="text-dark fa fa-navicon fa-lg py-2 p-1"></i></a>
+            <div class="text-center">
+                <h1>Danh sách các hoạt động mà bạn tham gia</h1>
+                <h5 class="text-danger" th:if="${message}!=null" th:text="${message}"></h5>
+                <div th:if="${message}==null">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Event Id</th>
+                            <th>Name</th>
+                            <th>Begin time</th>
+                            <th>End time</th>
+                            <th>Location</th>
+                            <th>Current number</th>
+                            <th>Max member</th>
+                            <th colspan="2">Approval State</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <th:block th:each="e: ${myEvents}">
+                            <tr>
+                                <td th:text="${e.event.eventId}"></td>
+                                <td><a th:href="@{'/events/list_of_member/'+${e.event.eventId}}"
+                                       target="_self" th:text="${e.event.eventName}"></a></td>
+                                <td th:text="${e.event.beginTime}"></td>
+                                <td th:text="${e.event.endTime}"></td>
+                                <td th:text="${e.event.location}"></td>
+                                <td th:text="${e.event.currentMem}"></td>
+                                <td th:text="${e.event.numOfMem}"></td>
+                                <th:block th:if="${e.getApproval()}==true">
+                                    <td>
+                                        Đã tham gia
+                                    </td>
+                                    <td><a th:href="@{/events/list_of_mem/}">Danh sách thành viên</a></td>
+
+                                </th:block>
+                                <th:block th:if="!${e.getApproval()}">
+                                    <td>
+                                        Chờ phê duyệt
+                                    </td>
+                                    <td><a th:href="@{/events/list_of_mem}">Hủy đăng ký</a></td>
+                                </th:block>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

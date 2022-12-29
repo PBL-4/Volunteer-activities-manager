@@ -8,7 +8,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
-     private static final long serialVersionUID = 20L;
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Khong co cai nay, se gap phai loi 001
@@ -32,7 +31,7 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name="gender",nullable=true)
+    @Column(name = "gender", nullable = true)
     private String gender;
 
     @Nullable
@@ -47,10 +46,13 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Post> comments;
+    private Set<Comment> comments;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Donate> donates;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserEvent> userList;
 
     public User() {
 
@@ -191,35 +193,32 @@ public class User {
     public void setPosts(Set<Post> posts) {
         this.posts = posts;
     }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<Donate> getDonates() {
+        return donates;
+    }
+
+    public void setDonates(Set<Donate> donates) {
+        this.donates = donates;
+    }
+
+    public Set<UserEvent> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(Set<UserEvent> userList) {
+        this.userList = userList;
+    }
 }
 
 
 
 
-
-
-//    public Set<Event> getEvents() {
-//        return eventList;
-//    }
-//
-//    public void setEvents(Set<Event> events) {
-//        this.eventList = events;
-//    }
-
-
-//    @ManyToMany(cascade={
-//            CascadeType.ALL
-//    },fetch = FetchType.EAGER)
-//    @JoinTable(
-//            name="users_events",
-//            joinColumns={
-//                   @JoinColumn(name = "user_id"),
-//            },
-//            inverseJoinColumns={
-//                    @JoinColumn(name="event_id"),
-//                   // @JoinColumn(name="is_appoval")
-//            }
-//
-//    )
-//
-//   private Set<Event> eventList=new HashSet<Event>();

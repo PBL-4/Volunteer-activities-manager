@@ -17,7 +17,9 @@ public class Rating {
     private int point5;// điểm mà ... trong câu hỏi 2
     private int point6;// điểm mà ... trong câu hỏi 3
 
-    private double star;// Diem trung binh cua event
+    @Column(name = "avg_mem_point")
+    private double avgMemPoint;
+    private double avgEventPoint;// Diem trung binh cua event
 
     private String description;
 
@@ -26,21 +28,33 @@ public class Rating {
 //    @OneToOne
 //    private Event event;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JoinColumn(name = "event_id") // 2columns
+    @JoinColumns({
+            @JoinColumn(name = "user_id", referencedColumnName = "user_user_id"),
+            @JoinColumn(name = "event_id", referencedColumnName = "event_event_id") // 2columns
+    }
+    )
+
     private UserEvent userEvent;
 
     public Rating() {
-        this.point4=0;
-        this.point5=0;
-        this.point6=0;
+        this.point4 = 0;
+        this.point5 = 0;
+        this.point6 = 0;
     }
+
+
+    public Rating(int point4, int point5, int point6, String description) {
+        this.point4 = point4;
+        this.point5 = point5;
+        this.point6 = point6;
+        this.description = description;
+    }
+
 
     public Rating(int point1, int point2, int point3) {
         this.point1 = point1;
         this.point2 = point2;
         this.point3 = point3;
-        this.star = (this.point1 + this.point2 + this.point3)/3;
     }
 
     public Rating(int point1, int point2, int point3, UserEvent userEvent) {
@@ -48,14 +62,8 @@ public class Rating {
         this.point2 = point2;
         this.point3 = point3;
         this.userEvent = userEvent;
-        this.star = (this.point1 + this.point2 + this.point3) / 3;
     }
 
-    public Rating(Integer point4, Integer point5, Integer point6) {
-        this.point4 = point4;
-        this.point5 = point5;
-        this.point6 = point6;
-    }
 
     public Rating(Long idRate, int point1, int point2, int point3, int point4, int point5, int point6, UserEvent userEvent) {
         this.idRate = idRate;
@@ -132,13 +140,6 @@ public class Rating {
         this.idRate = idRate;
     }
 
-    public double getStar() {
-        return star;
-    }
-
-    public void setStar(double star) {
-        this.star = star;
-    }
 
     public String getDescription() {
         return description;
@@ -156,92 +157,26 @@ public class Rating {
         this.userEvent = userEvent;
     }
 
-    //    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//
-//    public Event getEvent()
-//    {
-//        return event;
-//    }
-//
-//    public void setEvent(Event event) {
-//        this.event = event;
-//    }
-
-//    public String getEventname() {
-//        return eventname;
-//    }
-//
-//    public void setEventname(String eventname) {
-//        this.eventname = eventname;
-//    }
-//
-//    public Date getBeginTime() {
-//        return beginTime;
-//    }
-//
-//    public void setBeginTime(Date beginTime) {
-//        this.beginTime = beginTime;
-//    }
-//
-//    public Date getEndTime() {
-//        return endTime;
-//    }
-//
-//    public void setEndTime(Date endTime) {
-//        this.endTime = endTime;
-//    }
-
-//    public Rating(Long idRate, User user, int point1, int point2, int point3, int point4, int point5, int point6, Event event) {
-//        this.idRate = idRate;
-//        this.user = user;
-//        this.point1 = point1;
-//        this.point2 = point2;
-//        this.point3 = point3;
-//        this.point4 = point4;
-//        this.point5 = point5;
-//        this.point6 = point6;
-//        this.event = event;
-//    }
-//
-//    public Rating(User user, int point1, int point2, int point3, int point4, int point5, int point6, Event event) {
-//        this.user = user;
-//        this.point1 = point1;
-//        this.point2 = point2;
-//        this.point3 = point3;
-//        this.point4 = point4;
-//        this.point5 = point5;
-//        this.point6 = point6;
-//        this.event = event;
-//    }
-
-    public void setPoint1(Integer point1) {
-        this.point1 = point1;
-    }
-
-    public void setPoint2(Integer point2) {
-        this.point2 = point2;
-    }
-
-    public void setPoint3(Integer point3) {
-        this.point3 = point3;
-    }
-
-    public void setPoint4(Integer point4) {
+    public void setMemberPoint(int point4, int point5, int point6) {
         this.point4 = point4;
-    }
-
-    public void setPoint5(Integer point5) {
         this.point5 = point5;
-    }
-
-    public void setPoint6(Integer point6) {
         this.point6 = point6;
     }
+
+    public double getAvgMemPoint() {
+        return avgMemPoint;
+    }
+
+    public void setAvgMemPoint(double avgMemPoint) {
+        this.avgMemPoint = avgMemPoint;
+    }
+
+    public double getAvgEventPoint() {
+        return avgEventPoint;
+    }
+
+    public void setAvgEventPoint(double avgEventPoint) {
+        this.avgEventPoint = avgEventPoint;
+    }
 }
+

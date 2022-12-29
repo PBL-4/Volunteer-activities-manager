@@ -1,6 +1,6 @@
 //package com.example.demo1_pbl4.configure;
 //
-
+//
 //import com.example.demo1_pbl4.security.CustomUserDetailsService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
@@ -15,7 +15,9 @@
 //import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 //import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 //
-//import javax.sql.DataSource; // Sai duong dan se sai
+// // Sai duong dan se sai
+//
+//import javax.sql.DataSource;
 //import java.io.File;
 //
 //@Configuration
@@ -42,19 +44,24 @@
 //        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 //        authProvider.setUserDetailsService(userDetailsService());
 //        authProvider.setPasswordEncoder(passwordEncoder());
-
+//
 //        return authProvider;
 //    }
 //
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+//        // auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 //        // auth.authenticationProvider(authenticationProvider());
+//        auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select username,password "
+//                + "from users "
+//                + "where username = ?")
+//                .authoritiesByUsernameQuery("select username,role_name "
+//                        + "from users INNER JOIN roles on users.role_id=roles.role_id "
+//                        + "where role_name = ?");
 //    }
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
-
 //        http.csrf().disable();
 //        //Cac trang khong yeu cau login:
 //        http.authorizeRequests().antMatchers("/", "/login", "/register", "/logout", "/css/**", "/fonts/**", "/images/**", "/js/**", "/homepage/**").permitAll();
@@ -62,8 +69,12 @@
 //        http.authorizeRequests()
 //                .antMatchers("/events/**", "/posts/**").access("hasAnyRole('ADMIN','USER')");
 //
+//        http.authorizeRequests().use
 //        //Trang chỉ dành cho ADMIN:
 //        http.authorizeRequests().antMatchers("/admin_home").access("hasRole('ADMIN')");
+//
+//        // Các trang còn lại cần phải Authenticate:
+//        http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().build();
 //
 //        //Khi người dùng đã login, với vai trò USER.
 //        // Nhưng truy cập vào trang yêu cầu vai trò Admin,

@@ -43,4 +43,15 @@ public class CommentServiceImpl implements CommentService {
     public Long countComment() {
         return commentRepository.countComments();
     }
+
+    @Override
+    public Long countCommentByPost(Long postId) {
+        return commentRepository.countCommentsByPost(postId);
+    }
+
+
+    @Override
+    public List<Comment> getAllCommentsByPost(Long postId) {
+        return commentRepository.findAllByPost(postId);
+    }
 }
