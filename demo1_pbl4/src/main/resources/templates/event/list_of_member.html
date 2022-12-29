@@ -34,8 +34,7 @@
         <thead>
         <tr scope="row">
             <th>Member id</th>
-            <th>First name</th>
-            <th>Last name</th>
+            <th>Name</th>
             <th>Gender</th>
             <th>Phone Number</th>
             <th>Email</th>
@@ -48,8 +47,8 @@
         <th:block th:each="member: ${members}">
             <tr scope="row">
                 <td th:text="${member.getUser().getUserId()}"></td>
-                <td th:text="${member.getUser().getFirstName()}"></td>
-                <td th:text="${member.getUser().getLastName()}"></td>
+                <td><a th:text="${member.getUser().getFirstName()+' '+ member.getUser().getLastName()}"
+                       th:href="@{'/my_account/'+${member.getUser().getUserId()}}"></a></td>
                 <td th:text="${member.getUser().getGender()}? Male :Female"></td>
                 <td th:text="${member.getUser().getPhoneNum()}"></td>
                 <td th:text="${member.getUser().getEmail()}"></td>

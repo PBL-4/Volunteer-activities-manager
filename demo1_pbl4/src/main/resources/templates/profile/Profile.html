@@ -154,7 +154,7 @@
 
             <div class="profile-img">
                 <img th:src="@{${myUser.avatar}}"
-                     alt="img"/>
+                     alt="img" height="250px"/>
 
             </div>
         </div>
@@ -186,14 +186,14 @@
             </div>
         </div>
         <div class="col-md-2">
-            <input type="button" data-toggle="modal"
+            <input th:if="${validUser}" type="button" data-toggle="modal"
                    data-target="#editprofile" class="profile-edit-btn" name="editprofile" value="Edit Profile"/>
         </div>
 
         <!-- Begin Model 2-->
         <div class="modal" tabindex="-1" role="dialog" id="editprofile">
             <div class="modal-dialog">
-                <form th:action="@{/my_account/edit_user}" th:object="${userEdit}" method="post">
+                <form th:if="${validUser}" th:action="@{/my_account/edit_user}" th:object="${userEdit}" method="post">
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -251,7 +251,7 @@
     <div class="row">
         <div class="col-md-4">
             <div class="profile-work">
-                <form th:action="@{/my_account/upload}" method="post" enctype="multipart/form-data">
+                <form th:if="${validUser}" th:action="@{/my_account/upload}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label>Edit avatar</label>
                         <input type="file" name="image" accept="image/*" class="form-control-file">

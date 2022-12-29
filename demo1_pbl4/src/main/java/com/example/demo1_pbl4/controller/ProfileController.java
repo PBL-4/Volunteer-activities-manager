@@ -29,14 +29,16 @@ public class ProfileController {
     private UserService userService;
 
     //BachLT- Có fix lại
-    @GetMapping("")
-    public String showListRating(Model model, HttpSession session) {
+    @GetMapping("{uId}")
+    public String showListRating(Model model, HttpSession session, @PathVariable("uId") Long uId) {
         if (session.getAttribute("user") != null) {
-            User user = (User) session.getAttribute("user");
+            User myUser = (User) session.getAttribute("user");
+            User user = userService.getUserById(uId);
             List<Rating> listRatingEvent = ratingEventService.findRatingByUserId(user.getUserId());
             model.addAttribute("RatingHistory", listRatingEvent);
             model.addAttribute("myUser", userService.getUserById(user.getUserId()));
             model.addAttribute("userEdit", userService.getUserById(user.getUserId()));
+            model.addAttribute("validUser",myUser.getUserId().equals(user.getUserId()));
             return "profile/Profile";
         } else {
             System.out.println("Chua dang nhap");
@@ -76,6 +78,6 @@ public class ProfileController {
         redirAttrs.addFlashAttribute("myUser", user);
         model.addAttribute("msg", "Uploaded images success");
         System.out.println("Uploaded images: " + fileNames.toString());
-        return "redirect:/my_account";
+        return "redirect:/my_account/" + user.getUserId();
     }
 }

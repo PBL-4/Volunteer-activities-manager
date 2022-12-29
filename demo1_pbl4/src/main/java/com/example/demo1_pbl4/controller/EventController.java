@@ -454,6 +454,38 @@ public class EventController {
         }
     }
 
+    @PostMapping("/update_event")
+    public String updateEvent(Model model, @RequestParam("eId") Long id, HttpSession session, @RequestParam("eventName") String eventName
+            , @RequestParam("location") String location
+            , @RequestParam("beginDate") Date beginDate
+            , @RequestParam("endDate") Date endDate
+            , @RequestParam("numOfMem") int numOfMem
+            , @RequestParam("agePermit") int agePermit
+            , @RequestParam("content") String content
+    ) {
+        if ((session.getAttribute("user")) != null) {
+            User user = (User) session.getAttribute("user");
+            Event event = eventService.getEventById(id);
+            event.setEventName(eventName);
+            event.setLocation(location);
+            event.setBeginTime(beginDate);
+            event.setEndTime(endDate);
+            event.setNumOfMem(numOfMem);
+            event.setAge(agePermit);
+            event.getPost().setContent(content);
+            event.setStatus(new Status(1L, "Chưa bắt đầu"));
+            eventService.updateEvent(event);
+            postService.updatePost(event.getPost());
+            System.out.println("Cập nhật thành công");
+            System.out.println("eventId=" + event.getEventId());
+            return "redirect:/events/host_event";
+        } else {
+            System.out.println("Chua dang nhap");
+            model.addAttribute("message", "Bạn chưa xác thực để thực hiện hành động này");
+            return "/403Page";
+        }
+    }
+
 
     @GetMapping("/admin")
     public String showEventOnAdmin(Model model, HttpSession session) {

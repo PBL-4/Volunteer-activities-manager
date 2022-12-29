@@ -62,6 +62,17 @@ public class Event {
         this.waitingApproval = 0;
     }
 
+    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, Post post) {
+        this.eventName = eventName;
+        this.location = location;
+        this.age = age;
+        this.numOfMem = numOfMem;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.hostname = hostname;
+        this.post = post;
+    }
+
     public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double fund, Post post) {
         this.eventName = eventName;
         this.location = location;
