@@ -11,6 +11,9 @@ import java.util.List;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
+    @Query(value = "SELECT * from Events e where is_approval=1", nativeQuery = true)
+    public List<Event> findAll();
+
     @Query(value = "SELECT * from Events e where location=?1 and event_name LIKE %?2% and is_approval=1", nativeQuery = true)
     public List<Event> findEventByLocationAndKeyword(String location, String keyword);
 
@@ -111,5 +114,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     @Query(value = "SELECT * FROM events where is_approval=0", nativeQuery = true)
     List<Event> findDisapprovalList();
 
+    @Query(value = "SELECT * FROM events where event_name LIKE %?1% AND is_approval=0", nativeQuery = true)
+    List<Event> findDisapprovalListByEventName(String keyword);
 
 }

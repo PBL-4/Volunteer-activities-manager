@@ -276,7 +276,10 @@
                         <input type="button" value="Clear" id="btnClear" onclick="clearSearch()"/>
                     </form>
                 </div>
-                <div>
+                <div th:if="${msg!=null}">
+                    <p class="text-center text-danger" th:text="${msg}"></p>
+                </div>
+                <div th:if="${msg==null}">
                     <table class="table table-bordered table-responsive">
                         <form th:action="@{'/events/admin/approval/'}" th:method="post">
                             <thead class="thead-dark">

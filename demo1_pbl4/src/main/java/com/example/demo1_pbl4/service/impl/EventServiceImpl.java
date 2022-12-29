@@ -262,4 +262,9 @@ public class EventServiceImpl implements EventService {
     public List<Event> findDisapprovalList() {
         return eventRepository.findDisapprovalList();
     }
+
+    @Override
+    public List<Event> findDisapprovalListByEventName(String keyword) {
+        return eventRepository.findDisapprovalListByEventName(keyword);
+    }
 }

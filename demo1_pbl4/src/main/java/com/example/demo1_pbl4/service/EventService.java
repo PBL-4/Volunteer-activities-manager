@@ -80,4 +80,6 @@ public interface EventService {
 
     List<Event> findDisapprovalList();
 
+    List<Event> findDisapprovalListByEventName(String keyword);
+
 }
