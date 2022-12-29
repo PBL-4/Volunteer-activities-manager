@@ -40,7 +40,8 @@ public class Event {
 
     private double fund;
 
-    // private boolean isDelete;
+    @Column(name = "is_approval")
+    private boolean isApproval;
 
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
@@ -220,5 +221,13 @@ public class Event {
 
     public void setDonation(Set<Donate> donation) {
         this.donation = donation;
+    }
+
+    public boolean isApproval() {
+        return isApproval;
+    }
+
+    public void setApproval(boolean approval) {
+        isApproval = approval;
     }
 }

@@ -41,8 +41,8 @@ public class UserEventServiceImpl implements UserEventService {
 
     @Override
     public UserEvent findUserEventByUserAndEventId(Long eventId, Long UserId) {
-        Optional<UserEvent> ue= userEventRepository.findRatingByUserAndEventId(eventId, UserId);
-        if(ue.isPresent()) // ue.orElse(null)
+        Optional<UserEvent> ue = userEventRepository.findRatingByUserAndEventId(eventId, UserId);
+        if (ue.isPresent()) // ue.orElse(null)
         {
             System.out.println("here");
             return ue.get();
@@ -65,7 +65,7 @@ public class UserEventServiceImpl implements UserEventService {
     public List<UserEvent> findAllMemberInEvent(Long eventId) {
         List<UserEvent> userEventList = new ArrayList<>();
         for (UserEvent userEvent : userEventRepository.findAll()) {
-            if (userEvent.getEvent().getEventId() == eventId) {
+            if (userEvent.getEvent().getEventId() == eventId && userEvent.getApproval()) {
                 userEventList.add(userEvent);
             }
         }
@@ -94,22 +94,16 @@ public class UserEventServiceImpl implements UserEventService {
     }
 
     @Override
-    public boolean deleteUserEvent(Long userId, Long eventId) {
-        if (getUserEventById(userId, eventId) != null) {
-            userEventRepository.deleteById(new UserEventId(userId, eventId));
-            return true;
-        } else {
-            return false;
-        }
+    public boolean deleteUserEvent(UserEvent member) {
+        userEventRepository.deleteById(member.getUserEventId());
+        return true;
     }
 
     // Hàm tìm người tổ chức trong 1 sự kiện
     @Override
     public User findHostInAEvent(List<UserEvent> members) {
-        for(UserEvent member: members)
-        {
-            if(member.getEventRole().equals("Host"))
-            {
+        for (UserEvent member : members) {
+            if (member.getEventRole().equals("Host")) {
                 return member.getUser();
             }
         }

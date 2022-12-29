@@ -222,14 +222,17 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#general-pages" aria-expanded="false"
+                       aria-controls="general-pages">
                         <span class="menu-title">Quản lý tất cả sự kiện</span>
                         <i class="mdi mdi-contacts menu-icon"></i>
                     </a>
                     <div class="collapse" id="general-pages">
                         <ul class="nav flex-column sub-menu">
-                            <li class="nav-item"> <a class="nav-link" th:href="@{/events/admin}"> Sự kiện đã duyệt </a></li>
-                            <li class="nav-item"> <a class="nav-link" th:href="@{/events/admin/waiting_approval}">Sự kiện chờ duyệt </a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/events/admin}"> Sự kiện đã duyệt </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/events/admin/waiting_approval}">Sự kiện
+                                chờ duyệt </a></li>
                         </ul>
                     </div>
                 </li>
@@ -265,7 +268,7 @@
                 <h2 class="page-title text-center"><span class="me-2">Event Management</span>
                 </h2>
                 <div class="text-center">
-                    <form th:action="@{/events/admin}" th:method="post">
+                    <form th:action="@{'/events/admin/approval/search'}" th:method="post">
                         <input type="text" name="eventName" id="keyword" size="50" th:value="${eventName}"/>
                         &nbsp;
                         <input type="submit" value="Search"/>
@@ -275,7 +278,7 @@
                 </div>
                 <div>
                     <table class="table table-bordered table-responsive">
-                        <form>
+                        <form th:action="@{'/events/admin/approval/'}" th:method="post">
                             <thead class="thead-dark">
                             <tr>
                                 <th>Event_ID</th>
@@ -288,11 +291,11 @@
                                 <th>NumberOfMember</th>
                                 <th>HostName</th>
                                 <th>Description</th>
-                                <th>Delete</th>
+                                <th colspan="2">Approval</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <th:block th:each="e : ${Events}">
+                            <th:block th:each="e : ${eventList}">
                                 <tr>
                                     <td th:text="${e.getEventId()}"></td>
                                     <td th:text="${#strings.abbreviate(e.getEventName(),50)}"></td>
@@ -305,8 +308,12 @@
                                     <td th:text="${e.getHostname()}"></td>
                                     <td th:text="${#strings.abbreviate(e.getPost().getContent(),50)}"></td>
                                     <td>
+                                        <input type="hidden" name="eId" th:value="${e.getEventId()}">
+                                        <button type="submit">Chấp nhận</button>
+                                    </td>
+                                    <td>
                                         <button type="submit"
-                                                th:formaction="@{'/events/admin/delete/{id}'(id=${e.eventId})}">Xóa
+                                                th:formaction="@{'/events/admin/disapproval/?id='+${e.eventId}}">Từ chối
                                         </button>
                                     </td>
                                 </tr>

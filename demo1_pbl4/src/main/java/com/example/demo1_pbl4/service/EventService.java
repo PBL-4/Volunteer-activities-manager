@@ -78,4 +78,6 @@ public interface EventService {
 
     List<Event> sortEventByRating();
 
+    List<Event> findDisapprovalList();
+
 }
