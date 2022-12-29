@@ -51,119 +51,127 @@
                         <li class="nav-item">
                             <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
                                                                                     id="inlineCheckbox1"
-                                                                                    type="radio"
+                                                                                    th:type="radio"
                                                                                     name="choice"
-                                                                                    value="eventName"/><label
+                                                                                    th:value="${'eventName'}"
+                                                                                    th:checked="${c == 1}"/><label
                                     class="form-check-label" for="inlineCheckbox1">Tên sự kiện</label></div>
                         </li>
                         <li class="nav-item">
                             <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
                                                                                     id="inlineCheckbox2"
-                                                                                    type="radio"
+                                                                                    th:type="radio"
                                                                                     name="choice"
-                                                                                    value="location"/><label
+                                                                                    th:value="${'location'}"
+                                                                                    th:checked="${c == 2}"/><label
                                     class="form-check-label" for="inlineCheckbox2">Vị trí</label></div>
                         </li>
                         <li class="nav-item">
                             <div class="nav-item" style="padding-right:10px"><input class="form-check-input"
                                                                                     id="inlineCheckbox3"
-                                                                                    type="radio"
+                                                                                    th:type="radio"
                                                                                     name="choice"
-                                                                                    value="hostname"/><label
+                                                                                    th:value="${'hostname'}"
+                                                                                    th:checked="${c == 3}"/><label
                                     class="form-check-label" for="inlineCheckbox3">Người tổ chức</label>
                             </div>
                         </li>
                     </ul>
                     <div class="form-inline my-2 my-lg-0"><input
-                            class="form-control mr-sm-2" type="text" name="keyword" placeholder="Enter keyword">
-                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                            class="form-control mr-sm-2" type="text" name="keyword" placeholder="Enter keyword"
+                            th:value="${keyword}">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search
+                        </button>
                     </div>
                 </div>
             </nav>
-        </form>
+            <!--        </form>-->
 
-        <!-- Form search end-->
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="row">
-                    <h1 class="title">The best Virtual Volunteer Opportunity
-                        <div th:if="${location}!=null">
+            <!-- Form search end-->
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <h1 class="title">The best Virtual Volunteer Opportunity
+                            <div th:if="${location}!=null">
 
-                            in <span th:text="${location}"></span>
-                        </div>
+                                in <span th:text="${location}"></span>
+                            </div>
 
-                    </h1>
-                </div>
-                <div class="row">
-                    <h2>140 volunteer are needed<span th:if="${location}!=null" th:text="near ${location} "></span>
-                    </h2>
-                </div>
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <h2>140 volunteer are needed<span th:if="${location}!=null" th:text="near ${location} "></span>
+                        </h2>
+                    </div>
 
-                <hr>
-                <div class="text-center text-danger" th:if="${message}" th:text="${message}"></div>
-                <div th:if="${message==null}">
-                    <th:block th:each="event,pos: ${eventList}">
-                        <div class="event_content">
-                            <table>
-                                <thead class="event_title">
-                                <tr>
-                                    <td>
-                                        <a th:href="@{/posts/get(id=${event.eventId})}"><span
-                                                th:text="${pos.index+1} + ' ' + ${event.eventName}"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span th:text="With + ' '+ ${event.hostname}"></span></td>
-                                </tr>
-                                <tr>
-                                    <td th:text="${#dates.format(event.beginTime, 'dd-MMM-yyyy')} +' - ' + ${#dates.format(event.endTime, 'dd-MMM-yyyy')    }"></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td th:text="${event.getPost().getContent()}"></td>
-                                </tr>
-                                <tr>
-                                    <td th:text="${#dates.format(event.post.postDate, 'dd-MMM-yyyy')}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <hr>
-                        </div>
-                    </th:block>
+                    <hr>
+                    <div class="text-center text-danger" th:if="${message}" th:text="${message}"></div>
+                    <div th:if="${message==null}">
+                        <th:block th:each="event,pos: ${eventList}">
+                            <div class="event_content">
+                                <table>
+                                    <thead class="event_title">
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/posts/get(id=${event.eventId})}"><span
+                                                    th:text="${pageNumber*10+ pos.index+1} + ' ' + ${#strings.toUpperCase(event.eventName)}"></span></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span th:text="'Được tổ chức bởi:' + ${event.hostname}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td th:text="'Tổ chức từ '+${#dates.format(event.beginTime, 'dd-MMM-yyyy')} +' đến ' + ${#dates.format(event.endTime, 'dd-MMM-yyyy')    }"></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td th:text="${event.getPost().getContent()}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td th:text="'Ngày đăng: '+${#dates.format(event.post.postDate, 'dd-MMM-yyyy')}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <hr>
+                            </div>
+                        </th:block>
 
-                    <div class="row text-muted">
-                        <!--                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>-->
-                        <!--                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
-                        <a th:if="${pageNumber>0}" th:href="@{/events/page{pageNumber}(pageNumber=${pageNumber-1})}">Prev
-                            &nbsp;</a>
-                        <span style="text-align:right" th:each="i : ${#numbers.sequence(0,myTotalPages)}">
-                    <a th:if="${i!=pageNumber}" th:href="@{/events/page{pageNumber}(pageNumber=${i})}">[[${i+1}]]</a>&nbsp;
+                        <div class="row text-muted">
+                            <!--                <span style="text-align: left" th:text="'Total Items:'+ ' '+  ${totalItems}"> </span>-->
+                            <!--                <span style="text-align:center">&nbsp;&nbsp;&nbsp;&nbsp; - Page [[${currentPage}]] of [[${myTotalPages}]]&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+                            <a th:if="${pageNumber>0}"
+                               th:href="@{'/events/page/'+${pageNumber-1} +'?sort='+${sort}+'&choice='+${choice}+'&keyword='+${keyword}}">Prev
+                                &nbsp;</a>
+                            <span style="text-align:right" th:each="i : ${#numbers.sequence(0,myTotalPages)}">
+                    <a th:if="${i!=pageNumber}"
+                       th:href="@{'/events/page/'+${i} +'?sort='+${sort}+'&choice='+${choice}+'&keyword='+${keyword}}">[[${i+1}]]</a>&nbsp;
                     <span class="text-danger" th:if="${i==pageNumber}">[[${i+1}]]</span>&nbsp;&nbsp;
                 </span>
-                        <a th:if="${currentPage<myTotalPages}"
-                           th:href="@{/events/page{pageNumber}(pageNumber=${pageNumber+1})}">Next</a>
+                            <a th:if="${pageNumber<myTotalPages}"
+                               th:href="@{'/events/page/'+${pageNumber+1} +'?sort='+${sort}+'&choice='+${choice}+'&keyword='+${keyword}}">Next</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="row">
-<!--                    <form class="form-row align-items-center" th:action="@{/events/page}">-->
+                <div class="col-sm-4">
+                    <div class="row">
+                        <!--                    <form class="form-row align-items-center" th:action="@{/events/page}">-->
                         <div class="col-auto my-1">
                             <label class="mr-sm-2" for="sort">Sắp xếp</label>
                             <select class="custom-select mr-sm-2" id="sort" name="sort">
-                                <option value="1" selected th:selected="${sort==1}">Tên sự kiện</option>
+                                <option value="1" th:selected="${sort==1}">Tên sự kiện</option>
                                 <option value="2" th:selected="${sort==2}">Thời gian gần đây</option>
                                 <option value="3" th:selected="${sort==3}">Độ nổi bật</option>
                             </select>
                             <div class="col-auto my-1">
-                                <button class="btn btn-primary" type="submit" name="submit">Lọc</button>
+                                <button class="btn btn-primary" type="submit">Lọc</button>
                             </div>
                         </div>
-<!--                    </form>-->
+                        <!--                    </form>-->
+                    </div>
                 </div>
             </div>
-        </div>
+        </form>
     </main>
 </div>
 

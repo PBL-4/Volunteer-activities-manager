@@ -6,76 +6,105 @@
     <link rel="stylesheet" th:href="@{/css/register_form/style.css}" type="text/css">
 </head>
 <style>
+    .alert {
+        text-align: center;
+        padding: 20px;
+        background-color: #f44336;
+        color: white;
+    }
 
+    p {
+        margin-left: 10px;
+        font-size: small;
+        color: red;
+    }
+
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .closebtn:hover {
+        color: black;
+    }
 </style>
 <body>
-
+<div class="alert" th:if="${errorMessage}!=null">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>Danger!</strong> <span th:text="${errorMessage}"></span>
+</div>
 <div class="form_wrapper">
     <div class="form_container">
         <div class="title_container">
             <h2>Registration</h2>
         </div>
         <div class="row clearfix">
-            <div class="">
-                <form th:action="@{/process_register}" method="post" th:object="${myUser}">
+            <form th:action="@{/process_register}" method="post" th:object="${myUser}">
 
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-                        <input type="text" name="username" placeholder="Username" required th:field="*{username}"/>
-                    </div>
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-lock"></i></span>
-                        <input type="password" name="password" placeholder="Password" required th:field="*{password}"/>
-                    </div>
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-lock"></i></span>
-                        <input type="password" name="password" placeholder="Re-type Password" required/>
-                    </div>
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-                        <input type="email" name="email" placeholder="Email" required th:field="*{email}"/>
-                    </div>
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-                        <input type="text" name="phoneNum" placeholder="Phone Number" required th:field="*{phoneNum}"/>
-                    </div>
-                    <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-                        <input type="text" name="address" placeholder="Address" required th:field="*{address}"/>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col_half">
-                            <div class="input_field"><span><i aria-hidden="true" class="fa fa-user"></i></span>
-                                <input type="text" name="firstName" placeholder="First Name" th:field="*{firstName}"/>
-                            </div>
-                        </div>
-                        <div class="col_half">
-                            <div class="input_field"><span><i aria-hidden="true" class="fa fa-user"></i></span>
-                                <input type="text" name="LastName" placeholder="Last Name" required
-                                       th:field="*{lastName}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input_field radio_option">
-                        <input type="radio" name="gender" id="male" value="Nam" th:field="*{gender}">
-                        <label for="male">Male</label>
-                        <input type="radio" name="gender" id="female" value="Nữ" th:field="*{gender}">
-                        <label for="female">Female</label>
-                    </div>
-                    <!--
-                    <div class="input_field select_option">
-                      <select>
-                        <option>Select a country</option>
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                      </select>
-                      <div class="select_arrow"></div>
-                    </div>
-                     -->
-                    <div class="input_field checkbox_option">
-                        <input type="checkbox" id="cb1">
-                        <label for="cb1">I agree with terms and conditions</label>
-                    </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                    <input type="text" name="username" placeholder="Username" th:field="*{username}"/>
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Validation error</p>
+                </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                    <input type="password" name="password" placeholder="Password" th:field="*{password}"/>
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Validation error</p>
+                </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-lock"></i></span>
+                    <input type="password" name="password" placeholder="Re-type Password"
+                           th:field="*{matchingPassword}">
+                </div>
 
-                    <input class="button" type="submit" value="Register"/>
-                </form>
-            </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                    <input type="text" name="email" placeholder="Email" th:field="*{email}"/>
+                    <p th:each="error: ${#fields.errors('email')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                    <input type="text" name="phoneNum" placeholder="Phone Number" th:field="*{phoneNum}"/>
+                    <p th:if="${#fields.hasErrors('phoneNum')}" th:errors="*{phoneNum}">Validation error</p>
+                </div>
+                <div class="input_field"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>
+                    <input type="text" name="address" placeholder="Address" th:field="*{address}"/>
+                    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Validation error</p>
+                </div>
+                <div class="row clearfix">
+                    <div class="col_half">
+                        <div class="input_field"><span><i aria-hidden="true" class="fa fa-user"></i></span>
+                            <input type="text" name="firstName" placeholder="First Name" th:field="*{firstName}"/>
+                            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Validation error</p>
+                        </div>
+                    </div>
+                    <div class="col_half">
+                        <div class="input_field"><span><i aria-hidden="true" class="fa fa-user"></i></span>
+                            <input type="text" name="LastName" placeholder="Last Name"
+                                   th:field="*{lastName}"/>
+                            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Validation error</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input_field radio_option">
+                    <input type="radio" name="gender" id="male" value="Nam" th:field="*{gender}">
+                    <label for="male">Male</label>
+                    <input type="radio" name="gender" id="female" value="Nữ" th:field="*{gender}">
+                    <label for="female">Female</label>
+                    <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Validation error</p>
+                </div>
+
+                <div class="input_field checkbox_option">
+                    <input type="checkbox" id="cb1" required>
+                    <label for="cb1">I agree with terms and conditions</label>
+                </div>
+                <input class="button" type="submit" value="Register"/>
+            </form>
         </div>
     </div>
+    <a th:href="@{/home}" id="back">Back to home ...</a>
 </div>
 </body>
 </html>
