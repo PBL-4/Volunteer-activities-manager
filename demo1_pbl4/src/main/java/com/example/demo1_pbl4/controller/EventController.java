@@ -425,7 +425,7 @@ public class EventController {
         if (session.getAttribute("user") != null) {
             User u = (User) session.getAttribute("user");
             model.addAttribute("myUser", u);
-            List<Event> eventLists = eventService.getAllEvents();
+            List<Event> eventLists = eventService.getAllEvents(); // Maybe: Lỗi chỗ event chưa duyệt
             model.addAttribute("Events", eventLists);
             return "admin/EventsManager";
         } else {
@@ -626,10 +626,15 @@ public class EventController {
         if (session.getAttribute("user") != null) {
             User u = (User) session.getAttribute("user");
             model.addAttribute("myUser", u);
-            List<Event> listOfEvent = eventService.findEventByEventName(keyword);
-            model.addAttribute("Events", listOfEvent);
-            model.addAttribute("eventName", keyword);
-            return "admin/EventsManager";
+            List<Event> listOfEvent = eventService.findDisapprovalListByEventName(keyword);
+            if(listOfEvent.isEmpty())
+            {
+                model.addAttribute("msg", "Không có dữ liệu");
+            }else {
+                model.addAttribute("eventList", listOfEvent);
+                model.addAttribute("eventName", keyword);
+            }
+            return "admin/event_waiting_approval";
         } else {
             return "403Page";
         }

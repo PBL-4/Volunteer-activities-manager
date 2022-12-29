@@ -86,55 +86,29 @@
                     </div>
 
                     <div class="row align-items-center mb-4">
-                        <div th:if="${endEvent}  > 0">
-                            <div th:if="${IamMember} == 0">
+                        <div th:if="${enableJoin}">
+                            <div>
                                 <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                     <button type="button" data-toggle="modal"
                                             data-target="#joinRequest" class="join">Tôi muốn tham gia
                                     </button>
                                 </div>
                             </div>
-                            <!-- Nếu bạn là thành viên mà thời gian đã kết thúc-->
-                            <div th:if="${IamMember == 1 && endEvent  <= 0}">
-                                <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
-                                    <div style="display: flex;flex-direction: column">
-                                        <button type="button" data-toggle="modal"
-                                                data-target="#joinRequest" class="bg-info text-white join" disabled
-                                        >Bạn đã tham gia sự kiện
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <!--  Nếu bạn là thành viên mà thời gian chưa kết thúc-->
-                            <div th:if="${IamMember == 1 && endEvent  > 0}">
-                                <form th:action="@{/events/cancelRequest}" method="post">
-                                    <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
-                                        <div style="display: flex;flex-direction: column">
-                                            <button type="submit" data-toggle="modal"
-                                                    data-target="#deleteRequest" class="bg-alert text-white">Chờ phê duyệt
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-
                         </div>
                         <!--  Nếu thời gian sự kiện đã kết thúc-->
-                        <div th:if="${endEvent}  <= 0">
-
+                        <div th:if="${!enableJoin}">
                             <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                 <div style="display: flex;flex-direction: column">
                                     <button type="button" data-toggle="modal"
                                             data-target="#joinRequest" class="bg-secondary text-white join" disabled>
                                         Tôi muốn tham gia
                                     </button>
-                                    <label class="alert alert-warning">Sự kiện đã kết thúc</label>
+                                    <label class="alert alert-warning">[[${reason}]]</label>
                                 </div>
                             </div>
                             <br>
                             <div></div>
-                            <div th:if="${IamMember} == 1">
+                            <div th:if="${isMember && isEndDateEvent}">
                                 <div class="col-lg-3 text-center text-lg-start mb-3 m-lg-0">
                                     <button type="button" data-toggle="modal"
                                             data-target="#writerating" class="join"> Đánh giá

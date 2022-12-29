@@ -62,8 +62,10 @@ public class PostController {
             if (session.getAttribute("user") != null) {
                 user = (User) session.getAttribute("user");
             }
-            Post post = postService.getPostById(id);
-            Event event = post.getEvent();
+//            Post post = postService.getPostById(id);
+//            Event event = post.getEvent();
+            Event event = eventService.getEventById(id);
+            Post post = event.getPost();
             model.addAttribute("post", post);
             model.addAttribute("myComment", new Comment());
             model.addAttribute("comments", commentService.getAllCommentsByPost(id));
@@ -73,32 +75,44 @@ public class PostController {
             model.addAttribute("user", user);
             model.addAttribute("event", post.getEvent());
             Date date = new Date(System.currentTimeMillis());
-            int timeCompare = post.getEvent().getEndTime().compareTo(date);
-            int statusEvent = 1;
-            if (event.getBeginTime().after(date)) {
-                statusEvent = 1;
-            } else if (event.getBeginTime().before(date) && event.getEndTime().after(date)) {
-                statusEvent = 2;
-            } else if (event.getEndTime().before(date)) {
-                statusEvent = 3;
-            }
-            model.addAttribute("statusEvent",statusEvent);
-            System.out.println(timeCompare);
-            model.addAttribute("endEvent", timeCompare);
-            //
+            boolean enableJoin = false;
+            String reason = null;
+            boolean isFull = event.getCurrentMem() >= event.getNumOfMem();
+            boolean isMember = false;
+           boolean isEndDateEvent=false;
             UserEvent ue = null;
             if (user != null) {
                 ue = userEventService.findUserEventByUserAndEventId(event.getEventId(), user.getUserId());
+                if (ue != null && ue.getApproval()) {
+                    isMember = true;
+                }
             }
-
-            if (ue == null) {
-                model.addAttribute("IamMember", 0);
+            if (event.getBeginTime().after(date)) {
+                enableJoin = true;
+                if (isFull) {
+                    reason = "Sự kiện đã đầy";
+                    enableJoin = false;
+                }
+                if (isMember) {
+                    reason = "Đã tham gia";
+                    enableJoin = false;
+                }
+            } else if (event.getBeginTime().before(date) && event.getEndTime().after(date)) {
+                reason = "Sự kiện đang diễn ra";
+                enableJoin = false;
+            } else if (event.getEndTime().before(date)) {
+                reason = "Sự kiện đã kết thúc";
+                isEndDateEvent=true;
+                enableJoin = false;
             } else {
-//                if (ue.getApproval()) model.addAttribute("IamMember", 1);// đã phê duyệt
-//                else model.addAttribute("IamMember", 2);//chưa phê duyệt
-                model.addAttribute("IamMember", 1);
+                enableJoin = false;
             }
-
+//            model.addAttribute("endEvent", timeCompare);
+            //
+            model.addAttribute("enableJoin", enableJoin);
+            model.addAttribute("reason", reason);
+            model.addAttribute("isMember", isMember);
+            model.addAttribute("isEndDateEvent",isEndDateEvent);
             //Kiem tra danh gia vao bai post va danh gia sao cung voi diem trung binh:
             Long eId = post.getEvent().getEventId();
             Event e = eventService.getEventById(eId);
@@ -116,11 +130,9 @@ public class PostController {
             model.addAttribute("numOfMem", e.getNumOfMem());
             return "post/post_of_event";
 
-        }
-//        catch(NullPointerException e){
-//            return "500Page";
-//        }
-        catch (
+        } catch (NullPointerException e) {
+            return "500Page";
+        } catch (
                 NoSuchElementException e) {
             return "404Page";
         }
