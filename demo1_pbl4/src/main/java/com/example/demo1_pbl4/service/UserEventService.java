@@ -26,7 +26,7 @@ public interface UserEventService {
 
     List<UserEvent> findAllEventWithMember(Long userId,String role);
 
-    boolean deleteUserEvent(Long userId, Long eventId);
+    boolean deleteUserEvent(UserEvent member);
 
     //Tìm host trong 1 sự kiện
     User findHostInAEvent(List<UserEvent> members);

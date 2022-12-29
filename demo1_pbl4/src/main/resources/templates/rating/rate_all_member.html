@@ -29,7 +29,8 @@
         </tr>
         <th:block th:each="member : ${members}">
             <tr>
-                <td><a th:href="@{/profile}" th:text="${member.firstName}+' '+ ${member.lastName}"></a></td>
+                <td><a th:text="${member.getFirstName()+' '+ member.getLastName()}"
+                       th:href="@{'/my_account/'+${member.getUserId}}"></a></td>
                 <td th:text="${member.point4}"></td>
                 <td th:text="${member.point5}"></td>
                 <td th:text="${member.point6}"></td>

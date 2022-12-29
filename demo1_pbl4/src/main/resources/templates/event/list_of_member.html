@@ -20,9 +20,10 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a href="#" class="nav-link active">&nbsp;Danh sách thành viên trong sự kiện&nbsp; </a>
-                <a class="nav-link" th:href="@{'/events/waiting_list/'+ ${event.eventId}}">&nbsp;Danh sách thành viên
-                    đang chờ duyệt &nbsp;</a>
-                <a class="nav-link" th:href="@{/events/event_rating_list}">Thành viên đánh giá sự kiện</a>
+                <a th:if="${isHost}" class="nav-link" th:href="@{'/events/waiting_list/'+ ${event.eventId}}">&nbsp;Danh
+                    sách thành viên đang chờ duyệt &nbsp;</a>
+                <a th:if="${isHost}" class="nav-link" th:href="@{/events/event_rating_list}">Thành viên đánh giá sự
+                    kiện</a>
                 <a class="nav-link" th:href="@{'/events/host_event/'}">&nbsp;Quay về danh sách sự kiện&nbsp;</a>
             </div>
         </div>
@@ -33,28 +34,27 @@
         <thead>
         <tr scope="row">
             <th>Member id</th>
-            <th>First name</th>
-            <th>Last name</th>
+            <th>Name</th>
             <th>Gender</th>
             <th>Phone Number</th>
             <th>Email</th>
             <th>Address</th>
             <th>Role</th>
-            <th>Delete</th>
+            <th th:if="isHost" th:text="${'Delete'}"></th>
         </tr>
         </thead>
         <tbody>
         <th:block th:each="member: ${members}">
             <tr scope="row">
                 <td th:text="${member.getUser().getUserId()}"></td>
-                <td th:text="${member.getUser().getFirstName()}"></td>
-                <td th:text="${member.getUser().getLastName()}"></td>
+                <td><a th:text="${member.getUser().getFirstName()+' '+ member.getUser().getLastName()}"
+                       th:href="@{'/my_account/'+${member.getUser().getUserId()}}"></a></td>
                 <td th:text="${member.getUser().getGender()}? Male :Female"></td>
                 <td th:text="${member.getUser().getPhoneNum()}"></td>
                 <td th:text="${member.getUser().getEmail()}"></td>
                 <td th:text="${member.getUser().getAddress()}"></td>
                 <td th:text="${member.getEventRole()}"></td>
-                <td th:if="${member.user.userId!=host.userId}">
+                <td th:if="${member.user.userId!=host.userId && isHost}">
                     <a data-toggle="modal"
                        th:attr="data-target=${'#confirmDeleteModal'+member.getUser().getUserId()}"><i
                             class="bi bi-trash"></i>Xóa</a>
@@ -69,7 +69,9 @@
 <div class="modal fade" th:each="member: ${members}" th:attr="id=${'confirmDeleteModal'+member.getUser().getUserId()}"
      tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form th:action="@{'/events/member/delete?eId='+${member.event.eventId}+'&uId='+${member.getUser().getUserId()}}">
+        <form th:action="@{'/events/member/delete'}">
+            <input type="hidden" name="eId" th:value="${member.event.eventId}">
+            <input type="hidden" name="uId" th:value="${member.user.userId}">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Xóa thành viên</h5>

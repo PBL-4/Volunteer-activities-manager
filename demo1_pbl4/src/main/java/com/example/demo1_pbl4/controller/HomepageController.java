@@ -1,28 +1,30 @@
 package com.example.demo1_pbl4.controller;
 
 import com.example.demo1_pbl4.model.Event;
-import com.example.demo1_pbl4.model.Role;
 import com.example.demo1_pbl4.model.User;
 import com.example.demo1_pbl4.model.dto.TotalDonationOfUser;
-import com.example.demo1_pbl4.security.CustomUserDetailsService;
+import com.example.demo1_pbl4.model.dto.UserDTO;
 import com.example.demo1_pbl4.service.DonateService;
 import com.example.demo1_pbl4.service.EventService;
 import com.example.demo1_pbl4.service.ReportService;
 import com.example.demo1_pbl4.service.UserService;
 import com.example.demo1_pbl4.utils.B5EncodePassword;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.example.demo1_pbl4.utils.PasswordMatches;
+import com.example.demo1_pbl4.utils.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.context.IContext;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
+import javax.validation.Valid;
 import java.util.Calendar;
 import java.util.List;
 
@@ -74,7 +76,7 @@ public class HomepageController {
 
     @RequestMapping(value = "/register", method = {RequestMethod.GET})
     public String goRegister(Model model) {
-        model.addAttribute("myUser", new User());
+        model.addAttribute("myUser", new UserDTO());
         return "homepage/register_form";
     }
 
@@ -106,18 +108,33 @@ public class HomepageController {
         }
     }
 
-
     @PostMapping("/process_register") // action form
-    public String registerAccount(@ModelAttribute("myUser") User user) {
-        Role role = new Role();
-        user.setRole(role);
-        String rawPassword = user.getPassword();
-        //   String encodePass = b5EncodePassword.encodePass(rawPassword);
-        user.setPassword(rawPassword);
-        userService.insertUser(user);
-        return "redirect:/users";
-    }
+    public String registerAccount(Model model, @ModelAttribute("myUser") @Valid UserDTO userDto,
+                                  BindingResult bindingResult, Errors errors, RedirectAttributes redirAttrs) {
+        try {
+            if (bindingResult.hasErrors()) {
+                if (errors.getGlobalError().getObjectName().equals("myUser")) {
+                    model.addAttribute("errorMessage", "Mật khẩu xác nhận không khớp");
+                }
+                return "homepage/register_form";
+            }
+            User myUser = userService.getUserFromUserDTO(userDto);
+            userService.registerNewUser(myUser);
+            redirAttrs.addFlashAttribute("successRegister", "Đăng ký tài khoản thành công.");
+            return "redirect:/login";
+        } catch (UserAlreadyExistException uaeEx) {
+            model.addAttribute("errorMessage", uaeEx.getMessage());
+            uaeEx.printStackTrace();
+            return "homepage/register_form";
 
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            return "homepage/register_form";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "403Page";
+        }
+    }
 
     @GetMapping("/history_donation")
     public String showHistoryDonation(HttpSession session) {
@@ -172,4 +189,18 @@ public class HomepageController {
     }
 }
 
+//    @PostMapping("/process_register") // action form
+//    public String registerAccount(@ModelAttribute("myUser") User user) {
+//        Role role = new Role();// Mặc định role user
+//        user.setRole(role);
+//        if(user.getGender().equals("Nam")) user.setAvatar("/images/profile/male.jpg");
+//        else{
+//            user.setAvatar("/images/profile/female.png");
+//        }
+//        String rawPassword = user.getPassword();
+//        //   String encodePass = b5EncodePassword.encodePass(rawPassword);
+//        user.setPassword(rawPassword);
+//        userService.insertUser(user);
+//        return "redirect:/users";
+//    }
 

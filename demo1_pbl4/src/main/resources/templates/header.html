@@ -42,7 +42,8 @@
     <div class="container-fluid p-0">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
             <a href="/" class="navbar-brand ml-lg-3">
-                <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>Volunteer Expert</h1>
+<!--                <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>Volunteer Expert</h1>-->
+                <h1 class="m-0 text-uppercase text-primary"><i class="fa-solid fa-book-open-reader"></i>Volunteer Expert</h1>
             </a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -50,9 +51,9 @@
             <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mx-auto py-0">
                     <a th:href="@{/}" class="nav-item nav-link active">Home</a>
-                    <a th:href="@{/my_account}" class="navAccount-item nav-link active">My Account </a>
+                    <a th:if="${session.user!=null}" th:href="@{'/my_account/'+${session.user.userId}}" class="navAccount-item nav-link active">My Account </a>
                     <!--                <a href="about.html" class="nav-item nav-link">About</a>-->
-                    <a th:href="@{/events/page}" class="nav-item nav-link">Find our opportunities</a>
+                    <a th:href="@{/events/page/}" class="nav-item nav-link">Find our opportunities</a>
                     <div th:if="${session.user==null}">
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Join us</a>

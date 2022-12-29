@@ -30,22 +30,7 @@ public class UserController {
         return "user_list";
     }
 
-    @GetMapping("/insertForm")
-    public String showCreateForm(Model model) {
-        User user = new User();
-        model.addAttribute("User", user);
-        return "insert_user";
-    }
-
-    @PostMapping("/insertUser")// Voi bien se dung @RequestParam nhung voi doi tuong thi
-    public ModelAndView createUser(@ModelAttribute("myUser") User myUser) {
-        if (myUser != null) {
-            userService.insertUser(myUser);
-        }       // Chỗ này cần phải tối ưu.
-        return new ModelAndView("redirect:/users");
-    }
-
-    // Trang quản lý tình nguyện viên
+     // Trang quản lý tình nguyện viên
     @GetMapping("/admin")
     public String showUserOnAdmin(Model model, HttpSession session) {
         try {
@@ -86,9 +71,16 @@ public class UserController {
     }
 
     @GetMapping("/admin/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/users/admin";
+    public String deleteUser(@PathVariable("id") Long id, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User user = (User) session.getAttribute("user");
+            if (user.getRole().getRoleName().equals("ADMIN")) {
+                System.out.println("Xóa thành công");
+                userService.deleteUser(id);
+                return "redirect:/users/admin";
+            }
+        }
+        return "403Page";
     }
 
 

@@ -40,7 +40,8 @@ public class Event {
 
     private double fund;
 
-    // private boolean isDelete;
+    @Column(name = "is_approval")
+    private boolean isApproval;
 
     @ManyToOne()
     @JoinColumn(name = "status_id", nullable = false)
@@ -60,6 +61,17 @@ public class Event {
     public Event() {
         this.currentMem = 0;
         this.waitingApproval = 0;
+    }
+
+    public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, Post post) {
+        this.eventName = eventName;
+        this.location = location;
+        this.age = age;
+        this.numOfMem = numOfMem;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.hostname = hostname;
+        this.post = post;
     }
 
     public Event(String eventName, String location, int age, int numOfMem, Date beginTime, Date endTime, String hostname, double fund, Post post) {
@@ -209,5 +221,13 @@ public class Event {
 
     public void setDonation(Set<Donate> donation) {
         this.donation = donation;
+    }
+
+    public boolean isApproval() {
+        return isApproval;
+    }
+
+    public void setApproval(boolean approval) {
+        isApproval = approval;
     }
 }

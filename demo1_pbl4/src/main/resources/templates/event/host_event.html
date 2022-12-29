@@ -50,7 +50,8 @@
                             <th>State</th>
                             <th>Update</th>
                             <th>Rating</th>
-                            <th>Waiting Approval</th>
+                            <th>Waiting Approval Member</th>
+                            <th>Approval By Admin</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -79,6 +80,8 @@
                                 <td><a th:href="@{'/events/waiting_list/'+${event.getEventId()}}"
                                        th:text="${event.getWaitingApproval()}"></a>
                                 </td>
+                                <td th:if="${event.isApproval()}" th:text="${'Đã phê duyệt'}"></td>
+                                <td th:if="${!event.isApproval()}" th:text="${'Đợi admin phê duyệt'}"></td>
                             </tr>
                         </th:block>
                         </tbody>

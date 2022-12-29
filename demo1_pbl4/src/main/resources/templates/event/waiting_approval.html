@@ -21,7 +21,7 @@
                 <a class="nav-link" th:href="@{'/events/list_of_member/'+${eventId}}">Danh sách thành viên trong sự
                     kiện </a>
                 <a class="nav-link active" href="#">Danh sách thành viên đang chờ duyệt </a>
-                <a class="nav-link" th:href="@{'/events/my_event/'}">Quay về danh sách sự kiện</a>
+                <a class="nav-link" th:href="@{'/events/host_event/'}">Quay về danh sách sự kiện</a>
             </div>
         </div>
     </nav>
@@ -36,8 +36,7 @@
                 <thead>
                 <tr scope="row">
                     <th>Member id</th>
-                    <th>First name</th>
-                    <th>Last name</th>
+                    <th>Name</th>
                     <th>Gender</th>
                     <th>Phone Number</th>
                     <th>Email</th>
@@ -49,8 +48,8 @@
                 <th:block th:each="member: ${members}">
                     <tr scope="row">
                         <td th:text="${member.getUser().getUserId()}"></td>
-                        <td th:text="${member.getUser().getFirstName()}"></td>
-                        <td th:text="${member.getUser().getLastName()}"></td>
+                        <td><a th:text="${member.getUser().getFirstName()+' '+ member.getUser().getLastName()}"
+                               th:href="@{'/my_account/'+${member.getUser().getUserId()}}"></a></td>
                         <td th:text="${member.getUser().getGender()}? Male :Female"></td>
                         <td th:text="${member.getUser().getPhoneNum()}"></td>
                         <td th:text="${member.getUser().getEmail()}"></td>
@@ -61,7 +60,7 @@
                             <button type="submit" class="btn btn-primary">Đồng ý</button>
                         </td>
                         <td>
-                            <input type="submit" th:formaction="/events/disapproval" class="btn btn-alert"
+                            <input type="submit" formaction="/events/disapproval" class="btn btn-alert"
                                    value="Từ chối"/>
                         </td>
                     </tr>

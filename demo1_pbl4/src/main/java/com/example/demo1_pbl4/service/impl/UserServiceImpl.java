@@ -2,22 +2,18 @@ package com.example.demo1_pbl4.service.impl;
 
 import com.example.demo1_pbl4.model.Role;
 import com.example.demo1_pbl4.model.User;
-import com.example.demo1_pbl4.model.dto.MemberInRating;
+import com.example.demo1_pbl4.model.dto.UserDTO;
 import com.example.demo1_pbl4.repository.UserRepository;
 import com.example.demo1_pbl4.service.UserService;
+import com.example.demo1_pbl4.utils.UserAlreadyExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,11 +29,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).get();
     }
 
-    public User insertUser(User user) {
-        User temp = null;
-        if (checkExistedAccount(user) == true) {
+    public User registerNewUser(User user) throws UserAlreadyExistException {
+        if (checkExistedEmail(user)) {
+            throw new UserAlreadyExistException("There is an account with that email address: "
+                    + user.getEmail());
+
+        } else if (checkExistedUsername(user)) {
+            throw new UserAlreadyExistException("There is an account with that username: "
+                    + user.getUsername());
+        } else {
             return userRepository.save(user);
-        } else return temp;
+        }
     }
 
     public User updateUser(User user) {
@@ -49,11 +51,13 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    public boolean checkExistedAccount(User user) {
-        boolean check = false;
-        if (userRepository.findUserByUserName(user.getUsername()) == null && userRepository.findUserByEmail(user.getEmail()) == null)
-            check = true;
-        return check;
+    public boolean checkExistedEmail(User user) {
+
+        return userRepository.findUserByEmail(user.getEmail()) != null;
+    }
+
+    public boolean checkExistedUsername(User user) {
+        return userRepository.findUserByUserName(user.getUsername()) != null;
     }
 
 
@@ -91,26 +95,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer countAllUser() {
-        int count=0;
-       for(User u: getAllUsers())
-       {
+        int count = 0;
+        for (User u : getAllUsers()) {
             count++;
-       }
-       return count;
+        }
+        return count;
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//       User user=userRepository.findUserByUserName(username);
-//       if(user==null)
-//       {
-//           throw new UsernameNotFoundException("Invalid username or password");
-//       }
-//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),mapRoleToAuthority(user.getRole()));
-//    }
-//
-//    private  Collection<? extends GrantedAuthority> mapRoleToAuthority(Role role)
-//    {
-//        return  SimpleGrantedAuthority(role.getRoleName());
-//    }
+    @Override
+    public User getUserFromUserDTO(UserDTO userDTO) {
+        User myUser = new User();
+        myUser.setUsername(userDTO.getUsername());
+        myUser.setPassword(userDTO.getPassword());
+        myUser.setFirstName(userDTO.getFirstName());
+        myUser.setLastName(userDTO.getLastName());
+        myUser.setEmail(userDTO.getEmail());
+        myUser.setPhoneNum(userDTO.getPhoneNum());
+        myUser.setGender(userDTO.getGender());
+        myUser.setAddress(userDTO.getAddress());
+        if (myUser.getGender().equals("Nam")) myUser.setAvatar("/images/profile/male.jpg");
+        else {
+            myUser.setAvatar("/images/profile/female.png");
+        }
+        Role role = new Role();// Mặc định role USER
+        myUser.setRole(role);
+        // myUser.
+        return myUser;
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        return userRepository.findUserByEmail(email) != null;
+    }
 }
