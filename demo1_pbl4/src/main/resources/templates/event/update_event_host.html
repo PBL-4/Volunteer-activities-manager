@@ -9,18 +9,21 @@
 <body>
 <div class="container">
     <h1 class="text-center">Update your event here</h1>
-    <h2 class="text-center">Let them know more about your event mission and primary cause to help them connect to you</h2>
+    <h2 class="text-center">Let them know more about your event mission and primary cause to help them connect to
+        you</h2>
     <form th:action="@{/events/update_event}" method="post">
         <!-- 2 column grid layout with text inputs for the first and last names -->
-
+        <input type="hidden" name="eId" th:value="${event.eventId}">
         <div class="form-outline mb-4">
             <label class="form-label" for="eventName">Tên sự kiện</label>
-            <input type="text" id="eventName" class="form-control" name="eventName" th:value="${event.eventName}" required/>
+            <input type="text" id="eventName" class="form-control" name="eventName" th:value="${event.eventName}"
+                   required/>
         </div>
 
         <div class="form-outline mb-4">
             <label class="form-label" for="location">Vị trí</label>
-            <input type="text" id="location" class="form-control" name="location" th:value="${event.location}" required/>
+            <input type="text" id="location" class="form-control" name="location" th:value="${event.location}"
+                   required/>
         </div>
 
         <!-- Text input -->
@@ -28,14 +31,16 @@
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="beginDate">Ngày bắt đầu</label>
-                    <input type="date" id="beginDate" class="form-control" name="beginDate" th:value="${event.beginTime}" required/>
+                    <input type="date" id="beginDate" class="form-control" name="beginDate"
+                           th:value="${event.beginTime}" required/>
                 </div>
             </div>
             <!-- Text input -->
             <div class="col">
                 <div class="form-outline">
                     <label class="form-label" for="form6Example4">Ngày kết thúc</label>
-                    <input type="date" id="form6Example4" class="form-control" name="endDate" th:value="${event.endTime}" required/>
+                    <input type="date" id="form6Example4" class="form-control" name="endDate"
+                           th:value="${event.endTime}" required/>
                 </div>
             </div>
         </div>
@@ -43,7 +48,8 @@
         <!-- Email input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="numOfMem">Số lượng thành viên</label>
-            <input type="number" id="numOfMem" class="form-control" name="numOfMem" th:value="${event.numOfMem}" required/>
+            <input type="number" id="numOfMem" class="form-control" name="numOfMem" th:value="${event.numOfMem}"
+                   required/>
         </div>
 
         <!-- Number input -->
@@ -55,9 +61,10 @@
         <!-- Message input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="content">Nội dung mô tả sự kiện</label>
-            <textarea class="form-control" id="content" rows="4" name="content" th:value="${event.post.content}" required></textarea>
+            <textarea class="form-control" id="content" rows="4" name="content" th:value="${event.post.content}"
+                      required></textarea>
         </div>
-<!--<!-     <input type="hidden" name="id" th:value="${}">-->
+        <!--<!-     <input type="hidden" name="id" th:value="${}">-->
         <div class="row mb-4 btn-group">
             <button type="button" style="margin-right:10px" class="btn btn-secondary" formaction="/homepage/home">Back
                 to home
