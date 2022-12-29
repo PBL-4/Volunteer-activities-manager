@@ -57,7 +57,7 @@
                         <input type="hidden" name="userId" th:value="${member.getUser().getUserId()}">
                         <input type="hidden" name="eventId" th:value="${member.getEvent().getEventId()}">
                         <td>
-                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                            <button type="submit" formaction="/events/approval" class="btn btn-primary">Đồng ý</button>
                         </td>
                         <td>
                             <input type="submit" formaction="/events/disapproval" class="btn btn-alert"

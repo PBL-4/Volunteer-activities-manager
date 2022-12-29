@@ -555,13 +555,15 @@ public class EventController {
         // Nếu đầy:
         // NẾu ko
         int curMem = event.getCurrentMem();
-        if (curMem <= event.getNumOfMem()) {
+        if (curMem >= event.getNumOfMem())
+        {
             model.addAttribute("msg", "Số lượng sự kiện đã đầy");
         } else {
             UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
             userEvent.setApproval(true);
             userEventService.updateUserEvent(userEvent);
             event.setCurrentMem(++curMem);
+            eventService.updateEvent(event);
         }
         return "redirect:/events/waiting_list/" + eventId;
     }

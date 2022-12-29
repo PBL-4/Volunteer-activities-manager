@@ -217,8 +217,7 @@ public class PostController {
             userEvent.setEventRole("Member");
             userEvent.setUserEventId(new UserEventId(userId, eventId));
             userEventService.insertUserEvent(userEvent);// Tạo khóa chính
-            Long postId = event.getPost().getPostId();
-            return "redirect:/posts/get?id=" + postId;
+            return "redirect:/posts/get?id=" + eventId;
         } else {
             model.addAttribute("unLogin", "Bạn cần đăng nhập thì mới tham gia được");
             return "homepage/login_form";
