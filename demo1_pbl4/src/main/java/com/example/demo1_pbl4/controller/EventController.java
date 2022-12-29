@@ -62,76 +62,6 @@ public class EventController {
         return "/event/find_event_list";
     }
 
-    // Hàm hiển thị find_event chính
-    //  @GetMapping("/page{pageNumber}")
-//    public String pagingEventWithSort(Model model, @RequestParam(value = "sort", required = false) Integer sort,
-//                                      @PathVariable(value = "pageNumber", required = false) Integer pageNumber) {
-//        try {
-//            int pageSize = 10;
-//            if (pageNumber == null) pageNumber = 0;// check nếu như trang mặc định thì mình sẽ gán page hiện tại là 0
-//
-//            Pageable pageable = PageRequest.of(pageNumber, 10);// Tạo một loại phân trang với pageNumber là vị trí trang và size là số phần tử.
-//            Page<Event> eventPages;
-//            if (sort != null) {
-//                switch (sort) {
-//                    case 1:
-//                    default:
-//                        eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
-//                }
-//            } else {
-//                eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
-//            }
-//
-//            long totalItems = eventPages.getTotalElements();
-//            int totalPages = eventPages.getTotalPages();
-//            List<Event> eventLists = eventPages.getContent();
-//            if (eventLists.isEmpty()) {
-//                model.addAttribute("message", "Không có dữ liệu có sẵn");
-//            } else {
-//                model.addAttribute("totalItems", totalItems);
-//                model.addAttribute("totalPages", totalPages);
-//                model.addAttribute("eventList", eventLists);
-//                model.addAttribute("pageNumber", pageNumber);
-//                model.addAttribute("myTotalPages", totalPages - 1);
-//            }
-//            return "/event/find_event_list";
-//        } catch (NullPointerException e) {
-//            System.err.println("Lỗi không có dữ liệu khi load trang");
-//            e.printStackTrace();
-//            return "500Page";
-//        }
-//    }
-
-//    @GetMapping("/page{pageNumber}")
-//    public String pagingEventPage(Model model, @PathVariable("pageNumber") int pageNumber) {
-//        int pageSize = 10;
-//        Page<Event> eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
-//        long totalItems = eventPages.getTotalElements();
-//        int totalPages = eventPages.getTotalPages();
-//        List<Event> eventLists = eventPages.getContent();
-//        model.addAttribute("totalItems", totalItems);
-//        model.addAttribute("myTotalPages", totalPages - 1);
-//        model.addAttribute("eventList", eventLists);
-//        model.addAttribute("pageNumber", pageNumber);
-//        return "/event/find_event_list";
-//    }
-
-    //    @GetMapping("/find?l={location}&k={keyword}/{pageNumber}")
-//    public String showAllEventsByFind(Model model, @RequestParam("location") String location,
-//                                      @RequestParam("keyword") String keyword, @PathVariable("pageNumber") int pageNumber) {
-//        Page<Event> eventPages;
-//        List<Event> eventLists;
-//        if (location != null || keyword != null) {
-//            eventLists = eventService.findEventByLocationAndKeyword(location, keyword);
-//        } else {
-//            eventLists = eventService.getAllEvents();
-//        }
-//
-//        model.addAttribute("eventList", eventLists);
-//        model.addAttribute("location", location);
-//        //     model.addAttribute("keyword", keyword);
-//        return "/event/find_event_list";
-//    }
     @GetMapping("/page")
     public String showDefaultPage(Model model,
                                   @RequestParam(value = "sort", required = false) Integer sort,
@@ -427,8 +357,11 @@ public class EventController {
             , @RequestParam("content") String content
     ) {
         if ((session.getAttribute("user")) != null) {
+            if (beginDate.after(endDate)) {
+                model.addAttribute("msg", "Ngày bắt đầu trễ hơn ngày kết thúc");
+                return "event/create_event_host";
+            }
             User user = (User) session.getAttribute("user");
-
             Long millis = System.currentTimeMillis();
             Date datePost = new Date(millis);
             Post post = new Post(eventName, content, datePost, user);
@@ -618,17 +551,26 @@ public class EventController {
     //1. Chấp nhận
     @PostMapping("/approval")
     public String approvalMember(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
-        UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
-        userEvent.setApproval(true);
-        userEventService.updateUserEvent(userEvent);
+        Event event = eventService.getEventById(eventId);
+        // Nếu đầy:
+        // NẾu ko
+        int curMem = event.getCurrentMem();
+        if (curMem <= event.getNumOfMem()) {
+            model.addAttribute("msg", "Số lượng sự kiện đã đầy");
+        } else {
+            UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
+            userEvent.setApproval(true);
+            userEventService.updateUserEvent(userEvent);
+            event.setCurrentMem(++curMem);
+        }
         return "redirect:/events/waiting_list/" + eventId;
     }
 
     //2. Từ chối
     @PostMapping("/disapproval")
     public String disapprovalMember(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
-        //  UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
-        userEventService.deleteUserEvent(eventId, userId);
+        UserEvent userEvent = userEventService.findUserEventByUserAndEventId(eventId, userId);
+        userEventService.deleteUserEvent(userEvent);
         // model.addAttribute()
         System.out.println("Xóa khỏi danh sách đợi");
         return "redirect:/events/waiting_list/" + eventId;
@@ -637,12 +579,13 @@ public class EventController {
 
     @GetMapping("/cancelRequest")
     public String cancelRequestJoin(Model model, @RequestParam("userId") Long userId, @RequestParam("eventId") Long eventId) {
-        boolean check = userEventService.deleteUserEvent(userId, eventId);
+        UserEvent member = userEventService.findUserEventByUserAndEventId(eventId, userId);
+        boolean check = userEventService.deleteUserEvent(member);
         if (check) {
             model.addAttribute("message", "Hủy thành công");
             System.out.println("Hủy thành công");
         }
-        return "redirect:/";
+        return "redirect:/events/member_event";
     }
 
     // Xóa đi một thành viên trong tại danh sách thành viên trong 1 sự kiện
@@ -651,7 +594,7 @@ public class EventController {
         if (session.getAttribute("user") != null) {
             User u = (User) session.getAttribute("user");
             UserEvent memberDel = userEventService.findUserEventByUserAndEventId(eId, uId);
-            boolean delete = userEventService.deleteUserEvent(memberDel.getUser().getUserId(), memberDel.getEvent().getEventId());
+            boolean delete = userEventService.deleteUserEvent(memberDel);
             if (delete) {
                 model.addAttribute("successMes", "Xóa thành công");
             } else {
@@ -661,4 +604,133 @@ public class EventController {
         }
         return "redirect:/login";
     }
+
+    // Danh sách các sự kiện chờ phê duyệt
+    @GetMapping("/admin/waiting_approval")
+    public String waitingApprovalEvent(Model model, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            if (u.getRole().getRoleName().equals("ADMIN")) {
+                model.addAttribute("myUser", u);
+                List<Event> eventList = eventService.findDisapprovalList();
+                model.addAttribute("eventList", eventList);
+                //    model.addAttribute(eventName)
+                return "/admin/event_waiting_approval";
+            }
+        }
+        return "403Page";
+    }
+
+    @PostMapping("/admin/approval/search")
+    public String searchDisapprovalList(Model model, @RequestParam("eventName") String keyword, HttpSession session) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            model.addAttribute("myUser", u);
+            List<Event> listOfEvent = eventService.findEventByEventName(keyword);
+            model.addAttribute("Events", listOfEvent);
+            model.addAttribute("eventName", keyword);
+            return "admin/EventsManager";
+        } else {
+            return "403Page";
+        }
+    }
+
+    @PostMapping("/admin/approval/")
+    public String acceptEventByAdmin(Model model, HttpSession session, @RequestParam("eId") Long eId) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            if (u.getRole().getRoleName().equals("ADMIN")) {
+                Event e = eventService.getEventById(eId);
+                e.setApproval(true);
+                eventService.updateEvent(e);
+                System.out.println("Duyệt thành công");
+                return "redirect:/events/admin/waiting_approval";
+            }
+        }
+        return "403Page";
+    }
+
+    @PostMapping("/admin/disapproval/")
+    public String declineEventByAdmin(Model model, HttpSession session, @RequestParam("eId") Long eId) {
+        if (session.getAttribute("user") != null) {
+            User u = (User) session.getAttribute("user");
+            if (u.getRole().getRoleName().equals("ADMIN")) {
+                eventService.deleteEvent(eId);
+                System.out.println("Từ chối thành công");
+                return "redirect:/events/admin/waiting_approval";
+            }
+        }
+        return "403Page";
+    }
 }
+
+// Hàm hiển thị find_event chính
+//  @GetMapping("/page{pageNumber}")
+//    public String pagingEventWithSort(Model model, @RequestParam(value = "sort", required = false) Integer sort,
+//                                      @PathVariable(value = "pageNumber", required = false) Integer pageNumber) {
+//        try {
+//            int pageSize = 10;
+//            if (pageNumber == null) pageNumber = 0;// check nếu như trang mặc định thì mình sẽ gán page hiện tại là 0
+//
+//            Pageable pageable = PageRequest.of(pageNumber, 10);// Tạo một loại phân trang với pageNumber là vị trí trang và size là số phần tử.
+//            Page<Event> eventPages;
+//            if (sort != null) {
+//                switch (sort) {
+//                    case 1:
+//                    default:
+//                        eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
+//                }
+//            } else {
+//                eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
+//            }
+//
+//            long totalItems = eventPages.getTotalElements();
+//            int totalPages = eventPages.getTotalPages();
+//            List<Event> eventLists = eventPages.getContent();
+//            if (eventLists.isEmpty()) {
+//                model.addAttribute("message", "Không có dữ liệu có sẵn");
+//            } else {
+//                model.addAttribute("totalItems", totalItems);
+//                model.addAttribute("totalPages", totalPages);
+//                model.addAttribute("eventList", eventLists);
+//                model.addAttribute("pageNumber", pageNumber);
+//                model.addAttribute("myTotalPages", totalPages - 1);
+//            }
+//            return "/event/find_event_list";
+//        } catch (NullPointerException e) {
+//            System.err.println("Lỗi không có dữ liệu khi load trang");
+//            e.printStackTrace();
+//            return "500Page";
+//        }
+//    }
+
+//    @GetMapping("/page{pageNumber}")
+//    public String pagingEventPage(Model model, @PathVariable("pageNumber") int pageNumber) {
+//        int pageSize = 10;
+//        Page<Event> eventPages = eventService.findEventWithPagination(pageNumber, pageSize);
+//        long totalItems = eventPages.getTotalElements();
+//        int totalPages = eventPages.getTotalPages();
+//        List<Event> eventLists = eventPages.getContent();
+//        model.addAttribute("totalItems", totalItems);
+//        model.addAttribute("myTotalPages", totalPages - 1);
+//        model.addAttribute("eventList", eventLists);
+//        model.addAttribute("pageNumber", pageNumber);
+//        return "/event/find_event_list";
+//    }
+
+//    @GetMapping("/find?l={location}&k={keyword}/{pageNumber}")
+//    public String showAllEventsByFind(Model model, @RequestParam("location") String location,
+//                                      @RequestParam("keyword") String keyword, @PathVariable("pageNumber") int pageNumber) {
+//        Page<Event> eventPages;
+//        List<Event> eventLists;
+//        if (location != null || keyword != null) {
+//            eventLists = eventService.findEventByLocationAndKeyword(location, keyword);
+//        } else {
+//            eventLists = eventService.getAllEvents();
+//        }
+//
+//        model.addAttribute("eventList", eventLists);
+//        model.addAttribute("location", location);
+//        //     model.addAttribute("keyword", keyword);
+//        return "/event/find_event_list";
+//    }

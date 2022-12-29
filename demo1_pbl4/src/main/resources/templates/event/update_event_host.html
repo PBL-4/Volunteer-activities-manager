@@ -61,12 +61,13 @@
         <!-- Message input -->
         <div class="form-outline mb-4">
             <label class="form-label" for="content">Nội dung mô tả sự kiện</label>
-            <textarea class="form-control" id="content" rows="4" name="content" th:value="${event.post.content}"
-                      required></textarea>
+            <textarea class="form-control" id="content" rows="4" name="content"
+                      th:inline="text" required>[[${event.post.content}]]</textarea>
         </div>
         <!--<!-     <input type="hidden" name="id" th:value="${}">-->
         <div class="row mb-4 btn-group">
-            <button type="button" style="margin-right:10px" class="btn btn-secondary" formaction="/homepage/home">Back
+            <button type="button" style="margin-right:10px" class="btn btn-secondary" formaction="/events/host_event">
+                Back
                 to home
             </button>
             <button type="submit" class="btn btn-primary ">Update event?</button>

@@ -74,8 +74,17 @@ public class PostController {
             model.addAttribute("event", post.getEvent());
             Date date = new Date(System.currentTimeMillis());
             int timeCompare = post.getEvent().getEndTime().compareTo(date);
+            int statusEvent = 1;
+            if (event.getBeginTime().after(date)) {
+                statusEvent = 1;
+            } else if (event.getBeginTime().before(date) && event.getEndTime().after(date)) {
+                statusEvent = 2;
+            } else if (event.getEndTime().before(date)) {
+                statusEvent = 3;
+            }
+            model.addAttribute("statusEvent",statusEvent);
             System.out.println(timeCompare);
-            model.addAttribute("Eventend", timeCompare);
+            model.addAttribute("endEvent", timeCompare);
             //
             UserEvent ue = null;
             if (user != null) {
@@ -85,6 +94,8 @@ public class PostController {
             if (ue == null) {
                 model.addAttribute("IamMember", 0);
             } else {
+//                if (ue.getApproval()) model.addAttribute("IamMember", 1);// đã phê duyệt
+//                else model.addAttribute("IamMember", 2);//chưa phê duyệt
                 model.addAttribute("IamMember", 1);
             }
 
@@ -109,9 +120,11 @@ public class PostController {
 //        catch(NullPointerException e){
 //            return "500Page";
 //        }
-        catch (NoSuchElementException e) {
+        catch (
+                NoSuchElementException e) {
             return "404Page";
         }
+
     }
 
     @PostMapping("/saverating")
@@ -175,10 +188,9 @@ public class PostController {
 
     // xu ly send request
     @PostMapping("/sendRequest")
-    public String processJoin(Model model,@RequestParam(value = "userId",required =false ) Long userId, @RequestParam("eventId") Long eventId,
+    public String processJoin(Model model, @RequestParam(value = "userId", required = false) Long userId, @RequestParam("eventId") Long eventId,
                               @RequestParam("personalInfo") String personalInfo, @RequestParam("skill") String skill) {
-        if(userId!=null)
-        {
+        if (userId != null) {
             UserEvent userEvent = new UserEvent();
             User user = userService.getUserById(userId);
             System.out.println("userId" + user.getUserId());
@@ -195,7 +207,7 @@ public class PostController {
             userEventService.insertUserEvent(userEvent);// Tạo khóa chính
             Long postId = event.getPost().getPostId();
             return "redirect:/posts/get?id=" + postId;
-        }else{
+        } else {
             model.addAttribute("unLogin", "Bạn cần đăng nhập thì mới tham gia được");
             return "homepage/login_form";
         }

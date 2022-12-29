@@ -257,4 +257,9 @@ public class EventServiceImpl implements EventService {
     public Page<Event> findEventByEventNameOrderByPopular(String eventName, Pageable pageable) {
         return eventRepository.findEventByEventNameOrderByPopular(eventName,pageable);
     }
+
+    @Override
+    public List<Event> findDisapprovalList() {
+        return eventRepository.findDisapprovalList();
+    }
 }
